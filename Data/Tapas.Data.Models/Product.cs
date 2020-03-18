@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+
     using Tapas.Data.Common.Models;
 
     public class Product : IDeletableEntity

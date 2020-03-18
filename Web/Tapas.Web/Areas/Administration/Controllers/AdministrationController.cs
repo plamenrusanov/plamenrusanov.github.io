@@ -5,7 +5,7 @@
     using Tapas.Common;
     using Tapas.Web.Controllers;
 
-    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    [Authorize(Roles = GlobalConstants.AdministratorName)]
     [Area("Administration")]
     public class AdministrationController : BaseController
     {

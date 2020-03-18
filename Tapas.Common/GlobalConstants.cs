@@ -4,12 +4,14 @@
     {
         public const string SystemName = "Tapas";
 
-        public const string AdministratorRoleName = "Administrator";
+        public const string AdministratorName = "Administrator";
 
-        public const string OperatorRoleName = "Operator";
+        public const string OperatorName = "Operator";
 
-        public const string UserRoleName = "User";
+        public const string UserNameAsString = "User";
 
         public const string EmailAdministrator = "plamen.rusanov@abv.bg";
+
+        public const string EmailOperator = "operator@tapas.bg";
     }
 }
