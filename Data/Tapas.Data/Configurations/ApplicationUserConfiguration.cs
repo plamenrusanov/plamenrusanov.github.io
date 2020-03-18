@@ -1,8 +1,8 @@
 ﻿namespace Tapas.Data.Configurations
 {
-    using Tapas.Data.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Tapas.Data.Models;
 
     public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {

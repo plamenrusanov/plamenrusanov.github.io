@@ -1,9 +1,8 @@
 ﻿namespace Tapas.Web.ViewModels.Settings
 {
+    using AutoMapper;
     using Tapas.Data.Models;
     using Tapas.Services.Mapping;
-
-    using AutoMapper;
 
     public class SettingViewModel : IMapFrom<Setting>, IHaveCustomMappings
     {

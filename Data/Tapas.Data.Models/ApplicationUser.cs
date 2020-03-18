@@ -4,9 +4,8 @@ namespace Tapas.Data.Models
     using System;
     using System.Collections.Generic;
 
-    using Tapas.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using Tapas.Data.Common.Models;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {

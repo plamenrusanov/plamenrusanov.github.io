@@ -3,9 +3,8 @@ namespace Tapas.Data.Models
 {
     using System;
 
-    using Tapas.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using Tapas.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

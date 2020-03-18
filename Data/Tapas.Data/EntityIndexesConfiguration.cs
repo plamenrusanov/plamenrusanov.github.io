@@ -2,9 +2,8 @@
 {
     using System.Linq;
 
-    using Tapas.Data.Common.Models;
-
     using Microsoft.EntityFrameworkCore;
+    using Tapas.Data.Common.Models;
 
     internal static class EntityIndexesConfiguration
     {

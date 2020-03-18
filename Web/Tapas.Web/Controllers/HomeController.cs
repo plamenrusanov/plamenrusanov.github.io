@@ -2,9 +2,8 @@
 {
     using System.Diagnostics;
 
-    using Tapas.Web.ViewModels;
-
     using Microsoft.AspNetCore.Mvc;
+    using Tapas.Web.ViewModels;
 
     public class HomeController : BaseController
     {

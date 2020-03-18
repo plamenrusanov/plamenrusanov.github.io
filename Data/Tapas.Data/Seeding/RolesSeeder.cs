@@ -4,11 +4,10 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Tapas.Common;
-    using Tapas.Data.Models;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
+    using Tapas.Common;
+    using Tapas.Data.Models;
 
     internal class RolesSeeder : ISeeder
     {
