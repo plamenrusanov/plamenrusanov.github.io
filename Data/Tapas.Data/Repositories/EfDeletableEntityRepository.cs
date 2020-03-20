@@ -8,7 +8,7 @@
     using Tapas.Data.Common.Models;
     using Tapas.Data.Common.Repositories;
 
-    public class EfDeletableEntityRepository<TEntity> : EfRepository<TEntity>, IDeletableEntityRepository<TEntity>
+    public class EfDeletableEntityRepository<TEntity> : EfRepository<TEntity>, IRepository<TEntity>
         where TEntity : class, IDeletableEntity
     {
         public EfDeletableEntityRepository(ApplicationDbContext context)

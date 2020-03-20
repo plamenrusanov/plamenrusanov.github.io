@@ -15,6 +15,8 @@
 
         public string ImageUrl { get; set; }
 
+        public string Name { get; set; }
+
         public virtual ICollection<AllergensProducts> Products { get; set; }
     }
 }
