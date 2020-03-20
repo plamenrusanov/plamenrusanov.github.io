@@ -39,4 +39,10 @@
     <ProjectReference Include="..\Tapas.Web.Infrastructure\Tapas.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\Tapas.Web.ViewModels\Tapas.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\Allergens\Eggs.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

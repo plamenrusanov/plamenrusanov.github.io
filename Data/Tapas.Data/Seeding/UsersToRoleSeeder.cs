@@ -14,13 +14,26 @@
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            await this.AddUserToRole(GlobalConstants.AdministratorName, userManager);
-            await this.AddUserToRole(GlobalConstants.OperatorName, userManager);
+            await this.AddUserToRole(
+                GlobalConstants.AdministratorName,
+                userManager);
+
+            await this.AddUserToRole(
+                GlobalConstants.OperatorName,
+                userManager);
         }
 
-        private async Task AddUserToRole(string userName, UserManager<ApplicationUser> userManager)
+        private async Task AddUserToRole(
+            string userName,
+            UserManager<ApplicationUser> userManager)
         {
             var user = await userManager.FindByNameAsync(userName);
+
+            if (await userManager.IsInRoleAsync(user, userName))
+            {
+                return;
+            }
+
             await userManager.AddToRoleAsync(user, userName);
         }
     }

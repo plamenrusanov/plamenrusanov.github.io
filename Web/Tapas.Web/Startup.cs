@@ -15,6 +15,8 @@
     using Tapas.Data.Models;
     using Tapas.Data.Repositories;
     using Tapas.Data.Seeding;
+    using Tapas.Services;
+    using Tapas.Services.Contracts;
     using Tapas.Services.Data;
     using Tapas.Services.Mapping;
     using Tapas.Services.Messaging;
@@ -54,10 +56,13 @@
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+            services.AddScoped(typeof(CloudConnection));
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<IAllergensService, AllergensService>();
+            services.AddTransient<ICloudService, CloudService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
