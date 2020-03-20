@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace Tapas.Services.Contracts
+﻿namespace Tapas.Services.Contracts
 {
+    using System.Threading.Tasks;
+
     public interface IAllergensService
     {
         bool IsAllergenExist(string allergenName);
