@@ -1,0 +1,26 @@
+﻿@model List<Tapas.Web.ViewModels.Administration.Categories.CategoryViewModel>
+@{
+    this.ViewData["Title"] = "Категорий";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col-md-6 text-center">
+            @item.Name
+        </div>
+        <div class="col-md-2 justify-content-md-center">
+            <button class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
+                    asp-action="Edit" asp-route-categoryId="@item.Id">Edit</button>
+        </div> 
+        <div class="col-md-2 justify-content-md-center">
+            <button class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
+                    asp-action="Details" asp-route-categoryId="@item.Id">Details</button>
+        </div> 
+        <div class="col-md-2 justify-content-md-center">
+            <button class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
+                    asp-action="Delete" asp-route-categoryId="@item.Id">Delete</button>
+        </div>
+    </div>
+}

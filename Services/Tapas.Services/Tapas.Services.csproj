@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Tapas.Data.Common\Tapas.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\Tapas.Data.Models\Tapas.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\Tapas.Web.ViewModels\Tapas.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
