@@ -2,12 +2,16 @@
 {
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Tapas.Common;
     using Tapas.Services.Contracts;
     using Tapas.Web.ViewModels.Administration.Categories;
 
+    [Authorize(Roles = GlobalConstants.AdministratorName)]
     public class CategoriesController : AdministrationController
     {
+        private const string CategoryExist = "Category already exist.";
         private readonly ICategoriesService categoriesService;
 
         public CategoriesController(ICategoriesService categoriesService)
@@ -17,6 +21,11 @@
 
         public IActionResult Index()
         {
+            if (this.User == null)
+            {
+                return this.RedirectToPage("/Account/Login");
+            }
+
             var categories = this.categoriesService.All();
             return this.View(categories);
         }
@@ -36,13 +45,47 @@
 
             if (this.categoriesService.IsCategoryExist(inputModel.Name))
             {
-                this.ModelState.AddModelError(string.Empty, "Category already exist.");
+                this.ModelState.AddModelError(string.Empty, CategoryExist);
                 return this.View();
             }
 
             await this.categoriesService.AddAsync(inputModel.Name);
 
-            return this.LocalRedirect("/Index");
+            return this.RedirectToAction("Index");
+        }
+
+        public IActionResult Edit(string categoryId)
+        {
+            var category = this.categoriesService.GetCategoryById(categoryId);
+            if (category == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(category);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(CategoryViewModel viewModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(viewModel);
+            }
+
+            this.categoriesService.Edit(viewModel);
+
+            return this.RedirectToAction("Index");
+        }
+
+        public IActionResult Details(string categoryId)
+        {
+            return this.View();
+        }
+
+        public IActionResult Delete(string categoryId)
+        {
+            return this.View();
         }
     }
 }

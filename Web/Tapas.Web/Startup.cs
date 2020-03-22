@@ -64,6 +64,7 @@
             services.AddTransient<IAllergensService, AllergensService>();
             services.AddTransient<ICloudService, CloudService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<IHomeService, HomeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

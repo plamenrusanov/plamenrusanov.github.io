@@ -37,6 +37,28 @@
             }).ToList();
         }
 
+        public async void Edit(CategoryViewModel categoryViewModel)
+        {
+            var category = this.categoriesRepository.All()
+                .Where(x => x.Id == categoryViewModel.Id)
+                .FirstOrDefault();
+
+            category.Name = categoryViewModel.Name;
+            await this.categoriesRepository.SaveChangesAsync();
+        }
+
+        public CategoryViewModel GetCategoryById(string categoryId)
+        {
+            return this.categoriesRepository.All()
+                .Where(x => x.Id == categoryId)
+                .Select(x => new CategoryViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                })
+                .FirstOrDefault();
+        }
+
         public bool IsCategoryExist(string name)
         {
             return this.categoriesRepository.All().Any(x => x.Name == name);

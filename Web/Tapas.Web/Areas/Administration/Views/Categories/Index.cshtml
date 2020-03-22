@@ -3,24 +3,32 @@
     this.ViewData["Title"] = "Категорий";
 }
 
-<h1>@this.ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-md-9 justify-content-center">
+        <h1>@this.ViewData["Title"]</h1>
+    </div>
+    <div class="col-md-3 justify-content-end">
+        <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories"
+           asp-action="Add">Create Category</a>
+    </div>
+</div>
 @foreach (var item in Model)
 {
     <div class="row">
         <div class="col-md-6 text-center">
-            @item.Name
+            <h3>@item.Name</h3>
         </div>
         <div class="col-md-2 justify-content-md-center">
-            <button class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
-                    asp-action="Edit" asp-route-categoryId="@item.Id">Edit</button>
+            <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
+                    asp-action="Edit" asp-route-categoryId="@item.Id">Edit</a>
         </div> 
         <div class="col-md-2 justify-content-md-center">
-            <button class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
-                    asp-action="Details" asp-route-categoryId="@item.Id">Details</button>
+            <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
+                    asp-action="Details" asp-route-categoryId="@item.Id">Details</a>
         </div> 
         <div class="col-md-2 justify-content-md-center">
-            <button class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
-                    asp-action="Delete" asp-route-categoryId="@item.Id">Delete</button>
+            <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
+                    asp-action="Delete" asp-route-categoryId="@item.Id">Delete</a>
         </div>
     </div>
 }

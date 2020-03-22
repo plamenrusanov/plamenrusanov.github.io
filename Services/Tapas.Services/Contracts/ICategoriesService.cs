@@ -12,5 +12,9 @@
         Task AddAsync(string name);
 
         ICollection<CategoryViewModel> All();
+
+        CategoryViewModel GetCategoryById(string categoryId);
+
+        void Edit(CategoryViewModel categoryViewModel);
     }
 }

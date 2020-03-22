@@ -2,7 +2,10 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class CategoryInputViewModel
+    using Tapas.Data.Models;
+    using Tapas.Services.Mapping;
+
+    public class CategoryInputViewModel : IMapTo<Category>
     {
         [Required]
         [StringLength(20, MinimumLength =3)]
