@@ -17,6 +17,7 @@
     using Tapas.Data.Repositories;
     using Tapas.Data.Seeding;
     using Tapas.Services.Data;
+    using Tapas.Services.Data.Contracts;
     using Tapas.Services.Messaging;
 
     public static class Program

@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
-    using Tapas.Services.Data;
+    using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Settings;
 
     public class SettingsController : BaseController

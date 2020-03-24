@@ -5,6 +5,7 @@
 
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
+    using Tapas.Services.Data.Contracts;
     using Tapas.Services.Mapping;
 
     public class SettingsService : ISettingsService

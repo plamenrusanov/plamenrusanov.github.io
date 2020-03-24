@@ -2,29 +2,34 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
 
-    using Microsoft.Extensions.DependencyInjection;
-    using Tapas.Services.Contracts;
+    using Tapas.Data.Models;
 
-    internal class AllergensSeeder : ISeeder
+    public class AllergensSeeder : ISeeder
     {
         private const string AllergensPath = "./../Tapas.Web/wwwroot/Allergens/";
 
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             var allergensPaths = Directory.GetFiles(AllergensPath);
-            var allergensService = serviceProvider.GetRequiredService<IAllergensService>();
+
             foreach (var filePath in allergensPaths)
             {
                 var allergenName = Path.GetFileNameWithoutExtension(filePath);
 
-                if (allergensService.IsAllergenExist(allergenName))
+                if (dbContext.Allergens.Any(x => x.Name == allergenName))
                 {
                     continue;
                 }
 
-                await allergensService.AddAsync(allergenName, filePath);
+                await dbContext.Allergens
+                    .AddAsync(new Allergen()
+                    {
+                        Name = allergenName,
+                        ImageUrl = filePath,
+                    });
             }
         }
     }

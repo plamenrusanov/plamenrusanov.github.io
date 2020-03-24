@@ -18,6 +18,7 @@
     using Tapas.Services;
     using Tapas.Services.Contracts;
     using Tapas.Services.Data;
+    using Tapas.Services.Data.Contracts;
     using Tapas.Services.Mapping;
     using Tapas.Services.Messaging;
     using Tapas.Web.ViewModels;
@@ -56,15 +57,19 @@
             services.AddScoped(typeof(IRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
-            services.AddScoped(typeof(CloudConnection));
 
             // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(
+                this.configuration.GetSection("EmailGridSender:ApiKey").Value));
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IAllergensService, AllergensService>();
-            services.AddTransient<ICloudService, CloudService>();
+            services.AddTransient<ICloudService>(x => new CloudService(
+                this.configuration.GetSection("CloudSettings:CloudName").Value,
+                this.configuration.GetSection("CloudSettings:ApiKey").Value,
+                this.configuration.GetSection("CloudSettings:ApiSecret").Value));
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IHomeService, HomeService>();
+            services.AddTransient<IProductsService, ProductsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

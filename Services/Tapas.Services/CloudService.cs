@@ -11,11 +11,16 @@
 
     public class CloudService : ICloudService
     {
-        private readonly CloudConnection cloudConnection;
+        private readonly Account account;
 
-        public CloudService(CloudConnection cloudConnection)
+        public CloudService(string cloudName, string apiKey, string apiSecret)
         {
-            this.cloudConnection = cloudConnection;
+            this.account = new Account()
+            {
+                Cloud = cloudName,
+                ApiKey = apiKey,
+                ApiSecret = apiSecret,
+            };
         }
 
         public async Task<string> UploadImageToCloud(IFormFile formFile)
@@ -26,8 +31,11 @@
             {
                 File = new FileDescription(imageName, stream),
             };
-            var uploadResult = this.cloudConnection.Cloudinary().Upload(uploadParams);
+
+            var uploadResult = this.Cloudinary().Upload(uploadParams);
             return await Task.FromResult<string>(uploadResult.Uri.AbsolutePath);
         }
+
+        private Cloudinary Cloudinary() => new Cloudinary(this.account);
     }
 }

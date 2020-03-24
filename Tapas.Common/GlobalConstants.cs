@@ -13,5 +13,7 @@
         public const string EmailAdministrator = "plamen.rusanov@abv.bg";
 
         public const string EmailOperator = "operator@tapas.bg";
+
+        public const string AreaAdmin = "Administration";
     }
 }

@@ -5,7 +5,7 @@
 
     using Tapas.Data.Common.Models;
 
-    public class Category : IDeletableEntity
+    public class Category : IDeletableEntity, IAuditInfo
     {
         public Category()
         {
@@ -22,5 +22,9 @@
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
     }
 }

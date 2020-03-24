@@ -4,6 +4,7 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Tapas.Services.Data;
+    using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels;
 
     public class HomeController : BaseController

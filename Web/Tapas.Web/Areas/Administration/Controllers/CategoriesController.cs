@@ -5,7 +5,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Tapas.Common;
-    using Tapas.Services.Contracts;
+    using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.Categories;
 
     [Authorize(Roles = GlobalConstants.AdministratorName)]

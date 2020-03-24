@@ -6,7 +6,7 @@
 
     using Tapas.Data.Common.Models;
 
-    public class Product : IDeletableEntity
+    public class Product : IDeletableEntity, IAuditInfo
     {
         public Product()
         {
@@ -32,5 +32,9 @@
         public DateTime? DeletedOn { get; set; }
 
         public virtual ICollection<AllergensProducts> Allergens { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
     }
 }

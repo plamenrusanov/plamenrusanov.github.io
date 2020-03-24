@@ -26,6 +26,12 @@
 
         public virtual Task AddAsync(TEntity entity) => this.DbSet.AddAsync(entity).AsTask();
 
+        public async Task AddEntityAsync(TEntity entity)
+        {
+            await this.Context.AddAsync<TEntity>(entity);
+            this.Context.SaveChanges();
+        }
+
         public virtual void Update(TEntity entity)
         {
             var entry = this.Context.Entry(entity);
@@ -43,16 +49,16 @@
 
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+            // this.Dispose(true);
+            // GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                this.Context?.Dispose();
-            }
+            //if (disposing)
+            //{
+            //    this.Context?.Dispose();
+            //}
         }
     }
 }
