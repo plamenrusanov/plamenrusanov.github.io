@@ -49,16 +49,16 @@
 
         public void Dispose()
         {
-            // this.Dispose(true);
-            // GC.SuppressFinalize(this);
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            //if (disposing)
-            //{
-            //    this.Context?.Dispose();
-            //}
+            if (disposing)
+            {
+                this.Context?.Dispose();
+            }
         }
     }
 }

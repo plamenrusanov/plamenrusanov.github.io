@@ -6,27 +6,61 @@
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
+    using Tapas.Web.ViewModels.Administration.Categories;
+    using Tapas.Web.ViewModels.Administration.Products;
     using Tapas.Web.ViewModels.Home;
 
     public class HomeService : IHomeService
     {
         private readonly IRepository<Category> categoriesRepository;
+        private readonly IRepository<Product> productsRepository;
 
-        public HomeService(IRepository<Category> categoriesRepository)
+        public HomeService(IRepository<Category> categoriesRepository, IRepository<Product> productsRepository)
         {
             this.categoriesRepository = categoriesRepository;
+            this.productsRepository = productsRepository;
         }
 
-        public IEnumerable<CategoryWhitProductsViewModel> CategoryWhitProducts()
+        public HomeIndexViewModel CategoryWhitProducts(string categoryId = null)
         {
-            return this.categoriesRepository
+            var model = new HomeIndexViewModel()
+            {
+                Categories = this.categoriesRepository
                 .AllAsNoTracking()
-                .Select(x => new CategoryWhitProductsViewModel()
+                .Select(x => new CategoryViewModel()
                 {
-                    CategoryName = x.Name,
-                    CategoryId = x.Id,
-                    Products = x.Products.Select(c => new ProductsViewModel() { }).ToList(),
-                }).ToList();
+                    Id = x.Id,
+                    Name = x.Name,
+                }).ToList(),
+            };
+
+            if (categoryId == null)
+            {
+                model.Products = this.productsRepository
+                    .All()
+                    .Select(x => new ProductsViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        ImageUrl = x.ImageUrl,
+                        Price = x.Price,
+                        CategoryId = x.CategoryId,
+                    }).ToList().Take(12);
+                return model;
+            }
+
+            model.Products = this.productsRepository
+                   .All()
+                   .Where(x => x.CategoryId == categoryId)
+                   .Select(x => new ProductsViewModel()
+                   {
+                       Id = x.Id,
+                       Name = x.Name,
+                       ImageUrl = x.ImageUrl,
+                       Price = x.Price,
+                       CategoryId = x.CategoryId,
+                   }).ToList().Take(12);
+            return model;
         }
     }
 }

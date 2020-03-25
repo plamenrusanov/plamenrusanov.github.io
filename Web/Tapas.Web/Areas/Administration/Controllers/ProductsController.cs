@@ -5,7 +5,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Tapas.Services.Contracts;
     using Tapas.Services.Data.Contracts;
-    using Tapas.Web.ViewModels.Administration.Allergens;
     using Tapas.Web.ViewModels.Administration.Categories;
     using Tapas.Web.ViewModels.Administration.Products;
 

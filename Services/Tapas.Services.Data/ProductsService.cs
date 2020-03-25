@@ -1,6 +1,7 @@
 ﻿namespace Tapas.Services.Data
 {
     using System.Linq;
+
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Services.Contracts;

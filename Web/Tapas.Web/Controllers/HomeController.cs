@@ -3,23 +3,30 @@
     using System.Diagnostics;
 
     using Microsoft.AspNetCore.Mvc;
-    using Tapas.Services.Data;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels;
 
     public class HomeController : BaseController
     {
         private readonly IHomeService homeService;
+        private readonly IProductsService productsService;
 
-        public HomeController(IHomeService homeService)
+        public HomeController(IHomeService homeService, IProductsService productsService)
         {
             this.homeService = homeService;
+            this.productsService = productsService;
         }
 
         public IActionResult Index()
         {
-            var categories = this.homeService.CategoryWhitProducts();
-            return this.View(categories);
+            var homeIndexViewModel = this.homeService.CategoryWhitProducts();
+            return this.View(homeIndexViewModel);
+        }
+
+        public IActionResult GetProductsByCategory(string categoryId)
+        {
+            var homeIndexViewModel = this.homeService.CategoryWhitProducts(categoryId);
+            return this.View("Index", homeIndexViewModel);
         }
 
         public IActionResult Privacy()
