@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-
+    using Tapas.Common;
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
@@ -38,11 +38,11 @@
             {
                 model.Products = this.productsRepository
                     .All()
-                    .Select(x => new ProductsViewModel()
+                    .Select(x => new ProductViewModel()
                     {
                         Id = x.Id,
                         Name = x.Name,
-                        ImageUrl = x.ImageUrl,
+                        ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                         Price = x.Price,
                         CategoryId = x.CategoryId,
                     }).ToList().Take(12);
@@ -52,14 +52,14 @@
             model.Products = this.productsRepository
                    .All()
                    .Where(x => x.CategoryId == categoryId)
-                   .Select(x => new ProductsViewModel()
+                   .Select(x => new ProductViewModel()
                    {
                        Id = x.Id,
                        Name = x.Name,
-                       ImageUrl = x.ImageUrl,
+                       ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                        Price = x.Price,
                        CategoryId = x.CategoryId,
-                   }).ToList().Take(12);
+                   }).ToList();
             return model;
         }
     }

@@ -23,13 +23,24 @@
             };
         }
 
-        public async Task<string> UploadImageToCloud(IFormFile formFile)
+        public async Task<string> UploadImageFromForm(IFormFile formFile)
         {
             Stream stream = formFile.OpenReadStream();
             var imageName = Guid.NewGuid().ToString();
             var uploadParams = new ImageUploadParams()
             {
                 File = new FileDescription(imageName, stream),
+            };
+
+            var uploadResult = this.Cloudinary().Upload(uploadParams);
+            return await Task.FromResult<string>(uploadResult.Uri.AbsolutePath);
+        }
+
+        public async Task<string> UploadImageFromResources(string fileDirectory)
+        {
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription(fileDirectory),
             };
 
             var uploadResult = this.Cloudinary().Upload(uploadParams);

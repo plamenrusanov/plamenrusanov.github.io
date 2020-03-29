@@ -1,11 +1,11 @@
 ﻿namespace Tapas.Web.ViewModels.Administration.Allergens
 {
-    public class AllergenViewModel
+    public class DetailsAllergenViewModel
     {
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public bool IsCheked { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

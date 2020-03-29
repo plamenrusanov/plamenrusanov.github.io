@@ -6,10 +6,17 @@
     using System.Threading.Tasks;
 
     using Tapas.Data.Models;
+    using Tapas.Services.Contracts;
 
     public class AllergensSeeder : ISeeder
     {
         private const string AllergensPath = "./../Tapas.Web/wwwroot/Allergens/";
+        private readonly ICloudService cloudService;
+
+        public AllergensSeeder(ICloudService cloudService)
+        {
+            this.cloudService = cloudService;
+        }
 
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
@@ -24,11 +31,13 @@
                     continue;
                 }
 
+                var result = await this.cloudService.UploadImageFromResources(filePath);
+
                 await dbContext.Allergens
                     .AddAsync(new Allergen()
                     {
                         Name = allergenName,
-                        ImageUrl = filePath,
+                        ImageUrl = result,
                     });
             }
         }

@@ -17,7 +17,7 @@
 
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            builder.UseSqlServer(connectionString);
+            builder.UseSqlServer(connectionString).UseLazyLoadingProxies();
 
             return new ApplicationDbContext(builder.Options);
         }

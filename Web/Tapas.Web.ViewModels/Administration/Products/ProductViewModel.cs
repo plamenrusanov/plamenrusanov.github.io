@@ -4,7 +4,7 @@
 
     using Tapas.Web.ViewModels.Administration.AllergensProducts;
 
-    public class ProductsViewModel
+    public class ProductViewModel
     {
         public string Id { get; set; }
 

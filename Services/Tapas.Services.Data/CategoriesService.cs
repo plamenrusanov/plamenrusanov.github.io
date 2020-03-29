@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -37,17 +38,16 @@
             }).ToList();
         }
 
-        public async void Edit(CategoryViewModel categoryViewModel)
+        public void Edit(CategoryViewModel categoryViewModel)
         {
             var category = this.categoriesRepository.All()
                 .Where(x => x.Id == categoryViewModel.Id)
                 .FirstOrDefault();
-
             category.Name = categoryViewModel.Name;
-            await this.categoriesRepository.SaveChangesAsync();
+            this.categoriesRepository.SaveChanges();
         }
 
-        public CategoryViewModel GetCategoryById(string categoryId)
+        public CategoryViewModel GetCategoryViewModelById(string categoryId)
         {
             return this.categoriesRepository.All()
                 .Where(x => x.Id == categoryId)
@@ -59,9 +59,25 @@
                 .FirstOrDefault();
         }
 
-        public bool IsCategoryExist(string name)
+        public bool ExistCategoryByName(string categoryName)
         {
-            return this.categoriesRepository.All().Any(x => x.Name == name);
+            return this.categoriesRepository.All().Any(x => x.Name == categoryName);
         }
+
+        public bool ExistCategoryById(string categoryId)
+        {
+            return this.categoriesRepository.All().Any(x => x.Id == categoryId);
+        }
+
+        public void Remove(string categoryId)
+        {
+            var category = this.GetCategoryById(categoryId);
+
+            this.categoriesRepository.Delete(category);
+            this.categoriesRepository.SaveChanges();
+        }
+
+        private Category GetCategoryById(string categoryId)
+            => this.categoriesRepository.All().FirstOrDefault(x => x.Id == categoryId);
     }
 }

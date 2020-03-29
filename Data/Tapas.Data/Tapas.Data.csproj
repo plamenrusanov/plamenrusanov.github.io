@@ -27,6 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
@@ -39,8 +40,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\Tapas.Services\Tapas.Services.csproj" />
     <ProjectReference Include="..\..\Tapas.Common\Tapas.Common.csproj" />
-    <ProjectReference Include="..\Tapas.Data.Common\Tapas.Data.Common.csproj" />
     <ProjectReference Include="..\Tapas.Data.Models\Tapas.Data.Models.csproj" />
   </ItemGroup>
 

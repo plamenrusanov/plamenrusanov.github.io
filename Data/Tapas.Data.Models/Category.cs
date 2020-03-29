@@ -5,26 +5,17 @@
 
     using Tapas.Data.Common.Models;
 
-    public class Category : IDeletableEntity, IAuditInfo
+    public class Category : BaseDeletableModel<string>
     {
         public Category()
+            : base()
         {
             this.Id = Guid.NewGuid().ToString();
             this.Products = new HashSet<Product>();
         }
 
-        public string Id { get; set; }
-
         public string Name { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        public DateTime? DeletedOn { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? ModifiedOn { get; set; }
     }
 }

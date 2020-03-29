@@ -6,6 +6,8 @@
 
     public interface ICloudService
     {
-        Task<string> UploadImageToCloud(IFormFile formFile);
+        Task<string> UploadImageFromForm(IFormFile formFile);
+
+        Task<string> UploadImageFromResources(string fileDirectory);
     }
 }

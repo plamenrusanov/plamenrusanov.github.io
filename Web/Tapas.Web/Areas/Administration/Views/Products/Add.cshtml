@@ -19,11 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input class="form-control" required asp-for="Price">
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input type="file" asp-for="Image" />
+                <input class="form-control" required asp-for="Price" type="text">
             </div>
         </div>
         <div class="col-md-6">
@@ -36,10 +32,10 @@
                     }
                 </select>
             </div>
-            <div class="form-group">
+            <div class="row form-group">
                 @foreach (var item in Model.AvailableAllergens)
                 {
-                    <div class="checkbox">
+                    <div class="col-md-4 checkbox">
                         <label>
                             <input type="checkbox"
                                    name="Allergens"
@@ -50,14 +46,23 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
+    <hr />
+    <div class="row form-group justify-content-center">
+        <label asp-for="Image" class="control-label justify-content-center"></label>
+        <input type="file" class="form-control-file" asp-for="Image" />
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-6 justify-content-center">
+            <a asp-action="Index">Back to List</a>
+        </div>
+        <div class="col-md-6 form-group justify-content-center">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

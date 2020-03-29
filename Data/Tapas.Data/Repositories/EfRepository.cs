@@ -16,15 +16,15 @@
             this.DbSet = this.Context.Set<TEntity>();
         }
 
-        protected DbSet<TEntity> DbSet { get; set; }
-
         protected ApplicationDbContext Context { get; set; }
 
-        public virtual IQueryable<TEntity> All() => this.DbSet;
+        protected DbSet<TEntity> DbSet { get; set; }
 
-        public virtual IQueryable<TEntity> AllAsNoTracking() => this.DbSet.AsNoTracking();
+        public virtual IQueryable<TEntity> All() => this.Context.Set<TEntity>();
 
-        public virtual Task AddAsync(TEntity entity) => this.DbSet.AddAsync(entity).AsTask();
+        public virtual IQueryable<TEntity> AllAsNoTracking() => this.Context.Set<TEntity>().AsNoTracking();
+
+        public async virtual Task AddAsync(TEntity entity) => await this.Context.Set<TEntity>().AddAsync(entity).AsTask();
 
         public async Task AddEntityAsync(TEntity entity)
         {
@@ -32,20 +32,22 @@
             this.Context.SaveChanges();
         }
 
+        public virtual int SaveChanges() => this.Context.SaveChanges();
+
         public virtual void Update(TEntity entity)
         {
             var entry = this.Context.Entry(entity);
             if (entry.State == EntityState.Detached)
             {
-                this.DbSet.Attach(entity);
+                this.Context.Set<TEntity>().Attach(entity);
             }
 
             entry.State = EntityState.Modified;
         }
 
-        public virtual void Delete(TEntity entity) => this.DbSet.Remove(entity);
+        public virtual void Delete(TEntity entity) => this.Context.Set<TEntity>().Remove(entity);
 
-        public Task<int> SaveChangesAsync() => this.Context.SaveChangesAsync();
+        public virtual Task<int> SaveChangesAsync() => this.Context.SaveChangesAsync();
 
         public void Dispose()
         {

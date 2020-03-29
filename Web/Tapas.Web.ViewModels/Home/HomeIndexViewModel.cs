@@ -9,11 +9,11 @@
     {
         public HomeIndexViewModel()
         {
-            this.Products = new HashSet<ProductsViewModel>();
+            this.Products = new HashSet<ProductViewModel>();
             this.Categories = new HashSet<CategoryViewModel>();
         }
 
-        public virtual IEnumerable<ProductsViewModel> Products { get; set; }
+        public virtual IEnumerable<ProductViewModel> Products { get; set; }
 
         public virtual IEnumerable<CategoryViewModel> Categories { get; set; }
     }

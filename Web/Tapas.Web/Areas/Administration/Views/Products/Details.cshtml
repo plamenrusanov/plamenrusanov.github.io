@@ -1,0 +1,61 @@
+﻿@model Tapas.Web.ViewModels.Administration.Products.DetailsProductViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<main>
+    <h1 class="text-center">Details</h1>
+
+    <hr />
+
+    <div class="mx-auto">
+        <div class="row d-flex justify-content-around">
+            <div class="col-sm-6  flex-column">
+                <img class="card-img-top" src="https://res.cloudinary.com@(Model.ImageUrl)" width="400" height="270" alt="@Model.Name">
+            </div>
+
+            <div class="col-sm-6 flex-column">
+                <div class="row">
+                    <div class="col-sm-6 flex-column">
+                        <h2 class="text-center">@Html.LabelFor(x => x.Name)</h2>
+                    </div>
+                    <div class="col-sm-6 flex-column">
+                        <h3 class="text-center">@Html.DisplayFor(x => x.Name)</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 flex-column">
+                        <h2 class="text-center">Price</h2>
+                    </div>
+                    <div class="col-sm-6 flex-column">
+                        <h3 class="text-center">@Model.Price</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 flex-column">
+                        <h2 class="text-center">Category</h2>
+                    </div>
+                    <div class="col-sm-6 flex-column">
+                        <h2 class="text-center">@Model.CategoryName</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (var allergen in Model.Allergens)
+                    {
+                        <div class="col-md-2">
+                            <img src="https://res.cloudinary.com@(allergen.ImageUrl)" width="45" height="45" alt="@allergen.Name">
+                            <span>@allergen.Name</span>
+                        </div>
+                    }
+                </div>
+                <div class="text-center">
+                    <a onclick="history.back()" class="btn btn-secondary btn-lg active bg-event">Back</a>
+                    <a href="~/Administration/Products/Edit?productId=@Model.Id" class="btn btn-secondary btn-lg active bg-event" role="button" area-pressed="true">Edit</a>
+                </div>
+            </div>
+        </div>
+        <hr />
+      
+    </div>
+</main>

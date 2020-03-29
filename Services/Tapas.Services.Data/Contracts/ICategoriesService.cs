@@ -7,14 +7,18 @@
 
     public interface ICategoriesService
     {
-        bool IsCategoryExist(string name);
+        bool ExistCategoryByName(string categoryName);
 
-        Task AddAsync(string name);
+        bool ExistCategoryById(string categoryId);
+
+        Task AddAsync(string categoryName);
 
         ICollection<CategoryViewModel> All();
 
-        CategoryViewModel GetCategoryById(string categoryId);
+        CategoryViewModel GetCategoryViewModelById(string categoryId);
 
         void Edit(CategoryViewModel categoryViewModel);
+
+        void Remove(string categoryId);
     }
 }

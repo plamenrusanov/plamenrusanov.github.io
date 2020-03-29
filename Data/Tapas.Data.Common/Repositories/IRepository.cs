@@ -20,5 +20,7 @@
         Task<int> SaveChangesAsync();
 
         Task AddEntityAsync(TEntity entity);
+
+        int SaveChanges();
     }
 }

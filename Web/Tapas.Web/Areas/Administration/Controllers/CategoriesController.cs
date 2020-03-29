@@ -43,7 +43,7 @@
                 return this.View(inputModel);
             }
 
-            if (this.categoriesService.IsCategoryExist(inputModel.Name))
+            if (this.categoriesService.ExistCategoryByName(inputModel.Name))
             {
                 this.ModelState.AddModelError(string.Empty, CategoryExist);
                 return this.View();
@@ -56,7 +56,7 @@
 
         public IActionResult Edit(string categoryId)
         {
-            var category = this.categoriesService.GetCategoryById(categoryId);
+            var category = this.categoriesService.GetCategoryViewModelById(categoryId);
             if (category == null)
             {
                 return this.NotFound();
@@ -80,12 +80,38 @@
 
         public IActionResult Details(string categoryId)
         {
-            return this.View();
+            if (!this.categoriesService.ExistCategoryById(categoryId))
+            {
+                return this.NotFound();
+            }
+
+            var category = this.categoriesService.GetCategoryViewModelById(categoryId);
+
+            return this.View(category);
         }
 
         public IActionResult Delete(string categoryId)
         {
-            return this.View();
+            if (!this.categoriesService.ExistCategoryById(categoryId))
+            {
+                return this.NotFound();
+            }
+
+            var category = this.categoriesService.GetCategoryViewModelById(categoryId);
+
+            return this.View(category);
+        }
+
+        public IActionResult OnDelete(string categoryId)
+        {
+            if (!this.categoriesService.ExistCategoryById(categoryId))
+            {
+                return this.NotFound();
+            }
+
+            this.categoriesService.Remove(categoryId);
+
+            return this.RedirectToAction("Index");
         }
     }
 }

@@ -6,6 +6,7 @@
 
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Tapas.Services.Contracts;
 
     public class ApplicationDbContextSeeder : ISeeder
     {
@@ -29,7 +30,7 @@
                               new SettingsSeeder(),
                               new UsersSeeder(),
                               new UsersToRoleSeeder(),
-                              new AllergensSeeder(),
+                              new AllergensSeeder(serviceProvider.GetRequiredService<ICloudService>()),
                           };
 
             foreach (var seeder in seeders)
