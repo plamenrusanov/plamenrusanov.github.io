@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
-    using Tapas.Services.Contracts;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.Categories;
     using Tapas.Web.ViewModels.Administration.Products;
@@ -85,6 +84,30 @@
             }
 
             await this.productsService.EditProductAsync(viewModel);
+
+            return this.Redirect("/");
+        }
+
+        public IActionResult Delete(string productId)
+        {
+            if (!this.productsService.ExistProductById(productId))
+            {
+                return this.NotFound();
+            }
+
+            var viewModel = this.productsService.GetDeleteProductById(productId);
+
+            return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> OnDelete(string productId)
+        {
+            if (!this.productsService.ExistProductById(productId))
+            {
+                return this.NotFound();
+            }
+
+            await this.productsService.DeleteProductAsync(productId);
 
             return this.Redirect("/");
         }

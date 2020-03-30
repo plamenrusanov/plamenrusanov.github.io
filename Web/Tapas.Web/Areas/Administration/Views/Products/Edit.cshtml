@@ -76,7 +76,7 @@
                 <h3>@Html.LabelFor(model => model.Image, "Нова снимка")</h3>
             </div>
             <div class="form-control-file editor-field">
-                @Html.TextBoxFor(model => model.Image, new { type = "file" })
+                @Html.TextBoxFor(model => model.Image, new { type = "file", @class="form-group", @title=@Model.Name})
                 @Html.ValidationMessageFor(model => model.Image)
             </div>
         </div>
@@ -93,8 +93,8 @@
     </div>
     <hr class="hr-tapas" />
     <div class="row">
-        <div class="col-md-6 form-group justify-content-center">
-            <button type="submit" class="btn btn-primary active">Edit</button>
+        <div class="col-md-6 form-group text-center">
+            <button type="submit" class="btn btn-primary btn-lg active">Edit</button>
         </div>
     </div>
 

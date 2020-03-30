@@ -1,0 +1,42 @@
+﻿@model Tapas.Web.ViewModels.Administration.Products.DeleteProductViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<main>
+    <h1 class="text-center">Изтриване на продукт</h1>
+
+    <hr class="hr-tapas" />
+    <div class="mx-auto">
+        <div class="row d-flex justify-content-around">
+            <div class="col-sm-6  flex-column">
+                <img class="card-img-top" src="https://res.cloudinary.com@(Model.ImageUrl)" width="400" height="270" alt="@Model.Name">
+            </div>
+
+            <div class="col-sm-6 flex-column">
+                <div class="row">
+                    <div class="col-sm-6 flex-column">
+                        <h2 class="text-center">@Html.LabelFor(x => x.Name)</h2>
+                    </div>
+                    <div class="col-sm-6 flex-column">
+                        <h3 class="text-center">@Html.DisplayFor(x => x.Name)</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 flex-column">
+                        <h2 class="text-center">@Html.LabelFor(x => x.CategoryName)</h2>
+                    </div>
+                    <div class="col-sm-6 flex-column">
+                        <h2 class="text-center">@Html.DisplayFor(x => x.CategoryName)</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="hr-tapas" />
+        <div class="text-center">
+            <a onclick="history.back()" class="btn btn-primary btn-lg active">Назад</a>
+            <a href="~/Administration/Products/OnDelete?productId=@Model.Id" class="btn btn-danger btn-lg active" role="button" area-pressed="true">Изтрий</a>
+        </div>
+    </div>
+</main>

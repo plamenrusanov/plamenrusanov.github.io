@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Services.Data
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -173,6 +174,28 @@
                 }
             }
 
+            await this.productsRepo.SaveChangesAsync();
+        }
+
+        public DeleteProductViewModel GetDeleteProductById(string productId)
+        {
+            return this.productsRepo.All()
+                .Where(x => x.Id == productId)
+                .Select(x => new DeleteProductViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ImageUrl = x.ImageUrl,
+                    CategoryName = x.Category.Name,
+                }).FirstOrDefault();
+        }
+
+        public async Task DeleteProductAsync(string productId)
+        {
+            var product = this.productsRepo.All()
+                .Where(x => x.Id == productId)
+                .FirstOrDefault();
+            this.productsRepo.Delete(product);
             await this.productsRepo.SaveChangesAsync();
         }
     }

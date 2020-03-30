@@ -17,5 +17,9 @@
         EditProductViewModel GetEditProductById(string productId);
 
         Task EditProductAsync(EditProductViewModel model);
+
+        DeleteProductViewModel GetDeleteProductById(string productId);
+
+        Task DeleteProductAsync(string productId);
     }
 }
