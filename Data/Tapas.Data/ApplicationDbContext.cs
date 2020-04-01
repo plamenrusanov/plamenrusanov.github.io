@@ -33,6 +33,14 @@
 
         public DbSet<AllergensProducts> AllergensProducts { get; set; }
 
+        public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<ShopingCart> ShopingCarts { get; set; }
+
+        public DbSet<ShopingCartItem> ShopingCartItems { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

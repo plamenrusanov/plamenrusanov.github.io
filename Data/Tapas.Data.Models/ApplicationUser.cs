@@ -12,6 +12,9 @@ namespace Tapas.Data.Models
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid().ToString();
+            this.ShopingCart = new ShopingCart();
+            this.Orders = new HashSet<Order>();
+            this.Addresses = new HashSet<DeliveryAddress>();
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
@@ -26,6 +29,14 @@ namespace Tapas.Data.Models
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+        public string ShopingCartId { get; set; }
+
+        public virtual ShopingCart ShopingCart { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
+
+        public virtual ICollection<DeliveryAddress> Addresses { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
