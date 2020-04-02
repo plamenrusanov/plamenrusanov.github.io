@@ -70,7 +70,7 @@
                     ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                     CategoryId = x.CategoryId,
                     Allergens = x.Allergens
-                    .Select(c => new AllergensProductsViewModel()
+                    .Select(c => new DetailsAlergenViewModel()
                     {
                         AllergenId = c.AllergenId,
                     }).ToList(),

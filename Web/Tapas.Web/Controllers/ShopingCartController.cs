@@ -14,11 +14,16 @@
     {
         private readonly IShopingCartService cartService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IProductsService productsService;
 
-        public ShopingCartController(IShopingCartService cartService, UserManager<ApplicationUser> userManager)
+        public ShopingCartController(
+            IShopingCartService cartService,
+            UserManager<ApplicationUser> userManager,
+            IProductsService productsService)
         {
             this.cartService = cartService;
             this.userManager = userManager;
+            this.productsService = productsService;
         }
 
         // GET: ShopingCart
@@ -35,26 +40,38 @@
                 await this.cartService.CreateShopingCartAsync(user.Id);
             }
 
-            var products = this.cartService.GetShopingCart(user);
-            return this.View(products);
+            var cart = this.cartService.GetShopingCart(user);
+            return this.View(cart);
         }
 
-        // GET: ShopingCart/Details/5
-        public ActionResult Details(int id)
+        // GET: ShopingCart/AddItem/string
+        public async Task<ActionResult> AddItem(string productId)
         {
-            return this.View();
-        }
+            if (this.User == null)
+            {
+                return this.RedirectToPage("/Account/Login");
+            }
 
-        // GET: ShopingCart/Create
-        public ActionResult Create()
-        {
-            return this.View();
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user.ShopingCart == null)
+            {
+                await this.cartService.CreateShopingCartAsync(user.Id);
+            }
+
+            if (!this.productsService.ExistProductById(productId))
+            {
+                return this.NotFound(productId);
+            }
+
+            var model = this.cartService.GetShopingModel(user, productId);
+
+            return this.View(model);
         }
 
         // POST: ShopingCart/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create()
         {
             try
             {

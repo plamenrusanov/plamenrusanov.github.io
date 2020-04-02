@@ -7,16 +7,23 @@
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
+    using Tapas.Web.ViewModels.Administration.Allergens;
+    using Tapas.Web.ViewModels.Administration.AllergensProducts;
+    using Tapas.Web.ViewModels.Administration.Products;
     using Tapas.Web.ViewModels.ShopingCart;
     using Tapas.Web.ViewModels.ShopingCartItems;
 
     public class ShopingCartService : IShopingCartService
     {
         private readonly IDeletableEntityRepository<ShopingCart> cartRepository;
+        private readonly IDeletableEntityRepository<Product> productRepository;
 
-        public ShopingCartService(IDeletableEntityRepository<ShopingCart> cartRepository)
+        public ShopingCartService(
+            IDeletableEntityRepository<ShopingCart> cartRepository,
+            IDeletableEntityRepository<Product> productRepository)
         {
             this.cartRepository = cartRepository;
+            this.productRepository = productRepository;
         }
 
         public async Task CreateShopingCartAsync(string userId)
@@ -43,6 +50,31 @@
                         Quantity = c.Quantity,
                     }).ToList(),
                 }).FirstOrDefault();
+        }
+
+        public AddItemViewModel GetShopingModel(ApplicationUser user, string productId)
+        {
+            return new AddItemViewModel()
+            {
+                Product = this.productRepository
+                    .All()
+                    .Where(x => x.Id == productId)
+                    .Select(x => new DetailsProductViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Price = x.Price,
+                        ImageUrl = x.ImageUrl,
+                        Allergens = x.Allergens
+                            .Select(c => new DetailsAllergenViewModel()
+                            {
+                                Id = c.AllergenId,
+                                Name = c.Allergen.Name,
+                                ImageUrl = c.Allergen.ImageUrl,
+                            }).ToList(),
+                    }).FirstOrDefault(),
+                ShopingCart = this.GetShopingCart(user),
+            };
         }
     }
 }

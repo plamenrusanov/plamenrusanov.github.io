@@ -1,0 +1,89 @@
+﻿@model Tapas.Web.ViewModels.ShopingCart.AddItemViewModel
+@{
+    ViewData["Title"] = "Index";
+    var i = 1;
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <!--AddedProduct-->
+        <div class="col-md-6">
+            <div class="row">
+                <img class="card-img-top" src="https://res.cloudinary.com@(Model.Product.ImageUrl)" width="400" height="270" alt="@Model.Product.Name">
+            </div>
+            <div class="row">
+                @Html.DisplayFor(x => x.Product.Name)
+            </div>
+            <div class="row">
+                @Html.DisplayFor(x => x.Product.Price)
+            </div>
+            <div class="row">
+                @foreach (var item in Model.Product.Allergens)
+                {
+                    <div class="col-md-1">
+                        <img src="https://res.cloudinary.com@(item.ImageUrl)" width="45" height="45" alt="@item.Name">
+                        <span>@Html.Label(item.Name)</span>
+                    </div>
+                }
+            </div>
+        </div>
+        <!--ShopingCart-->
+        <div class="col-md-6">
+            <h1 class="text-center">Твоята количка</h1>
+            <hr class="hr-tapas" />
+            <table class="table">
+                <thead>
+                    <tr class="row">
+                        <th class="col-sm-1">
+                            #
+                        </th>
+                        <th class="col-sm-2">
+                            @Html.DisplayName("Продукт")
+                        </th>
+                        <th class="col-sm-2">
+                            @Html.DisplayName("Количество")
+                        </th>
+                        <th class="col-sm-2">
+                            @Html.DisplayName("Цена")
+                        </th>
+                        <th class="col-sm-3">
+                            @Html.DisplayName("Actions")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ShopingCart.ShopingItems)
+                    {
+                        <tr class="row">
+                            <td class="col-sm-1">
+                                @(i++)
+                            </td>
+                            <td class="col-sm-2">
+                                @Html.DisplayFor(x => item.ProductName)
+                            </td>
+                            <td class="col-sm-2">
+                                @Html.DisplayFor(x => item.Quantity)
+                            </td>
+                            <td class="col-sm-2">
+                                @Html.DisplayFor(x => (item.ProductPrice * item.Quantity))
+                            </td>
+                            <td class="col-sm-3">
+                                @if (this.User.IsInRole("Admin"))
+                                {
+                                    <partial name="_AdminActionEventPartial" model="@item.Id" />
+                                }
+                                else
+                                {
+                                    <partial name="_UserActionEventPartial" model="@item.Id" />
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <hr class="hr-tapas" />
+        </div>
+    </div>
+</div>

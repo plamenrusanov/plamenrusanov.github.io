@@ -11,5 +11,7 @@
         ShopingCartViewModel GetShopingCart(ApplicationUser user);
 
         Task CreateShopingCartAsync(string userId);
+
+        AddItemViewModel GetShopingModel(ApplicationUser user, string productId);
     }
 }
