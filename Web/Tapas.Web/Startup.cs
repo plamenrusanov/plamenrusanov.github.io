@@ -51,7 +51,6 @@
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-
             services.AddSingleton(this.configuration);
 
             // Data repositories
@@ -62,15 +61,17 @@
             // Application services
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender(
                 this.configuration.GetSection("EmailGridSender:ApiKey").Value));
-            services.AddTransient<ISettingsService, SettingsService>();
-            services.AddTransient<IAllergensService, AllergensService>();
             services.AddTransient<ICloudService>(x => new CloudService(
                 this.configuration.GetSection("CloudSettings:CloudName").Value,
                 this.configuration.GetSection("CloudSettings:ApiKey").Value,
                 this.configuration.GetSection("CloudSettings:ApiSecret").Value));
+
+            services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<IAllergensService, AllergensService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IProductsService, ProductsService>();
+            services.AddTransient<IShopingCartService, ShopingCartService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

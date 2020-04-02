@@ -12,8 +12,8 @@ namespace Tapas.Data.Models
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.ShopingCart = new ShopingCart();
             this.Orders = new HashSet<Order>();
+            this.ShopingCart = new ShopingCart();
             this.Addresses = new HashSet<DeliveryAddress>();
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();

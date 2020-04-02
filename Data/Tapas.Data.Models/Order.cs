@@ -15,9 +15,7 @@
 
         public string AddInfo { get; set; }
 
-        public string CustomerId { get; set; }
-
-        public virtual ApplicationUser Customer { get; set; }
+        public string ApplicationUserId { get; set; }
 
         public string AddressId { get; set; }
 

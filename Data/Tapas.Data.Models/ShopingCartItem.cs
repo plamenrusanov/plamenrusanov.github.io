@@ -1,16 +1,18 @@
 ﻿namespace Tapas.Data.Models
 {
-    public class ShopingCartItem
-    {
-        public int Id { get; set; }
+    using System;
 
+    using Tapas.Data.Common.Models;
+
+    public class ShopingCartItem : BaseDeletableModel<int>
+    {
         public string ProductId { get; set; }
 
         public virtual Product Product { get; set; }
 
-        public string OrderId { get; set; }
+        public string ShopingCartId { get; set; }
 
-        public virtual Order Order { get; set; }
+        public virtual ShopingCart Cart { get; set; }
 
         public int Quantity { get; set; }
     }

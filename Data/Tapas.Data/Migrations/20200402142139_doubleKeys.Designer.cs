@@ -10,8 +10,8 @@ using Tapas.Data;
 namespace Tapas.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200329070403_BdModel")]
-    partial class BdModel
+    [Migration("20200402142139_doubleKeys")]
+    partial class DoubleKeys
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -163,24 +163,7 @@ namespace Tapas.Data.Migrations
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("AllergenId", "ProductId");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("ProductId");
 
@@ -285,6 +268,12 @@ namespace Tapas.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ShopingCartId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShopingCartId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -303,6 +292,8 @@ namespace Tapas.Data.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("ShopingCartId1");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -332,6 +323,76 @@ namespace Tapas.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.DeliveryAddress", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AddInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StreetNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("DeliveryAddresses");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.Order", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AddInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Tapas.Data.Models.Product", b =>
@@ -404,6 +465,80 @@ namespace Tapas.Data.Migrations
                     b.ToTable("Settings");
                 });
 
+            modelBuilder.Entity("Tapas.Data.Models.ShopingCart", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AddInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("ShopingCarts");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.ShopingCartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShopingCartId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ShopingCartId");
+
+                    b.ToTable("ShopingCartItems");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Tapas.Data.Models.ApplicationRole", null)
@@ -470,11 +605,51 @@ namespace Tapas.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tapas.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Tapas.Data.Models.ShopingCart", "ShopingCart")
+                        .WithMany()
+                        .HasForeignKey("ShopingCartId1");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.DeliveryAddress", b =>
+                {
+                    b.HasOne("Tapas.Data.Models.ApplicationUser", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.Order", b =>
+                {
+                    b.HasOne("Tapas.Data.Models.DeliveryAddress", "Address")
+                        .WithMany("Orders")
+                        .HasForeignKey("AddressId");
+
+                    b.HasOne("Tapas.Data.Models.ApplicationUser", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("Tapas.Data.Models.Product", b =>
                 {
                     b.HasOne("Tapas.Data.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.ShopingCartItem", b =>
+                {
+                    b.HasOne("Tapas.Data.Models.Order", null)
+                        .WithMany("CartItems")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("Tapas.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Tapas.Data.Models.ShopingCart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("ShopingCartId");
                 });
 #pragma warning restore 612, 618
         }

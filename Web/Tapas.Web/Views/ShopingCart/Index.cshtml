@@ -1,0 +1,67 @@
+﻿@model Tapas.Web.ViewModels.ShopingCart.ShopingCartViewModel
+@{
+    ViewData["Title"] = "Index";
+    var i = 1;
+}
+
+
+<h1 class="text-center">Твоята количка</h1>
+<hr class="hr-tapas" />
+<table class="table">
+    <thead>
+        <tr class="row">
+            <th class="col-sm-1">
+                #
+            </th>
+            <th class="col-sm-2">
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TotalPrice)
+            </th>
+            <th class="col-sm-2">
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th class="col-sm-3">
+                @Html.DisplayName("Actions")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ShopingItems)
+        {
+            <tr class="row">
+                <td class="col-sm-1">
+                    @(i++)
+                </td>
+                <td class="col-sm-2">
+                    @Html.DisplayFor(x => item.ProductId)
+                </td>
+                <td class="col-sm-2">
+                    @Html.DisplayFor(x => item.ProductName)
+                </td>
+                <td class="col-sm-2">
+                    @Html.DisplayFor(x => item.ProductPrice)
+                </td>
+                <td class="col-sm-2">
+                    @Html.DisplayFor(x => item.Quantity)
+                </td>
+                <td class="col-sm-3">
+                    @if (this.User.IsInRole("Admin"))
+                    {
+                        <partial name="_AdminActionEventPartial" model="@item.Id" />
+                    }
+                    else
+                    {
+                        <partial name="_UserActionEventPartial" model="@item.Id" />
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr class="hr-tapas" />

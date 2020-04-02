@@ -14,9 +14,7 @@
             this.CartItems = new HashSet<ShopingCartItem>();
         }
 
-        public string CustomerId { get; set; }
-
-        public virtual ApplicationUser Customer { get; set; }
+        public string ApplicationUserId { get; set; }
 
         public decimal TotalPrice => this.CartItems.Sum(x => x.Product.Price * x.Quantity);
 

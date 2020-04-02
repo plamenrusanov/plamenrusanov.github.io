@@ -19,9 +19,7 @@
 
         public string AddInfo { get; set; }
 
-        public string CustomerId { get; set; }
-
-        public virtual ApplicationUser Customer { get; set; }
+        public string ApplicationUserId { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
     }
