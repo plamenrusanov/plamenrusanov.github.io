@@ -50,14 +50,14 @@
                     @Html.DisplayFor(x => item.Quantity)
                 </td>
                 <td class="col-sm-3">
-                    @if (this.User.IsInRole("Admin"))
+                    @*@if (this.User.IsInRole("Admin"))
                     {
                         <partial name="_AdminActionEventPartial" model="@item.Id" />
                     }
                     else
                     {
                         <partial name="_UserActionEventPartial" model="@item.Id" />
-                    }
+                    }*@
 
                 </td>
             </tr>

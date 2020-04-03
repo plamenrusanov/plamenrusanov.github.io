@@ -7,5 +7,7 @@
         public DetailsProductViewModel Product { get; set; }
 
         public ShopingCartViewModel ShopingCart { get; set; }
+
+        public int Quantity { get; set; }
     }
 }

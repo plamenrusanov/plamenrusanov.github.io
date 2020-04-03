@@ -12,28 +12,41 @@
             <div class="row">
                 <img class="card-img-top" src="https://res.cloudinary.com@(Model.Product.ImageUrl)" width="400" height="270" alt="@Model.Product.Name">
             </div>
-            <div class="row">
-                @Html.DisplayFor(x => x.Product.Name)
-            </div>
-            <div class="row">
-                @Html.DisplayFor(x => x.Product.Price)
-            </div>
-            <div class="row">
-                @foreach (var item in Model.Product.Allergens)
-                {
-                    <div class="col-md-1">
-                        <img src="https://res.cloudinary.com@(item.ImageUrl)" width="45" height="45" alt="@item.Name">
-                        <span>@Html.Label(item.Name)</span>
-                    </div>
-                }
-            </div>
-            <div class="row">
-                <div class="quantity buttons_added">
-                    <input id="minus" type="button" class="minus" value="-">
-                    <input id="theInput" type="text" size="4" class="input-text qty text" title="Qty" value="1" min="1" step="1">
-                    <input id="plus" type="button" class="plus" value="+">
+            <form asp-controller="ShopingCart" asp-action="AddItem">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    @Html.HiddenFor(x => x.Product.Id, new { @class = "form-control" })
+                    @Html.HiddenFor(x => x.ShopingCart.Id, new { @class = "form-control" })
                 </div>
-            </div>
+                <div class="row">
+                    @Html.DisplayFor(x => x.Product.Name)
+                </div>
+                <div class="row">
+                    @Html.DisplayFor(x => x.Product.Price)
+                </div>
+                <div class="row">
+                    @foreach (var item in Model.Product.Allergens)
+                    {
+                        <div class="col-md-1">
+                            <img src="https://res.cloudinary.com@(item.ImageUrl)" width="45" height="45" alt="@item.Name">
+                            <span>@Html.Label(item.Name)</span>
+                        </div>
+                    }
+                </div>
+                <div class="row form-group">
+                    <div class="quantity buttons_added">
+                        <input id="minus" type="button" class="minus" value="-">
+                        <input asp-for="@Model.Quantity"  id="theInput" type="text" size="4" class="form-control input-text qty text" title="Qty" value="1" min="1" step="1">
+                        <input id="plus" type="button" class="plus" value="+">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group text-center">
+                        <button type="submit" class="btn btn-primary btn-lg active">Добави</button>
+                    </div>
+                </div>
+            </form>
         </div>
         <!--ShopingCart-->
         <div class="col-md-6">
@@ -73,17 +86,17 @@
                                 @Html.DisplayFor(x => item.Quantity)
                             </td>
                             <td class="col-sm-3">
-                                @Html.DisplayFor(x => (item.ProductPrice * item.Quantity))
+                                @*@Html.DisplayFor(x => (item.ProductPrice * item.Quantity))*@
                             </td>
                             <td class="col-sm-3">
-                                @if (this.User.IsInRole("Admin"))
+                                @*@if (this.User.IsInRole("Admin"))
                                 {
                                     <partial name="_AdminActionEventPartial" model="@item.Id" />
                                 }
                                 else
                                 {
                                     <partial name="_UserActionEventPartial" model="@item.Id" />
-                                }
+                                }*@
 
                             </td>
                         </tr>
@@ -98,12 +111,12 @@
     var input = document.getElementById('theInput');
     document.getElementById('plus').onclick = function () {
         if (input.value < 10) {
-             input.value = parseInt(input.value, 10) + 1
-        }      
+            input.value = parseInt(input.value, 10) + 1
+        }
     }
     document.getElementById('minus').onclick = function () {
         if (input.value > 1) {
-             input.value = parseInt(input.value, 10) - 1
+            input.value = parseInt(input.value, 10) - 1
         }
     }
 </script>

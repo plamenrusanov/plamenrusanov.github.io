@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
+    using Tapas.Web.ViewModels.ShopingCart;
 
     [Authorize]
     public class ShopingCartController : Controller
@@ -71,12 +72,12 @@
         // POST: ShopingCart/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create()
+        public ActionResult AddItem([FromForm]AddItemViewModel model)
         {
             try
             {
-                // TODO: Add insert logic here
-                return this.RedirectToAction(nameof(this.Index));
+                this.cartService.AddItem(model);
+                return this.Redirect("/");
             }
             catch
             {

@@ -26,6 +26,26 @@
             this.productRepository = productRepository;
         }
 
+        public void AddItem(AddItemViewModel model)
+        {
+            var cart = this.cartRepository
+                .All()
+                .Where(x => x.Id == model.ShopingCart.Id)
+                .FirstOrDefault();
+
+            var product = this.productRepository
+                .All()
+                .Where(x => x.Id == model.Product.Id)
+                .FirstOrDefault();
+
+            cart.CartItems.Add(new ShopingCartItem()
+            {
+                ProductId = product.Id,
+                Quantity = model.Quantity,
+            });
+            this.cartRepository.SaveChanges();
+        }
+
         public async Task CreateShopingCartAsync(string userId)
         {
             await this.cartRepository.AddAsync(new ShopingCart() { ApplicationUserId = userId });
