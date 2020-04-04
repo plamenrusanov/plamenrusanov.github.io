@@ -1,7 +1,6 @@
 ﻿namespace Tapas.Web.Controllers
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -18,9 +17,6 @@
         private const string RefererHeader = "Referer";
         private const string LoginPageRoute = "/Account/Login";
         private const string IndexRoute = "/";
-        private const char RouteDelimeter = '/';
-        private const char Ampersand = '&';
-        private const char EqualsSign = '=';
         private readonly IShopingCartService cartService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IProductsService productsService;
@@ -125,23 +121,7 @@
                 if (result)
                 {
                     var uri = new Uri(refererValue);
-                    if (uri.Segments.Length < 3)
-                    {
-                        var controller = uri.Segments[1].TrimEnd(RouteDelimeter);
-                        var action = string.Empty;
-                        return this.RedirectToAction(action, controller, new { });
-                    }
-                    else
-                    {
-                        var controller = uri.Segments[1].TrimEnd(RouteDelimeter);
-                        var action = uri.Segments[2];
-                        var arguments = uri.Query?
-                                 .Substring(1) // Remove '?'
-                                 .Split(Ampersand)
-                                 .Select(q => q.Split(EqualsSign))
-                                 .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
-                        return this.RedirectToAction(action, controller, arguments);
-                    }
+                    return this.LocalRedirect(uri.PathAndQuery);
                 }
             }
 
