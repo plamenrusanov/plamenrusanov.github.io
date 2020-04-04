@@ -1,6 +1,5 @@
 ﻿namespace Tapas.Services.Data
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -8,7 +7,6 @@
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.Allergens;
-    using Tapas.Web.ViewModels.Administration.AllergensProducts;
     using Tapas.Web.ViewModels.Administration.Products;
     using Tapas.Web.ViewModels.ShopingCart;
     using Tapas.Web.ViewModels.ShopingCartItems;
@@ -50,6 +48,20 @@
         {
             await this.cartRepository.AddAsync(new ShopingCart() { ApplicationUserId = userId });
             await this.cartRepository.SaveChangesAsync();
+        }
+
+        public void DeleteItem(int itemId, string shopingCartId)
+        {
+            var cart = this.cartRepository.All()
+                .Where(x => x.Id == shopingCartId)
+                .FirstOrDefault();
+
+            var productCartItem = cart.CartItems
+                .Where(x => x.Id == itemId)
+                .FirstOrDefault();
+
+            cart.CartItems.Remove(productCartItem);
+            this.cartRepository.SaveChanges();
         }
 
         public ShopingCartViewModel GetShopingCart(ApplicationUser user)

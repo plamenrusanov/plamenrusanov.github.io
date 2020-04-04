@@ -38,14 +38,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Categories" asp-action="Index">Категорий</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Products" asp-action="Add">Продукти</a>
+                            </li>
+
+                        }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Administration" asp-controller="Categories" asp-action="Index">Категорий</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Administration" asp-controller="Products" asp-action="Add">Продукти</a>
-                        </li> 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="ShopingCart" asp-action="Index"><i class='fas fa-shopping-cart' style='font-size:30px'></i></a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ShopingCart" asp-action="Index"><i class='fas fa-shopping-cart' style='font-size:30px'></i></a>
                         </li>
                     </ul>
                 </div>

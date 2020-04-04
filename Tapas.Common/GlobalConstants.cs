@@ -17,5 +17,7 @@
         public const string AreaAdmin = "Administration";
 
         public const string DefaultProductImage = "/duxtyuzpy/image/upload/v1585466876/utvaxhqgzon5lczgkoak.jpg";
+
+       
     }
 }

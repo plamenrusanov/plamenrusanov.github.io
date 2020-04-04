@@ -13,19 +13,16 @@
             <th class="col-sm-1">
                 #
             </th>
-            <th class="col-sm-2">
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th class="col-sm-2">
-                @Html.DisplayNameFor(model => model.TotalPrice)
-            </th>
-            <th class="col-sm-2">
-                @Html.DisplayNameFor(model => model.UserId)
+            <th class="col-sm-3">
+                @Html.DisplayName("Продукт")
             </th>
             <th class="col-sm-3">
+                @Html.DisplayName("Количество")
+            </th>
+            <th class="col-sm-3">
+                @Html.DisplayName("Цена")
+            </th>
+            <th class="col-sm-2">
                 @Html.DisplayName("Actions")
             </th>
         </tr>
@@ -37,31 +34,23 @@
                 <td class="col-sm-1">
                     @(i++)
                 </td>
-                <td class="col-sm-2">
-                    @Html.DisplayFor(x => item.ProductId)
-                </td>
-                <td class="col-sm-2">
+                <td class="col-sm-3">
                     @Html.DisplayFor(x => item.ProductName)
                 </td>
-                <td class="col-sm-2">
-                    @Html.DisplayFor(x => item.ProductPrice)
-                </td>
-                <td class="col-sm-2">
+                <td class="col-sm-3">
                     @Html.DisplayFor(x => item.Quantity)
                 </td>
                 <td class="col-sm-3">
-                    @*@if (this.User.IsInRole("Admin"))
-                    {
-                        <partial name="_AdminActionEventPartial" model="@item.Id" />
-                    }
-                    else
-                    {
-                        <partial name="_UserActionEventPartial" model="@item.Id" />
-                    }*@
-
+                    @Html.DisplayFor(x => item.ItemPrice)
+                </td>
+                <td class="col-sm-2">
+                    <a class="btn btn-danger btn-lg" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.Id">Изтрий</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 <hr class="hr-tapas" />
+<div>
+    <p>&#8270; Oпаковката е включена в цената!</p>
+</div>

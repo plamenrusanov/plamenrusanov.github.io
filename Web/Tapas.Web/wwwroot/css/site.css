@@ -71,3 +71,8 @@ body {
 .editor-label{
     padding:inherit;
 }
+table{
+    width:90% !important;
+    margin-left:5%;
+    margin-right:5%;
+}

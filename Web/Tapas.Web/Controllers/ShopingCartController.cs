@@ -1,5 +1,7 @@
 ﻿namespace Tapas.Web.Controllers
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -13,6 +15,12 @@
     [Authorize]
     public class ShopingCartController : Controller
     {
+        private const string RefererHeader = "Referer";
+        private const string LoginPageRoute = "/Account/Login";
+        private const string IndexRoute = "/";
+        private const char RouteDelimeter = '/';
+        private const char Ampersand = '&';
+        private const char EqualsSign = '=';
         private readonly IShopingCartService cartService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IProductsService productsService;
@@ -32,7 +40,7 @@
         {
             if (this.User == null)
             {
-                return this.RedirectToPage("/Account/Login");
+                return this.RedirectToPage(LoginPageRoute);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -50,7 +58,7 @@
         {
             if (this.User == null)
             {
-                return this.RedirectToPage("/Account/Login");
+                return this.RedirectToPage(LoginPageRoute);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -77,7 +85,7 @@
             try
             {
                 this.cartService.AddItem(model);
-                return this.Redirect("/");
+                return this.Redirect(IndexRoute);
             }
             catch
             {
@@ -107,10 +115,37 @@
             }
         }
 
-        // GET: ShopingCart/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeleteProductItem(int itemId, string shopingCartId)
         {
-            return this.View();
+            this.cartService.DeleteItem(itemId, shopingCartId);
+            if (this.Request.Headers.ContainsKey(RefererHeader))
+            {
+                var refererValue = default(Microsoft.Extensions.Primitives.StringValues);
+                bool result = this.Request.Headers.TryGetValue(RefererHeader, out refererValue);
+                if (result)
+                {
+                    var uri = new Uri(refererValue);
+                    if (uri.Segments.Length < 3)
+                    {
+                        var controller = uri.Segments[1].TrimEnd(RouteDelimeter);
+                        var action = string.Empty;
+                        return this.RedirectToAction(action, controller, new { });
+                    }
+                    else
+                    {
+                        var controller = uri.Segments[1].TrimEnd(RouteDelimeter);
+                        var action = uri.Segments[2];
+                        var arguments = uri.Query?
+                                 .Substring(1) // Remove '?'
+                                 .Split(Ampersand)
+                                 .Select(q => q.Split(EqualsSign))
+                                 .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+                        return this.RedirectToAction(action, controller, arguments);
+                    }
+                }
+            }
+
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         // POST: ShopingCart/Delete/5

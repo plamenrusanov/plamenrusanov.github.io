@@ -15,5 +15,7 @@
         AddItemViewModel GetShopingModel(ApplicationUser user, string productId);
 
         void AddItem(AddItemViewModel model);
+
+        void DeleteItem(int itemId, string shopingCartId);
     }
 }

@@ -11,5 +11,7 @@
         public decimal ProductPrice { get; set; }
 
         public int Quantity { get; set; }
+
+        public decimal ItemPrice => this.ProductPrice * this.Quantity;
     }
 }

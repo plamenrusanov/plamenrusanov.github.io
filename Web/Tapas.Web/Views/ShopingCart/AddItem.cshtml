@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Index";
     var i = 1;
+    decimal price = 0.0m;
 }
 
 
@@ -58,16 +59,16 @@
                         <th class="col-sm-1">
                             #
                         </th>
-                        <th class="col-sm-2">
+                        <th class="col-sm-3">
                             @Html.DisplayName("Продукт")
                         </th>
-                        <th class="col-sm-2">
+                        <th class="col-sm-3">
                             @Html.DisplayName("Количество")
                         </th>
-                        <th class="col-sm-2">
+                        <th class="col-sm-3">
                             @Html.DisplayName("Цена")
                         </th>
-                        <th class="col-sm-3">
+                        <th class="col-sm-2">
                             @Html.DisplayName("Actions")
                         </th>
                     </tr>
@@ -82,28 +83,25 @@
                             <td class="col-sm-3">
                                 @Html.DisplayFor(x => item.ProductName)
                             </td>
-                            <td class="col-sm-2">
+                            <td class="col-sm-3">
                                 @Html.DisplayFor(x => item.Quantity)
                             </td>
                             <td class="col-sm-3">
-                                @*@Html.DisplayFor(x => (item.ProductPrice * item.Quantity))*@
+                                @{price = item.ProductPrice * item.Quantity; }
+                                @Html.DisplayFor( x => price)
                             </td>
-                            <td class="col-sm-3">
-                                @*@if (this.User.IsInRole("Admin"))
-                                {
-                                    <partial name="_AdminActionEventPartial" model="@item.Id" />
-                                }
-                                else
-                                {
-                                    <partial name="_UserActionEventPartial" model="@item.Id" />
-                                }*@
-
+                            <td class="col-sm-2">
+                                <a class="btn btn-danger btn-lg" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.ShopingCart.Id">Изтрий</a>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
             <hr class="hr-tapas" />
+            <div>
+                <p>&#8270; Oпаковката е включена в цената!</p>
+            </div>
+            
         </div>
     </div>
 </div>
