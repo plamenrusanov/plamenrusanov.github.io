@@ -1,17 +1,8 @@
-﻿namespace Tapas.Data.Models
+﻿namespace Tapas.Web.ViewModels.Addreses
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Tapas.Data.Common.Models;
-
-    public class DeliveryAddress : BaseDeletableModel<string>
+    public class AddressViewModel
     {
-        public DeliveryAddress()
-        {
-            this.Id = Guid.NewGuid().ToString();
-            this.Orders = new HashSet<Order>();
-        }
+        public string Id { get; set; }
 
         public string Latitude { get; set; }
 
@@ -34,9 +25,5 @@
         public string Floor { get; set; }
 
         public string AddInfo { get; set; }
-
-        public string ApplicationUserId { get; set; }
-
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }

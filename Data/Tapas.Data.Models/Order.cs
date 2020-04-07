@@ -10,7 +10,7 @@
     {
         public Order()
         {
-            this.Id = Guid.NewGuid().ToString();
+            this.CartItems = new HashSet<ShopingCartItem>();
         }
 
         public string AddInfo { get; set; }

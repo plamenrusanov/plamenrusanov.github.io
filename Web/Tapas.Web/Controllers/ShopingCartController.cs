@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Tapas.Common;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.ShopingCart;
@@ -15,8 +16,6 @@
     public class ShopingCartController : Controller
     {
         private const string RefererHeader = "Referer";
-        private const string LoginPageRoute = "/Account/Login";
-        private const string IndexRoute = "/";
         private readonly IShopingCartService cartService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IProductsService productsService;
@@ -31,12 +30,12 @@
             this.productsService = productsService;
         }
 
-        // GET: ShopingCart
+        // GET
         public async Task<ActionResult> Index()
         {
             if (this.User == null)
             {
-                return this.RedirectToPage(LoginPageRoute);
+                return this.RedirectToPage(GlobalConstants.LoginPageRoute);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -49,12 +48,12 @@
             return this.View(cart);
         }
 
-        // GET: ShopingCart/AddItem/string
+        // GET
         public async Task<ActionResult> AddItem(string productId)
         {
             if (this.User == null)
             {
-                return this.RedirectToPage(LoginPageRoute);
+                return this.RedirectToPage(GlobalConstants.LoginPageRoute);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -73,15 +72,20 @@
             return this.View(model);
         }
 
-        // POST: ShopingCart/Create
+        // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddItem([FromForm]AddItemViewModel model)
         {
+            if (this.User == null)
+            {
+                return this.RedirectToPage(GlobalConstants.LoginPageRoute);
+            }
+
             try
             {
                 this.cartService.AddItem(model);
-                return this.Redirect(IndexRoute);
+                return this.Redirect(GlobalConstants.IndexRoute);
             }
             catch
             {
@@ -89,30 +93,14 @@
             }
         }
 
-        // GET: ShopingCart/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return this.View();
-        }
-
-        // POST: ShopingCart/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-                return this.RedirectToAction(nameof(this.Index));
-            }
-            catch
-            {
-                return this.View();
-            }
-        }
-
+        // GET
         public ActionResult DeleteProductItem(int itemId, string shopingCartId)
         {
+            if (this.User == null)
+            {
+                return this.RedirectToPage(GlobalConstants.LoginPageRoute);
+            }
+
             this.cartService.DeleteItem(itemId, shopingCartId);
             if (this.Request.Headers.ContainsKey(RefererHeader))
             {
@@ -126,22 +114,6 @@
             }
 
             return this.RedirectToAction(nameof(this.Index));
-        }
-
-        // POST: ShopingCart/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-                return this.RedirectToAction(nameof(this.Index));
-            }
-            catch
-            {
-                return this.View();
-            }
         }
     }
 }

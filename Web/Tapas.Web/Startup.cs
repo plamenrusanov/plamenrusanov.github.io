@@ -61,6 +61,8 @@
             // Application services
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender(
                 this.configuration.GetSection("EmailGridSender:ApiKey").Value));
+            services.AddTransient<IGeolocationService>(x => new GeolocationService(
+                this.configuration.GetSection("GeolocationSettings:ApiKey").Value));
             services.AddTransient<ICloudService>(x => new CloudService(
                 this.configuration.GetSection("CloudSettings:CloudName").Value,
                 this.configuration.GetSection("CloudSettings:ApiKey").Value,
@@ -72,6 +74,8 @@
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IProductsService, ProductsService>();
             services.AddTransient<IShopingCartService, ShopingCartService>();
+            services.AddTransient<IOrdersService, OrdersService>();
+            services.AddTransient<IAddresesService, AddresesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

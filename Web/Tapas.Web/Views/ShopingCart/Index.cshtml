@@ -51,6 +51,31 @@
     </tbody>
 </table>
 <hr class="hr-tapas" />
-<div>
-    <p>&#8270; Oпаковката е включена в цената!</p>
+<div class="row">
+    <div class="col-md-8">
+        <p>&#8270; Oпаковката е включена в цената!</p>
+        @if (Model.TotalPrice < 10)
+        {
+            <p>&#8270; Поръчка под 10 лева заплаща 2 лева за доставка!</p>
+        }
+        else if (Model.TotalPrice < 25)
+        {
+            <p>&#8270; Поръчка над 25 лева получава подарък!</p>
+        }
+    </div>
+    <div class="col-md-4">
+        <h3>@Html.LabelFor(x => x.TotalPrice): @Html.DisplayFor(x => x.TotalPrice)</h3>
+    </div>
+</div>
+<hr class="hr-tapas" />
+<div class="row">
+    <div class="col-md-4 text-center">
+        <a class="btn btn-primary btn-lg" href="/">Към менюто</a>
+    </div>
+    <div class="col-md-4 text-center">
+        <a class="btn btn-danger btn-lg" href="/ShopingCart/Clear?shopingCartId=@Model.Id">Към менюто</a>
+    </div>
+    <div class="col-md-4 text-center">
+        <a class="btn btn-primary btn-lg" href="/Orders/Create">Поръчай</a>
+    </div>
 </div>

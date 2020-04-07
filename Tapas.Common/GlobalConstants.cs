@@ -18,6 +18,8 @@
 
         public const string DefaultProductImage = "/duxtyuzpy/image/upload/v1585466876/utvaxhqgzon5lczgkoak.jpg";
 
-       
+        public const string LoginPageRoute = "/Account/Login";
+
+        public const string IndexRoute = "/";
     }
 }

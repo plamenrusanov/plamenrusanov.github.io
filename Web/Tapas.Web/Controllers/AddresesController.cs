@@ -1,21 +1,46 @@
 ﻿namespace Tapas.Web.Controllers
 {
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Tapas.Data.Models;
+    using Tapas.Services.Data.Contracts;
+    using Tapas.Web.ViewModels.Addreses;
+
+    [Authorize]
     public class AddresesController : Controller
     {
-        // GET: Addreses
-        public ActionResult Index()
+        private readonly IAddresesService addresesService;
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public AddresesController(
+            IAddresesService addresesService,
+            UserManager<ApplicationUser> userManager)
         {
-            this.HttpContext.Response.Headers.Add("accept", "application/json");
-            this.HttpContext.Response.Headers.Add("authorization", "apikey");
-            return this.View();
+            this.addresesService = addresesService;
+            this.userManager = userManager;
         }
 
-        // GET: Addreses/Details/5
-        public ActionResult Add()
+        // GET: Addreses
+        public async Task<ActionResult> Index()
         {
+            var user = await this.userManager.GetUserAsync(this.User);
+            var model = this.addresesService.GetMyAddreses(user);
+            return this.View(model);
+        }
+
+        public async Task<ActionResult> GetAddressFromLocation(string latitude, string longitude)
+        {
+            if (string.IsNullOrEmpty(latitude) || string.IsNullOrEmpty(longitude))
+            {
+                // TO DO
+            }
+
+            var model = await this.addresesService.GetAddressAsync(latitude, longitude);
+
             return this.View();
         }
 
@@ -28,7 +53,7 @@
         // POST: Addreses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(AddressInputModel model)
         {
             try
             {
