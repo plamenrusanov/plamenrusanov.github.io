@@ -1,42 +1,112 @@
-﻿
+﻿@model Tapas.Web.ViewModels.Addreses.AddressInputModel
 @{
     ViewData["Title"] = "Create";
 }
 
 
-<button onclick="getLocation()">Try It</button>
+<div class="container" id="container-address">
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4" id="form-address">
 
-<p id="demo"></p>
-<script>
-    var x = document.getElementById("demo");
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, showError);
-        } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
-        }
-    }
+            <h1 class="text-center">Добави адрес</h1>
+            <hr />
+            <button class="btn btn-primary" id="child">Добави адрес</button>
+            <hr />
+            <form asp-area="" asp-controller="Addreses" asp-action="Create">
+                <div class="form-group">@Html.HiddenFor(x => x.Latitude, new { @id = "latitude", @class = "form-control"  })</div>
+                <div class="form-group">@Html.HiddenFor(x => x.Longitude, new { @id = "longitude", @class = "form-control"  })</p></div>
+                <div class="form-group">@Html.HiddenFor(x => x.DisplayName, new { @id = "displayName", @class = "form-control"  })</div>
+                <div class="row form-group ">
+                    <div class="col-md-4"><h5><label>Град: </label></h5></div>
+                    <div class="col-md-8">@Html.EditorFor(x => x.City, new { htmlAttributes = new { @id = "city", @class = "form-control" } })</div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-4"><h5><label>Квартал: </label></h5></div>
+                    <div class="col-md-8">@Html.EditorFor(x => x.Borough, new { htmlAttributes = new { @id = "borough", @class = "form-control" } })</div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-4"><h5><label>Улица: </label></h5></div>
+                    <div class="col-md-8">@Html.EditorFor(x => x.Street, new { htmlAttributes = new { @id = "street", @class = "form-control" } })</div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-4"><h5><label>Номер: </label></h5></div>
+                    <div class="col-md-8">@Html.EditorFor(x => x.StreetNumber, new { htmlAttributes = new { @id = "streetNumber", @class = "form-control" } })</div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-4"><h5><label>Блок: </label></h5></div>
+                    <div class="col-md-8">@Html.EditorFor(x => x.Block, new { htmlAttributes = new { @id = "block", @class = "form-control" } })</div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-4"><h5><label>Вход: </label></h5></div>
+                    <div class="col-md-8">@Html.EditorFor(x => x.Entry, new { htmlAttributes = new { @id = "entry", @class = "form-control" } })</div>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-4"><h5><label>Етаж: </label></h5></div>
+                    <div class="col-md-8">@Html.EditorFor(x => x.Floor, new { htmlAttributes = new { @id = "floor", @class = "form-control" } })</div>
+                </div>
+                <div class="row form-group ">
+                    <label>Допълнителна информация</label>
+                    @Html.TextAreaFor(x => x.AddInfo, 5, 30, new { @id="addInfo", @class="form-control"})
+                </div>
+                <div class="row form-group">
+                    <button type="submit" class="btn btn-primary" value="Create">Добави</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-    function showPosition(position) {
-        x.innerHTML = "Latitude: " + position.coords.latitude +
-            "<br>Longitude: " + position.coords.longitude;
-    }
+@section Scripts{
+    <script>
+        $("#child").click(function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    Send(position.coords.latitude, position.coords.longitude);
+                });
+            } else {
+                Send(undefined, undefined);
+            }
+        });
 
-    function showError(error) {
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                x.innerHTML = "User denied the request for Geolocation."
-                break;
-            case error.POSITION_UNAVAILABLE:
-                x.innerHTML = "Location information is unavailable."
-                break;
-            case error.TIMEOUT:
-                x.innerHTML = "The request to get user location timed out."
-                break;
-            case error.UNKNOWN_ERROR:
-                x.innerHTML = "An unknown error occurred."
-                break;
-        }
-    }
+    </script>
+    <script>
 
-</script>
+        function Send(x, y) {
+            $.ajax({
+                url: "/Addreses/GetAddressFromLocation",
+                data: { latitude: x, longitude: y },
+                dataType: "json",
+                success: function (response) {
+                    if (response.city !== "undefined") {
+                        document.getElementById("city").value = response.city;
+                    }
+                    if (response.borough !== "undefined") {
+                        document.getElementById("borough").value = response.borough;
+                    }
+                    if (response.street !== "undefined") {
+                        document.getElementById("street").value = response.street;
+                    }
+                    if (response.streetNumber !== "undefined") {
+                        document.getElementById("streetNumber").value = response.streetNumber;
+                    }
+                    if (response.block !== "undefined") {
+                        document.getElementById("block").value = response.block;
+                    }
+                    if (response.entry !== "undefined") {
+                         document.getElementById("entry").value = response.entry;
+                    }
+                    if (response.latitude !== "undefined") {
+                        document.getElementById("latitude").value = response.latitude;
+                    }
+                    if (response.longitude !== "undefined") {
+                        document.getElementById("longitude").value = response.longitude;
+                    }
+                    if (response.displayName !== "undefined") {
+                        document.getElementById("displayName").value = response.displayName;
+                    }
+                }
+            });
+        };
+    </script>
+}

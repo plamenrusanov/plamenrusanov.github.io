@@ -21,5 +21,7 @@
         public const string LoginPageRoute = "/Account/Login";
 
         public const string IndexRoute = "/";
+
+        public const string RefererHeader = "Referer";
     }
 }

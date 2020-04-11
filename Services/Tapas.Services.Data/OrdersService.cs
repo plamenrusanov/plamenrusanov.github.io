@@ -29,12 +29,14 @@
                 ApplicationUserId = user.Id,
                 Status = OrderStatus.Unprocessed.ToString(),
                 Addresses = user.Addresses
+                    .OrderBy(x => x.LastUseOn)
                     .Select(x => new AddressViewModel()
                     {
                         Id = x.Id,
                         AddInfo = x.AddInfo,
                         Street = x.Street,
                         StreetNumber = x.StreetNumber,
+                        DisplayName = x.DisplayName,
                     }).ToList(),
                 CartItems = this.cartRepository
                     .All()

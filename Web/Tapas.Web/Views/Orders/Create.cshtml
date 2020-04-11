@@ -1,98 +1,77 @@
 ﻿@model Tapas.Web.ViewModels.Orders.OrderInpitModel
 @{
-    ViewData["Title"] = "Create";
+    var i = 1;
 }
-
-<h1 class="text-center">Create</h1>
-<button onclick="getLatitude()">Get</button>
-<a href="/Addreses/GetAddressFromLocation?latitude=@(Model.Latitude)&longitude=@(Model.Longitude)"> Try It </a>
-<p id="demo"></p>
-@Html.EditorFor(x => x.Latitude, new { id = "latitude" })
-@Html.EditorFor(x => x.Longitude, new { id = "longitude" })
-<hr class="hr-tapas" />
-
-
-
-
-
-@*@using (Html.BeginForm("Create", "Orders", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true);
-        <div class="row">
-            <div class="col-md-6">
-                @Html.LabelFor(x => x.AddressId, "Адрес за доставка:")
-                @Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = string.Format("ул. {0} {1}", x.Street, x.StreetNumber), Value = x.Id }).ToList(), new { })
-            </div>
-            <div class="col-md-6">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                @Html.LabelFor(m => m.AddInfo, "Допълнителна информация:")
-                @Html.EditorFor(m => m.AddInfo)
-                @Html.ValidationMessageFor(m => m.AddInfo)
-            </div>
-        </div>
-
-
-    }*@
-
-
-
 <div class="row">
-    <a href="javascript:window.location=createDynamicURL();"> employee info </a>
+    <div class="col-md-6">
+        <table class="table">
+            <thead>
+                <tr class="row">
+                    <th class="col-sm-1">
+                        #
+                    </th>
+                    <th class="col-sm-3">
+                        @Html.DisplayName("Продукт")
+                    </th>
+                    <th class="col-sm-3">
+                        @Html.DisplayName("Количество")
+                    </th>
+                    <th class="col-sm-3">
+                        @Html.DisplayName("Цена")
+                    </th>
+                    <th class="col-sm-2">
+                        @Html.DisplayName("Actions")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartItems)
+                {
+                    <tr class="row">
+                        <td class="col-sm-1">
+                            @(i++)
+                        </td>
+                        <td class="col-sm-3">
+                            @Html.DisplayFor(x => item.ProductName)
+                        </td>
+                        <td class="col-sm-3">
+                            @Html.DisplayFor(x => item.Quantity)
+                        </td>
+                        <td class="col-sm-3">
+                            @Html.DisplayFor(x => item.ItemPrice)
+                        </td>
+                        <td class="col-sm-2">
+                            <a class="btn btn-danger btn-lg" href="/ShopingCart/DeleteProductItem?itemId=@item.Id">Изтрий</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-md-8">
+                <p>&#8270; Oпаковката е включена в цената!</p>
+                @if (Model.OrderPrice < 10)
+                {
+                    <p>&#8270; Поръчка под 10 лева заплаща 2 лева за доставка!</p>
+                }
+                else if (Model.OrderPrice < 25)
+                {
+                    <p>&#8270; Поръчка над 25 лева получава подарък!</p>
+                }
+            </div>
+            <div class="col-md-4">
+                <h3>@Html.LabelFor(x => x.OrderPrice): @Html.DisplayFor(x => x.OrderPrice)</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
+        <div class="row"><a class="btn btn-primary" href="/Addreses/Create">Добави адрес</a></div>
+        <div class="row"></div>
+        <div class="row"></div>
+        <div class="row"></div>
+        <div class="row"></div>
+    </div>.
 </div>
-<script>
-    function createDynamicURL() {
-        //The variable to be returned
-        var URL;
-
-        //The variables containing the respective IDs
-        URL += "/Orders/Create?";
-        URL += "latitude=";
-        URL += getLatitude();
-        URL += "longitude=";
-        URL += getLongitude();
-
-        return URL;
-    }
-    function getLatitude() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showLatitude);
-        }
-    }
-
-    function showLatitude(position) {
-        return position.coords.latitude;
-    }
-    function getLongitude() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showLongitude);
-        }
-    }
-
-    function showLongitude(position) {
-        return position.coords.longitude;
-    }
-</script>
-<script>
-    var c = document.getElementById("demo");
-
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            c.innerHTML = "Geolocation is not supported by this browser.";
-        }
-    }
-
-    function showPosition(position) {
-        c.innerHTML = "lat=" + position.coords.latitude + "&" +
-            "lon=" + position.coords.longitude;
-    }
 
 
-
-</script>

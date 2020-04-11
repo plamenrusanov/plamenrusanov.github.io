@@ -62,17 +62,41 @@ body {
     margin-bottom: 3px
 }
 
-.btn.btn-default.list-group-item {
-    background-image: url("/Images/Wood.jpg");
-}
+    .btn.btn-default.list-group-item {
+        background-image: url("/Images/Wood.jpg");
+    }
+
 .hr-tapas {
     border: 2px solid grey;
 }
-.editor-label{
-    padding:inherit;
+
+.editor-label {
+    padding: inherit;
 }
-table{
-    width:90% !important;
-    margin-left:5%;
-    margin-right:5%;
+
+table {
+    width: 90% !important;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+
+/* Background image on /Addreses/Add */
+
+#container-address {
+    background-image: url("/Images/vegetables.jpg");
+    min-height: 850px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+#form-address {
+    position: absolute;
+    right: 0;
+    margin: 20px;
+    max-width: 400px;
+    padding: 16px;
+    background-color: white;
 }

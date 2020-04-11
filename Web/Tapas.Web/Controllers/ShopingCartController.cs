@@ -1,10 +1,10 @@
 ﻿namespace Tapas.Web.Controllers
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Tapas.Common;
@@ -15,7 +15,6 @@
     [Authorize]
     public class ShopingCartController : Controller
     {
-        private const string RefererHeader = "Referer";
         private readonly IShopingCartService cartService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IProductsService productsService;
@@ -94,18 +93,29 @@
         }
 
         // GET
-        public ActionResult DeleteProductItem(int itemId, string shopingCartId)
+        public async Task<ActionResult> DeleteProductItem(int itemId, string shopingCartId)
         {
             if (this.User == null)
             {
                 return this.RedirectToPage(GlobalConstants.LoginPageRoute);
             }
 
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (shopingCartId == null || user.ShopingCart.Id != shopingCartId)
+            {
+                shopingCartId = user.ShopingCart.Id;
+            }
+
+            if (!user.ShopingCart.CartItems.Any(x => x.Id == itemId))
+            {
+                return this.NotFound();
+            }
+
             this.cartService.DeleteItem(itemId, shopingCartId);
-            if (this.Request.Headers.ContainsKey(RefererHeader))
+            if (this.Request.Headers.ContainsKey(GlobalConstants.RefererHeader))
             {
                 var refererValue = default(Microsoft.Extensions.Primitives.StringValues);
-                bool result = this.Request.Headers.TryGetValue(RefererHeader, out refererValue);
+                bool result = this.Request.Headers.TryGetValue(GlobalConstants.RefererHeader, out refererValue);
                 if (result)
                 {
                     var uri = new Uri(refererValue);

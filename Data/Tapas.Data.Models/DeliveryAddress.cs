@@ -29,11 +29,13 @@
 
         public string Block { get; set; }
 
-        public string Еntry { get; set; }
+        public string Entry { get; set; }
 
         public string Floor { get; set; }
 
         public string AddInfo { get; set; }
+
+        public DateTime LastUseOn { get; set; }
 
         public string ApplicationUserId { get; set; }
 

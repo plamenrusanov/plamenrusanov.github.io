@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using Tapas.Web.ViewModels.Addreses;
     using Tapas.Web.ViewModels.ShopingCartItems;
 
@@ -26,6 +26,8 @@
         public string ApplicationUserId { get; set; }
 
         public string AddressId { get; set; }
+
+        public decimal OrderPrice => this.CartItems.Sum(x => x.ItemPrice);
 
         public List<AddressViewModel> Addresses { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -21,6 +22,29 @@
         {
             this.addressRepository = addressRepository;
             this.geolocationService = geolocationService;
+        }
+
+        public async Task CreateAddressAsync(ApplicationUser user, AddressInputModel model)
+        {
+            var address = new DeliveryAddress()
+            {
+                Latitude = model.Latitude,
+                Longitude = model.Longitude,
+                DisplayName = model.DisplayName,
+                City = model.City,
+                Borough = model.Borough,
+                Street = model.Street,
+                StreetNumber = model.StreetNumber,
+                Block = model.Block,
+                Entry = model.Entry,
+                Floor = model.Floor,
+                AddInfo = model.AddInfo,
+                LastUseOn = DateTime.UtcNow,
+                ApplicationUserId = user.Id,
+            };
+
+            await this.addressRepository.AddAsync(address);
+            await this.addressRepository.SaveChangesAsync();
         }
 
         public async Task<AddressInputModel> GetAddressAsync(string latitude, string longitude)
@@ -54,7 +78,7 @@
                     Street = x.Street,
                     StreetNumber = x.StreetNumber,
                     Block = x.Block,
-                    Еntry = x.Еntry,
+                    Еntry = x.Entry,
                     Floor = x.Floor,
                     AddInfo = x.AddInfo,
                     Latitude = x.Latitude,

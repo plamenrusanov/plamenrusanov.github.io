@@ -69,6 +69,12 @@
     <Content Update="Areas\Administration\Views\Products\Add.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Views\Orders\Details.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Orders\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\Allergens\Eggs.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

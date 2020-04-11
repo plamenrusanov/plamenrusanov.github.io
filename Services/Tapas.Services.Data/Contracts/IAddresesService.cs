@@ -11,5 +11,7 @@
         ICollection<AddressViewModel> GetMyAddreses(ApplicationUser user);
 
         Task<AddressInputModel> GetAddressAsync(string latitude, string longitude);
+
+        Task CreateAddressAsync(ApplicationUser user, AddressInputModel model);
     }
 }

@@ -20,7 +20,7 @@
 
         public string Block { get; set; }
 
-        public string Еntry { get; set; }
+        public string Entry { get; set; }
 
         public string Floor { get; set; }
 

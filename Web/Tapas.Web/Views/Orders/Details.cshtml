@@ -1,0 +1,54 @@
+﻿<body>
+    <p id="demo">Click the button to get your position:</p>
+    <button onclick="getLocation()">Get your Location</button>
+    <button id="child">Send Your Location</button>
+    <p id="lat"></p>
+    <p id="lon"></p>
+    <script type="text/javascript">
+        var x = document.getElementById("demo");
+        var c = document.getElementById("lat");
+        var d = document.getElementById("lon");
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            }
+            else { x.innerHTML = "Geolocation is not supported by this browser."; }
+        }
+        function showPosition(position) {
+            x.innerHTML = "Your Latitude Position is:=" + position.coords.latitude + "," + "Your Longitude Position is:=" + position.coords.longitude;
+            c.innerHTML = position.coords.latitude;
+            d.innerHTML = position.coords.longitude;
+        }
+        function showError(error) {
+            if (error.code == 1) {
+                x.innerHTML = "User denied the request for Geolocation."
+            }
+            else if (err.code == 2) {
+                x.innerHTML = "Location information is unavailable."
+            }
+            else if (err.code == 3) {
+                x.innerHTML = "The request to get user location timed out."
+            }
+            else {
+                x.innerHTML = "An unknown error occurred."
+            }
+        }
+
+    </script>
+    <script>
+        $("#child").click(function () {
+            var c = document.getElementById("lat");
+            var d = document.getElementById("lon");
+            $.ajax({
+                url: "/Addreses/GetAddressFromLocation?latitude=" + c + "&longitude=" + d,
+                data: { latutude: document.getElementById("lat"), longitude: document.getElementById("lon") },
+                success: function (responce) {
+
+                }
+            });
+        });
+    </script>
+    <form id="form1" runat="server">
+        <div></div>
+    </form>
+</body>  
