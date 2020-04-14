@@ -25,4 +25,16 @@
     <ProjectReference Include="..\..\Services\Tapas.Services.Mapping\Tapas.Services.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Orders\OrderInpitModel.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="Orders\OrderDetailsViewModel.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="Orders\OrdersViewModel.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
 </Project>

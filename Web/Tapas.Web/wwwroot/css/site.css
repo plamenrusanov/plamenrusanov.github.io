@@ -44,8 +44,20 @@ html {
 }
 
 body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin-bottom: 30px;
+    background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/v1586767202/k4yosrnrf2mlyw6rfcfe.jpg");
+    height: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#main-transperant {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    color: #3b3b3b;
+    width: 100%;
+    height: auto;
 }
 
 .footer {
@@ -53,38 +65,26 @@ body {
     bottom: 0;
     width: 100%;
     white-space: nowrap;
-    /* Set the fixed height of the footer here */
     height: 60px;
-    line-height: 60px; /* Vertically center the text there */
+    line-height: 60px;
 }
 
-.btn {
-    margin-bottom: 3px
+.btn.btn-default.list-group-item { /*Index*/
+    background-image: url("/Images/Wood.jpg");
+    margin-bottom: 3px;
 }
-
-    .btn.btn-default.list-group-item {
-        background-image: url("/Images/Wood.jpg");
-    }
 
 .hr-tapas {
     border: 2px solid grey;
 }
 
-.editor-label {
-    padding: inherit;
-}
-
-table {
+table { /*ShopingCart*/
     width: 90% !important;
     margin-left: 5%;
     margin-right: 5%;
 }
 
-
-/* Background image on /Addreses/Add */
-
-#container-address {
-    background-image: url("/Images/vegetables.jpg");
+#container-address { /*Addreses/Add*/
     min-height: 850px;
     background-position: center;
     background-repeat: no-repeat;
@@ -92,11 +92,17 @@ table {
     position: relative;
 }
 
-#form-address {
+#form-address { /*Addreses/Add*/
     position: absolute;
     right: 0;
     margin: 20px;
     max-width: 400px;
     padding: 16px;
     background-color: white;
+}
+
+.order-container { /*Order/Index*/
+    margin: 2px;
+    border: solid 1px black;
+    border-radius: 6px;
 }

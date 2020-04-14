@@ -68,7 +68,6 @@
                 this.configuration.GetSection("CloudSettings:ApiKey").Value,
                 this.configuration.GetSection("CloudSettings:ApiSecret").Value));
 
-            services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IAllergensService, AllergensService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IHomeService, HomeService>();

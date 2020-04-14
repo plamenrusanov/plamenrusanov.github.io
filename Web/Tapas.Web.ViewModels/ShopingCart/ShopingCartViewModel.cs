@@ -8,7 +8,6 @@
     {
         public ShopingCartViewModel()
         {
-            this.ShopingItems = new List<ShopingItemsViewModel>();
         }
 
         public string Id { get; set; }

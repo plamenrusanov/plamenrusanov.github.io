@@ -1,6 +1,6 @@
 ﻿namespace Tapas.Web.ViewModels.Administration.AllergensProducts
 {
-    public class DetailsAlergenViewModel
+    public class AlergenDetailsViewModel
     {
         public string AllergenId { get; set; }
 

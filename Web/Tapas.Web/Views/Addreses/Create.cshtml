@@ -74,8 +74,7 @@
 
         function Send(x, y) {
             $.ajax({
-                url: "/Addreses/GetAddressFromLocation",
-                data: { latitude: x, longitude: y },
+                url: `/Addreses/GetAddressFromLocation?latitude=${x}&longitude=${y}`,
                 dataType: "json",
                 success: function (response) {
                     if (response.city !== "undefined") {

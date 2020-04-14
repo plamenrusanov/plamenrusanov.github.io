@@ -1,77 +1,39 @@
 ﻿@model Tapas.Web.ViewModels.Orders.OrderInpitModel
+
 @{
-    var i = 1;
+    ViewData["Title"] = "Create";
 }
-<div class="row">
-    <div class="col-md-6">
-        <table class="table">
-            <thead>
-                <tr class="row">
-                    <th class="col-sm-1">
-                        #
-                    </th>
-                    <th class="col-sm-3">
-                        @Html.DisplayName("Продукт")
-                    </th>
-                    <th class="col-sm-3">
-                        @Html.DisplayName("Количество")
-                    </th>
-                    <th class="col-sm-3">
-                        @Html.DisplayName("Цена")
-                    </th>
-                    <th class="col-sm-2">
-                        @Html.DisplayName("Actions")
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.CartItems)
-                {
-                    <tr class="row">
-                        <td class="col-sm-1">
-                            @(i++)
-                        </td>
-                        <td class="col-sm-3">
-                            @Html.DisplayFor(x => item.ProductName)
-                        </td>
-                        <td class="col-sm-3">
-                            @Html.DisplayFor(x => item.Quantity)
-                        </td>
-                        <td class="col-sm-3">
-                            @Html.DisplayFor(x => item.ItemPrice)
-                        </td>
-                        <td class="col-sm-2">
-                            <a class="btn btn-danger btn-lg" href="/ShopingCart/DeleteProductItem?itemId=@item.Id">Изтрий</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <div class="row">
-            <div class="col-md-8">
-                <p>&#8270; Oпаковката е включена в цената!</p>
-                @if (Model.OrderPrice < 10)
-                {
-                    <p>&#8270; Поръчка под 10 лева заплаща 2 лева за доставка!</p>
-                }
-                else if (Model.OrderPrice < 25)
-                {
-                    <p>&#8270; Поръчка над 25 лева получава подарък!</p>
-                }
-            </div>
-            <div class="col-md-4">
-                <h3>@Html.LabelFor(x => x.OrderPrice): @Html.DisplayFor(x => x.OrderPrice)</h3>
-            </div>
+
+@using (Html.BeginForm("Create", "Orders", FormMethod.Post))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true);
+    @await Html.PartialAsync("_ShopingCartPartial", Model.CartItems, ViewData);
+    <div class="row">
+        <div class="col-md-8">
+            <p>&#8270; Oпаковката е включена в цената!</p>
+            @if (Model.OrderPrice < 10)
+            {
+                <p>&#8270; Поръчка под 10 лева заплаща 2 лева за доставка!</p>
+            }
+            else if (Model.OrderPrice < 25)
+            {
+                <p>&#8270; Поръчка над 25 лева получава подарък!</p>
+            }
+        </div>
+        <div class="col-md-4">
+            <h3 class="form-group">@Html.LabelFor(x => x.OrderPrice): @Html.DisplayFor(x => x.OrderPrice, new { @class = "form-control" })</h3>
         </div>
     </div>
+
     <div class="col-md-6">
-        <div class="row">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
-        <div class="row"><a class="btn btn-primary" href="/Addreses/Create">Добави адрес</a></div>
+        <div class="row form-group">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
+        <div class="row"><a class="btn btn-default" href="/Addreses/Create">Добави адрес</a></div>
+        <div class="row form-group ">@Html.TextAreaFor(x => x.AddInfo, 3, 30, new { @class = "form-control" })</div>
         <div class="row"></div>
-        <div class="row"></div>
-        <div class="row"></div>
-        <div class="row"></div>
-    </div>.
-</div>
+        <div class="row"><button class="btn btn-default" type="submit">Добави адрес</button></div>
+    </div>
+}
+
 
 

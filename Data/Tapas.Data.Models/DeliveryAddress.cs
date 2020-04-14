@@ -1,7 +1,6 @@
 ﻿namespace Tapas.Data.Models
 {
     using System;
-    using System.Collections.Generic;
 
     using Tapas.Data.Common.Models;
 
@@ -10,7 +9,6 @@
         public DeliveryAddress()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Orders = new HashSet<Order>();
         }
 
         public string Latitude { get; set; }
@@ -35,10 +33,6 @@
 
         public string AddInfo { get; set; }
 
-        public DateTime LastUseOn { get; set; }
-
         public string ApplicationUserId { get; set; }
-
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }

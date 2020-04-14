@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Tapas.Data.Common.Models;
 
@@ -16,7 +16,8 @@
 
         public string ApplicationUserId { get; set; }
 
-        public decimal TotalPrice => this.CartItems.Sum(x => x.Product.Price * x.Quantity);
+        [NotMapped]
+        public decimal TotalPrice { get; set; }
 
         public string AddInfo { get; set; }
 

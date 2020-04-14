@@ -361,9 +361,6 @@ namespace Tapas.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LastUseOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Latitude")
                         .HasColumnType("nvarchar(max)");
 
@@ -390,8 +387,10 @@ namespace Tapas.Data.Migrations
 
             modelBuilder.Entity("Tapas.Data.Models.Order", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AddInfo")
                         .HasColumnType("nvarchar(max)");
@@ -399,7 +398,7 @@ namespace Tapas.Data.Migrations
                     b.Property<string>("AddressId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("BagId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -411,11 +410,16 @@ namespace Tapas.Data.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("BagId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -456,38 +460,6 @@ namespace Tapas.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Tapas.Data.Models.Setting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("Tapas.Data.Models.ShopingCart", b =>
@@ -539,9 +511,6 @@ namespace Tapas.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
@@ -554,8 +523,6 @@ namespace Tapas.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -647,12 +614,16 @@ namespace Tapas.Data.Migrations
             modelBuilder.Entity("Tapas.Data.Models.Order", b =>
                 {
                     b.HasOne("Tapas.Data.Models.DeliveryAddress", "Address")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("Tapas.Data.Models.ApplicationUser", null)
+                    b.HasOne("Tapas.Data.Models.ShopingCart", "Bag")
+                        .WithMany()
+                        .HasForeignKey("BagId");
+
+                    b.HasOne("Tapas.Data.Models.ApplicationUser", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Tapas.Data.Models.Product", b =>
@@ -664,10 +635,6 @@ namespace Tapas.Data.Migrations
 
             modelBuilder.Entity("Tapas.Data.Models.ShopingCartItem", b =>
                 {
-                    b.HasOne("Tapas.Data.Models.Order", null)
-                        .WithMany("CartItems")
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("Tapas.Data.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");

@@ -49,7 +49,20 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Addreses" asp-action="Add">Адрес</a>
                             </li>
-
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Поръчки</a>
+                            </li>
+                            <li class="dropdown">
+                                <button class="dropbtn">
+                                    Dropdown
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-content">
+                                    <a href="#">Link 1</a>
+                                    <a href="#">Link 2</a>
+                                    <a href="#">Link 3</a>
+                                </div>
+                            </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ShopingCart" asp-action="Index"><i class='fas fa-shopping-cart' style='font-size:30px'></i></a>
@@ -60,7 +73,7 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container" id="main-transperant">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @this.RenderBody()
@@ -72,21 +85,6 @@
             &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script>
-        $.validator.methods.range = function (value, element, param) {
-            var globalizedValue = value.replace(".", ",");
-            return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
-        }
-
-        $.validator.methods.number = function (value, element) {
-            return this.optional(element) || /-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
-        }
-        //Date dd/MM/yyyy
-        $.validator.methods.date = function (value, element) {
-            var date = value.split("/");
-            return this.optional(element) || !/Invalid|NaN/.test(new Date(date[2], date[1], date[0]).toString());
-        }
-    </script>
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>

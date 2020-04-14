@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
 
     using Tapas.Data.Common.Repositories;
@@ -30,7 +31,7 @@
             {
                 Latitude = model.Latitude,
                 Longitude = model.Longitude,
-                DisplayName = model.DisplayName,
+                DisplayName = this.GetDisplayName(model),
                 City = model.City,
                 Borough = model.Borough,
                 Street = model.Street,
@@ -39,7 +40,6 @@
                 Entry = model.Entry,
                 Floor = model.Floor,
                 AddInfo = model.AddInfo,
-                LastUseOn = DateTime.UtcNow,
                 ApplicationUserId = user.Id,
             };
 
@@ -84,6 +84,47 @@
                     Latitude = x.Latitude,
                     Longitude = x.Longitude,
                 }).ToList();
+        }
+
+        private string GetDisplayName(AddressInputModel model)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (model.Floor != null)
+            {
+                sb.Append($"ет. {model.Floor}, ");
+            }
+
+            if (model.Entry != null)
+            {
+                sb.Append($"вх. {model.Entry}, ");
+            }
+
+            if (model.Block != null)
+            {
+                sb.Append($"бл. {model.Block}, ");
+            }
+
+            if (model.Street != null)
+            {
+                sb.Append($"ул. {model.Street}, ");
+            }
+
+            if (model.StreetNumber != null)
+            {
+                sb.Append($"№ {model.StreetNumber}, ");
+            }
+
+            if (model.Borough != null)
+            {
+                sb.Append($"кв. {model.Borough}, ");
+            }
+
+            if (model.City != null)
+            {
+                sb.Append($"гр. {model.City}");
+            }
+
+            return sb.ToString();
         }
     }
 }

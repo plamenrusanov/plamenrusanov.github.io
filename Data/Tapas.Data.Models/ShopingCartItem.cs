@@ -1,7 +1,5 @@
 ﻿namespace Tapas.Data.Models
 {
-    using System;
-
     using Tapas.Data.Common.Models;
 
     public class ShopingCartItem : BaseDeletableModel<int>

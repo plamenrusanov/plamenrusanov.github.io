@@ -16,6 +16,6 @@
 
         public string CategoryId { get; set; }
 
-        public virtual ICollection<DetailsAlergenViewModel> Allergens { get; set; }
+        public virtual ICollection<AlergenDetailsViewModel> Allergens { get; set; }
     }
 }

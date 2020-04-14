@@ -1,0 +1,49 @@
+﻿@model List<Tapas.Web.ViewModels.ShopingCartItems.ShopingItemsViewModel>
+
+@{
+    var i = 1;
+}
+<table class="table">
+    <thead>
+        <tr class="row">
+            <th class="col-sm-1">
+                #
+            </th>
+            <th class="col-sm-3">
+                @Html.Label("Продукт")
+            </th>
+            <th class="col-sm-3">
+                @Html.Label("Количество")
+            </th>
+            <th class="col-sm-3">
+                @Html.Label("Цена")
+            </th>
+            <th class="col-sm-2">
+                @Html.Label("Actions")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr class="row">
+                @Html.Hidden("ProductId", item.ProductId, new { @class = "form-control", @name = "ProductId" })
+                <td class="col-sm-1">
+                    @(i++)
+                </td>
+                <td class="col-sm-3">
+                    @Html.DisplayFor(x => item.ProductName, "CartItems", "ProductName", new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td class="col-sm-3">
+                    @Html.DisplayFor(x => item.Quantity, "CartItems", "Quanttity", new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td class="col-sm-3">
+                    @Html.DisplayFor(x => item.ItemPrice, "CartItems", "ItemPrice", new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
