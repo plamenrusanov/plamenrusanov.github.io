@@ -1,54 +1,38 @@
-﻿<body>
-    <p id="demo">Click the button to get your position:</p>
-    <button onclick="getLocation()">Get your Location</button>
-    <button id="child">Send Your Location</button>
-    <p id="lat"></p>
-    <p id="lon"></p>
-    <script type="text/javascript">
-        var x = document.getElementById("demo");
-        var c = document.getElementById("lat");
-        var d = document.getElementById("lon");
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            }
-            else { x.innerHTML = "Geolocation is not supported by this browser."; }
-        }
-        function showPosition(position) {
-            x.innerHTML = "Your Latitude Position is:=" + position.coords.latitude + "," + "Your Longitude Position is:=" + position.coords.longitude;
-            c.innerHTML = position.coords.latitude;
-            d.innerHTML = position.coords.longitude;
-        }
-        function showError(error) {
-            if (error.code == 1) {
-                x.innerHTML = "User denied the request for Geolocation."
-            }
-            else if (err.code == 2) {
-                x.innerHTML = "Location information is unavailable."
-            }
-            else if (err.code == 3) {
-                x.innerHTML = "The request to get user location timed out."
-            }
-            else {
-                x.innerHTML = "An unknown error occurred."
-            }
-        }
+﻿@model Tapas.Web.ViewModels.Orders.OrderDetailsViewModel
 
-    </script>
-    <script>
-        $("#child").click(function () {
-            var c = document.getElementById("lat");
-            var d = document.getElementById("lon");
-            $.ajax({
-                url: "/Addreses/GetAddressFromLocation?latitude=" + c + "&longitude=" + d,
-                data: { latutude: document.getElementById("lat"), longitude: document.getElementById("lon") },
-                success: function (responce) {
+@{
+    Layout = null;
+}
 
-                }
-            });
-        });
-    </script>
-    <form id="form1" runat="server">
-        <div></div>
-    </form>
-</body>  
+<div class="row">
+    <div class="col-md-4">
+        <h4>Поръчка: <span id="order">@Model.OrderId</span></h4>
+    </div>
+    <div class="col-md-4" i>
+        <h4>Поръчана: <span id="createdOn">@Model.CreatedOn</span></h4>
+    </div>
+    <div class="col-md-3">
+        @Html.DropDownListFor(x => x.Status, Model.OrderStatus.Select(x => new SelectListItem() { Text = x.ToString(), Value = x.ToString(), Selected = x == Model.Status }), "Статус", new { @id = "statusValue", @class = "form-control", @onchange="changeStatus()" })
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-sm-6">
+        <h4>Клиент: <span id="userName">@Model.UserUserName</span></h4>
+    </div>
+    <div class="col-sm-6">
+        <h4>Телефон: <span id="phone">@Model.UserPhone</span></h4>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-8">
+        <h4>Адрес: <span id="address">@Model.DisplayAddress</span></h4>
+    </div>
+    <div class="col-md-4">
+        <span>Допълнителна информация за адреса.</span>
+        @Html.TextBoxFor(x => x.AddInfo)
+    </div>
+</div>
+<hr/>
+@await Html.PartialAsync("_ShopingCartPartial", Model.CartItems) 

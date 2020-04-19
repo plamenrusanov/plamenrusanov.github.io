@@ -21,7 +21,9 @@
     using Tapas.Services.Data.Contracts;
     using Tapas.Services.Mapping;
     using Tapas.Services.Messaging;
+    using Tapas.Web.Hubs;
     using Tapas.Web.ViewModels;
+
 
     public class Startup
     {
@@ -48,6 +50,12 @@
                         options.CheckConsentNeeded = context => true;
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
+
+            services.AddSignalR(
+               options =>
+               {
+                   options.EnableDetailedErrors = true;
+               }).AddMessagePackProtocol();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -118,6 +126,7 @@
             app.UseEndpoints(
                 endpoints =>
                     {
+                        endpoints.MapHub<OrderHub>("/orderHub");
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();

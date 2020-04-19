@@ -12,12 +12,16 @@
 
         OrderInpitModel GetOrderInputModel(ApplicationUser user);
 
-        OrderDetailsViewModel GetLast50();
+        ICollection<OrdersViewModel> GetDailyOrders();
 
-        Task CreateAsync(ApplicationUser user, OrderInpitModel model);
+        Task<int> CreateAsync(ApplicationUser user, OrderInpitModel model);
 
         OrderDetailsViewModel GetDetailsById(int id);
 
         bool IsExists(int id);
+
+        OrderDetailsViewModel GetUpdate();
+
+        Task<bool> ChangeStatusAsync(string status, string orderId);
     }
 }

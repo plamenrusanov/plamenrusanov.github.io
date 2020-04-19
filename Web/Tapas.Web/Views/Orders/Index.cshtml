@@ -1,4 +1,4 @@
-﻿@model Tapas.Web.ViewModels.Orders.OrderDetailsViewModel
+﻿@model List<Tapas.Web.ViewModels.Orders.OrdersViewModel>
 @{
     ViewData["Title"] = "Index";
 }
@@ -7,65 +7,18 @@
 <h1 class="text-center">Поръчки</h1>
 <hr class="hr-tapas" />
 <div class="row">
-    <div class="col-md-3">
-        @await Html.PartialAsync("_ListOrdersPartial", Model.Orders)
-    </div>
-    <div class="col-md-9 bg-white"> 
-        @if (Model.Id != default)
-        {
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.Id, "Поръчка:   ")
-                    @Html.DisplayFor(x => x.Id, "Index", "Id", new { htmlAttributes = new { } })
-                </div>
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.CreatedOn, "Поръчана:   ")
-                    @Html.DisplayFor(x => x.CreatedOn, "Index", "CreatedOn", new { htmlAttributes = new { } })
-                </div>
-                <div class="col-md-3">
-                    @Html.DropDownListFor(x => x.Status, Model.OrderStatus.Select(x => new SelectListItem() { Text = x.ToString(), Value = x.ToString(), Selected = x == Model.Status }), "Статус", new { @id = "status", @class = "form-control" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    @Html.LabelFor(x => x.UserUserName, "Клиент:   ")
-                    @Html.DisplayFor(x => x.UserUserName, "Index", "UserUserName", new { htmlAttributes = new { } })
-                </div>
-                <div class="col-sm-6">
-                    @Html.LabelFor(x => x.UserPhone, "Телефон: ")
-                    @Html.DisplayFor(x => x.UserPhone, "Index", "UserPhone", new { htmlAttributes = new { } })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    @Html.LabelFor(x => x.DisplayAddress, "Адрес: ")
-                    @Html.DisplayFor(x => x.DisplayAddress, "Index", "DisplayAddress", new { htmlAttributes = new { } })
-                </div>
-                <div class="col-md-4">
-                    @Html.LabelFor(x => x.AddInfo, "Допълнителна информация: ")
-                    @Html.DisplayFor(x => x.AddInfo, "Index", "AddInfo", new { htmlAttributes = new { } })
-                </div>
-            </div>
-            @await Html.PartialAsync("_ShopingCartPartial", Model.CartItems)
-        }
+    <ul class="col-md-2" id="listOrders">
+        @await Html.PartialAsync("_ListOrdersPartial", Model)
+    </ul>
+    <div class="col-md-10 bg-white" id="detailSection">
+           
     </div>
 </div>
 <hr class="hr-tapas" />
-
-<audio autoplay loop id="playAudio">
-    <source src="~/Audio/bercow_order.mp3">
-</audio>
-
+<audio loop id="audio"> <source src="~/Audio/Графа - Най-щастливият човек-1.mp3" type="audio/mpeg"></audio>
 @section scripts
 {
-    <script>
-        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-        if (!isChrome) {
-            $('#iframeAudio').remove()
-        }
-        else {
-            $('#playAudio').remove() // just to make sure that it will not have 2x audio in the background
-        }
-    </script>
+    <script src="~/lib/signalr/microsoft/dist/browser/signalr.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 }
 

@@ -1,6 +1,5 @@
 ﻿namespace Tapas.Services.Data
 {
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -25,7 +24,26 @@
             this.cartRepository = cartRepository;
         }
 
-        public async Task CreateAsync(ApplicationUser user, OrderInpitModel model)
+        public async Task<bool> ChangeStatusAsync(string status, string orderId)
+        {
+            int id = default;
+
+            if (int.TryParse(orderId, out id))
+            {
+                object statusResult = new object { };
+                if (Enum.TryParse(typeof(OrderStatus), status, out statusResult))
+                {
+                    var order = this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault();
+                    order.Status = (OrderStatus)statusResult;
+                    await this.ordersRepository.SaveChangesAsync();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public async Task<int> CreateAsync(ApplicationUser user, OrderInpitModel model)
         {
             var order = new Order()
             {
@@ -45,6 +63,7 @@
 
             await this.ordersRepository.AddAsync(order);
             await this.ordersRepository.SaveChangesAsync();
+            return order.Id;
         }
 
         public OrderDetailsViewModel GetDetailsById(int id)
@@ -53,8 +72,8 @@
 
             return new OrderDetailsViewModel()
             {
-                CreatedOn = order.CreatedOn.ToShortDateString(),
-                Id = order.Id,
+                CreatedOn = order.CreatedOn.ToLocalTime().ToString("HH:mm:ss"),
+                OrderId = order.Id,
                 DisplayAddress = order.Address.DisplayName,
                 AddressInfo = order.Address.AddInfo,
                 UserUserName = order.User.UserName,
@@ -63,46 +82,26 @@
                 CartItems = order.Bag.CartItems
                     .Select(x => new ShopingItemsViewModel()
                     {
-                        Id = x.Id,
                         ProductId = x.ProductId,
                         ProductName = x.Product.Name,
                         ProductPrice = x.Product.Price,
                         Quantity = x.Quantity,
                     }).ToList(),
-                Orders = this.GetLast50().Orders.ToList(),
                 Status = order.Status,
                 OrderStatus = this.Statuses(),
             };
         }
 
-        public OrderDetailsViewModel GetLast50()
+        public ICollection<OrdersViewModel> GetDailyOrders()
         {
-            return new OrderDetailsViewModel()
-            {
-                Orders = this.ordersRepository.All()
+            return this.ordersRepository.All()
+                .Where(x => x.CreatedOn.Date == DateTime.UtcNow.Date)
                 .OrderByDescending(x => x.Id)
                 .Select(x => new OrdersViewModel()
                 {
                     Id = x.Id,
-                    AddInfo = x.AddInfo,
-                    Address = new AddressViewModel()
-                    {
-                        AddInfo = x.Address.AddInfo,
-                        DisplayName = x.Address.DisplayName,
-                    },
-                    ApplicationUserId = x.UserId,
                     Status = x.Status.ToString(),
-                    CartItems = x.Bag.CartItems
-                        .Select(c => new ShopingItemsViewModel()
-                        {
-                            Id = c.Id,
-                            ProductId = c.Product.Id,
-                            ProductName = c.Product.Name,
-                            ProductPrice = c.Product.Price,
-                            Quantity = c.Quantity,
-                        }).ToList(),
-                }).ToList(),
-            };
+                }).ToList();
         }
 
         public OrderInpitModel GetOrderInputModel(ApplicationUser user)
@@ -127,13 +126,35 @@
                     .CartItems
                     .Select(x => new ShopingItemsViewModel()
                     {
-                        Id = x.Id,
                         ProductId = x.ProductId,
                         ProductName = x.Product.Name,
                         ProductPrice = x.Product.Price,
                         Quantity = x.Quantity,
                     }).ToList(),
             };
+        }
+
+        public OrderDetailsViewModel GetUpdate()
+        {
+            return this.ordersRepository.All()
+                .Where(x => x.Status == OrderStatus.Unprocessed)
+                .Select(x => new OrderDetailsViewModel()
+                {
+                    AddInfo = x.AddInfo,
+                    AddressInfo = x.Address.AddInfo,
+                    CartItems = x.Bag.CartItems.Select(c => new ShopingItemsViewModel()
+                    {
+                        ProductName = c.Product.Name,
+                        Quantity = c.Quantity,
+                    }).ToList(),
+                    CreatedOn = x.CreatedOn.ToLocalTime().ToString("HH:mm:ss"),
+                    DisplayAddress = x.Address.DisplayName,
+                    OrderId = x.Id,
+                    Status = x.Status,
+                    UserPhone = x.User.PhoneNumber,
+                    UserUserName = x.User.UserName,
+                    OrderStatus = this.Statuses(),
+                }).FirstOrDefault();
         }
 
         public bool IsExists(int id) => this.ordersRepository.All().Any(x => x.Id == id);

@@ -2,27 +2,21 @@
 
 @foreach (var item in Model)
 {
-    if (item.Status == "Unprocesed")
+    if (item.Status != "Unprocessed")
     {
-        <a href="/Orders/Details?id=@item.Id">
-            <div class="row justify-content-center order-container bg-success">
-                <h5>
-                    @Html.Label("Поръчка: ")
-                    @Html.DisplayFor(x => item.Id)
-                </h5>
-            </div>
-        </a>
+        <li class="btn btn-success btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)">
+            <h5>
+                Поръчка: <strong id="orderId">@item.Id</strong>
+            </h5>
+        </li>
     }
     else
     {
-        <a href="/Orders/Details?id=@item.Id">
-            <div class="row justify-content-around order-container bg-danger border-dark">
-                <h5>
-                    @Html.Label("Поръчка: ")
-                    @Html.DisplayFor(x => item.Id)
-                </h5>
-            </div>
-        </a>
+        <li class="btn btn-danger btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)">
+            <h5>
+                Поръчка: <strong id="orderId">@item.Id</strong>
+            </h5>
+        </li>
     }
 
 }

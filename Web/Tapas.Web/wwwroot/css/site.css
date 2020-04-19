@@ -44,8 +44,8 @@ html {
 }
 
 body {
-    margin-bottom: 30px;
-    background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/v1586767202/k4yosrnrf2mlyw6rfcfe.jpg");
+    margin-bottom: 60px;
+    background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_900,w_1600/v1586767202/k4yosrnrf2mlyw6rfcfe.jpg");
     height: auto;
     background-position: center;
     background-repeat: no-repeat;
@@ -55,7 +55,7 @@ body {
 #main-transperant {
     position: relative;
     background: rgba(0, 0, 0, 0.5);
-    color: #3b3b3b;
+    color: ghostwhite;
     width: 100%;
     height: auto;
 }
@@ -101,8 +101,7 @@ table { /*ShopingCart*/
     background-color: white;
 }
 
-.order-container { /*Order/Index*/
-    margin: 2px;
-    border: solid 1px black;
-    border-radius: 6px;
+li { /*Order/Index*/
+    margin-top: 2px;
+    margin-bottom: 2px;
 }

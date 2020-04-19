@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-@using (Html.BeginForm("Create", "Orders", FormMethod.Post))
+@using (Html.BeginForm("Create", "Orders", FormMethod.Post, new { @class="bg-white" }))
 {
     @Html.AntiForgeryToken();
     @Html.ValidationSummary(true);

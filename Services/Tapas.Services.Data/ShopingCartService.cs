@@ -72,10 +72,8 @@
                 {
                     Id = x.Id,
                     UserId = x.ApplicationUserId,
-                    TotalPrice = x.CartItems.Sum(c => (c.Product.Price * c.Quantity)),
                     ShopingItems = x.CartItems.Select(c => new ShopingItemsViewModel()
                     {
-                        Id = c.Id,
                         ProductId = c.ProductId,
                         ProductName = c.Product.Name,
                         ProductPrice = c.Product.Price,

@@ -5,9 +5,10 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Tapas.Common;
+    using Microsoft.AspNetCore.SignalR;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
+    using Tapas.Web.Hubs;
     using Tapas.Web.ViewModels.Orders;
 
     [Authorize]
@@ -15,19 +16,22 @@
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IOrdersService ordersService;
+        private readonly IHubContext<OrderHub> hub;
 
         public OrdersController(
             UserManager<ApplicationUser> userManager,
-            IOrdersService ordersService)
+            IOrdersService ordersService,
+            IHubContext<OrderHub> hub)
         {
             this.userManager = userManager;
             this.ordersService = ordersService;
+            this.hub = hub;
         }
 
         [Authorize(Roles = "Administrator, Operator")]
         public IActionResult Index()
         {
-            var orders = this.ordersService.GetLast50();
+            var orders = this.ordersService.GetDailyOrders();
             return this.View(orders);
         }
 
@@ -44,20 +48,29 @@
         public async Task<IActionResult> Create(OrderInpitModel model)
         {
             var user = await this.userManager.GetUserAsync(this.User);
-
-            await this.ordersService.CreateAsync(user, model);
+            var id = await this.ordersService.CreateAsync(user, model);
+            await this.hub.Clients.All.SendAsync("NewOrder", id);
             return this.Redirect("/");
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(string orderId)
         {
-            if (!this.ordersService.IsExists(id))
+            if (string.IsNullOrEmpty(orderId))
             {
-                return this.NotFound($"Няма поръчка с номер {id}");
+                return this.NotFound();
+            }
+
+            int id = default;
+
+            bool result = int.TryParse(orderId, out id);
+            if (!result || !this.ordersService.IsExists(id))
+            {
+                return this.NotFound();
             }
 
             var model = this.ordersService.GetDetailsById(id);
-            return this.View("Index", model);
+
+            return this.View(model);
         }
     }
 }
