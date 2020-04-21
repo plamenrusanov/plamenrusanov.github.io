@@ -164,6 +164,29 @@
             return this.ordersRepository.All().Any(x => x.Status == OrderStatus.Unprocessed);
         }
 
+        public ICollection<OrderCollectionViewModel> GetAll()
+        {
+            return this.ordersRepository.All()
+                .Select(x => new OrderCollectionViewModel()
+                {
+                    Id = x.Id,
+                    UserName = x.User.UserName,
+                    DateTime = x.CreatedOn.ToLocalTime(),
+                }).OrderByDescending(x => x.Id).ToList();
+        }
+
+        public ICollection<OrderCollectionViewModel> GetOrdersByUserName(string userName)
+        {
+            return this.ordersRepository.All()
+                .Where(x => x.User.UserName == userName)
+                .Select(x => new OrderCollectionViewModel()
+                {
+                    Id = x.Id,
+                    UserName = userName,
+                    DateTime = x.CreatedOn.ToLocalTime(),
+                }).OrderByDescending(x => x.Id).ToList();
+        }
+
         private List<OrderStatus> Statuses()
         {
             return Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>().ToList();

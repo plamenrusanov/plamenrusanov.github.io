@@ -10,7 +10,6 @@
         <link href="~/lib/jquery/dist/jquery.min.js" rel="application/json" asp-append-version="true" />
         <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
-        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     </environment>
     <environment names="Staging,Production">
         <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
@@ -19,9 +18,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-light-transperant box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>
+                <a class="navbar-brand brand-logo" asp-area="" asp-controller="Home" asp-action="Index"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -33,24 +32,27 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Settings" asp-action="Index">Settings</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @if (User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Categories" asp-action="Index">Категорий</a>
+                                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Packages" asp-action="Index">Опаковки</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Products" asp-action="Add">Продукти</a>
+                                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Categories" asp-action="Index">Категорий</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Addreses" asp-action="Add">Адрес</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Поръчки</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                    Поръчки
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Orders/Index">Дневни</a>
+                                    <a class="dropdown-item" href="/Orders/All">Всички</a>
+                                </div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -58,11 +60,13 @@
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/Administration/Products/Add">Добави</a>
+                                    <a class="dropdown-item" href="/Administration/Products/GetProducts?isDeleted=@false">Активни</a>
+                                    <a class="dropdown-item" href="/Administration/Products/GetProducts?isDeleted=@true">Неактивни</a>
                                 </div>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ShopingCart" asp-action="Index"><i class='fas fa-shopping-cart' style='font-size:30px'></i></a>
+                        <li class="nav-item SCItem">
+                            <a class="nav-link cart-link" asp-area="" asp-controller="ShopingCart" asp-action="Index"></a>
                         </li>
                     </ul>
                 </div>

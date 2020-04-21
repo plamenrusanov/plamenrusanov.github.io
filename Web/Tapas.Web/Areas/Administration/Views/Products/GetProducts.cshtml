@@ -1,0 +1,72 @@
+﻿@model List<Tapas.Web.ViewModels.Administration.Products.DetailsProductViewModel>
+@{
+    bool isDeleted = (bool)ViewData["IsDeleted"];
+}
+
+<h1 class="text-center">@ViewData["Title"] продукти</h1>
+
+<hr class="hr-tapas" />
+
+<div class="container bg-light">
+    <table class="table">
+        <thead>
+            <tr class="row">
+                <th class="col-sm-3">
+                    @Html.Label("Име")
+                </th>
+                <th class="col-sm-2">
+                    @Html.Label("Цена")
+                </th>
+                <th class="col-sm-3">
+                    @Html.Label("Категория")
+                </th>
+                <th class="col-sm-2">
+                    @Html.Label("Редактирай")
+                </th>
+                @if (isDeleted)
+                {
+                    <th class="col-sm-2">
+                        @Html.Label("Активирай")
+                    </th>
+                }
+                else
+                {
+                    <th class="col-sm-2">
+                        @Html.Label("Изтрий")
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="row">
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.Name)
+                    </td>
+                    <td class="col-sm-2">
+                        @Html.DisplayFor(x => item.Price)
+                    </td>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.CategoryName)
+                    </td>
+                    <td class="col-sm-2">
+                        <a class="btn btn-info btn-lg" href="/Administration/Products/Edit?productId=@item.Id">Редактирай</a>
+                    </td>
+                    @if (isDeleted)
+                    {
+                        <td class="col-sm-2">
+                            <a class="btn btn-danger btn-lg" href="/Administration/Products/Аctivate?productId=@item.Id">Активирай</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="col-sm-2">
+                            <a class="btn btn-danger btn-lg" href="/Administration/Products/Delete?productId=@item.Id">Изтрий</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

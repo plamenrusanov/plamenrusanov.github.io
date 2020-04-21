@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Services.Data.Contracts
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Tapas.Web.ViewModels.Administration.Products;
@@ -21,5 +22,9 @@
         DeleteProductViewModel GetDeleteProductById(string productId);
 
         Task DeleteProductAsync(string productId);
+
+        ICollection<DetailsProductViewModel> GetAllProducts(bool isDeleted);
+
+        void Activate(string productId);
     }
 }

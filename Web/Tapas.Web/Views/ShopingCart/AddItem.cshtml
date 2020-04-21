@@ -6,12 +6,12 @@
 }
 
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <!--AddedProduct-->
         <div class="col-md-6">
             <div class="row">
-                <img class="card-img-top" src="https://res.cloudinary.com@(Model.Product.ImageUrl)" width="400" height="270" alt="@Model.Product.Name">
+                <img src="https://res.cloudinary.com@(Model.Product.ImageUrl)" width="400" height="270" alt="@Model.Product.Name">
             </div>
             <form asp-controller="ShopingCart" asp-action="AddItem">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -20,10 +20,10 @@
                     @Html.HiddenFor(x => x.ShopingCart.Id, new { @class = "form-control" })
                 </div>
                 <div class="row">
-                    @Html.DisplayFor(x => x.Product.Name)
+                    <h4>@Html.DisplayFor(x => x.Product.Name)</h4>
                 </div>
                 <div class="row">
-                    @Html.DisplayFor(x => x.Product.Price)
+                    <h4>@Html.DisplayFor(x => x.Product.Price) лв.</h4>
                 </div>
                 <div class="row">
                     @foreach (var item in Model.Product.Allergens)
@@ -35,10 +35,10 @@
                     }
                 </div>
                 <div class="row form-group">
-                    <div class="quantity buttons_added">
-                        <input id="minus" type="button" class="minus" value="-">
-                        <input asp-for="@Model.Quantity"  id="theInput" type="text" size="4" class="form-control input-text qty text" title="Qty" value="1" min="1" step="1">
-                        <input id="plus" type="button" class="plus" value="+">
+                    <div class="quantity buttons_added row">
+                        <input id="minus" type="button" class="minus col-sm-4 form-control" value="-">
+                        <input asp-for="@Model.Quantity" id="theInput" type="text" size="4" class="form-control input-text qty text col-sm-4" title="Qty" value="1" min="1" step="1">
+                        <input id="plus" type="button" class="plus col-sm-4 form-control" value="&#65291;">
                     </div>
                 </div>
 
@@ -50,7 +50,7 @@
             </form>
         </div>
         <!--ShopingCart-->
-        <div class="col-md-6">
+        <div class="col-md-6 bg-light">
             <h1 class="text-center">Твоята количка</h1>
             <hr class="hr-tapas" />
             <table class="table justify-content-center">
@@ -88,10 +88,10 @@
                             </td>
                             <td class="col-sm-3">
                                 @{price = item.ProductPrice * item.Quantity; }
-                                @Html.DisplayFor( x => price)
+                                @Html.DisplayFor(x => price)
                             </td>
                             <td class="col-sm-2">
-                                <a class="btn btn-danger btn-lg" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.ShopingCart.Id">Изтрий</a>
+                                <a class="btn btn-danger btn-sm" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.ShopingCart.Id">Изтрий</a>
                             </td>
                         </tr>
                     }
@@ -101,20 +101,24 @@
             <div>
                 <p>&#8270; Oпаковката е включена в цената!</p>
             </div>
-            
+
         </div>
     </div>
 </div>
-<script>
-    var input = document.getElementById('theInput');
-    document.getElementById('plus').onclick = function () {
-        if (input.value < 10) {
-            input.value = parseInt(input.value, 10) + 1
+@section Scripts
+{
+    <script>
+        var input = document.getElementById('theInput');
+        document.getElementById('plus').onclick = function () {
+            if (input.value < 10) {
+                input.value = parseInt(input.value, 10) + 1
+            }
         }
-    }
-    document.getElementById('minus').onclick = function () {
-        if (input.value > 1) {
-            input.value = parseInt(input.value, 10) - 1
+        document.getElementById('minus').onclick = function () {
+            if (input.value > 1) {
+                input.value = parseInt(input.value, 10) - 1
+            }
         }
-    }
-</script>
+    </script>
+}
+

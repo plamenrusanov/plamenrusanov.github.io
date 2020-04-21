@@ -18,6 +18,8 @@
 
         public string CategoryName { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public ICollection<DetailsAllergenViewModel> Allergens { get; set; }
     }
 }

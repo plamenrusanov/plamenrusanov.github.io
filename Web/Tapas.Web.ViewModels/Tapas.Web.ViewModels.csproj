@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Administration\Packages\PackageViewModel.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Update="Orders\OrderInpitModel.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

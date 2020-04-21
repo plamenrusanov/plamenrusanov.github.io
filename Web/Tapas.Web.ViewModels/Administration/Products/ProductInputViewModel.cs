@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Http;
     using Tapas.Web.ViewModels.Administration.Allergens;
     using Tapas.Web.ViewModels.Administration.Categories;
+    using Tapas.Web.ViewModels.Administration.Packages;
 
     public class ProductInputViewModel
     {
@@ -14,6 +15,7 @@
             this.AvailableAllergens = new HashSet<AllergenViewModel>();
             this.Allergens = new HashSet<string>();
             this.AvailableCategories = new HashSet<CategoryViewModel>();
+            this.Packages = new HashSet<PackageViewModel>();
         }
 
         [Required]
@@ -26,6 +28,10 @@
         public IFormFile Image { get; set; }
 
         public string CategoryId { get; set; }
+
+        public int PackageId { get; set; }
+
+        public ICollection<PackageViewModel> Packages { get; set; }
 
         public ICollection<CategoryViewModel> AvailableCategories { get; set; }
 

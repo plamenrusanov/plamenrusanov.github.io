@@ -33,7 +33,9 @@
             };
 
             var uploadResult = this.Cloudinary().Upload(uploadParams);
-            return await Task.FromResult<string>(uploadResult.Uri.AbsolutePath);
+
+            var url = uploadResult.Uri.AbsolutePath.Insert(24, "f_auto/");
+            return await Task.FromResult<string>(url);
         }
 
         public async Task<string> UploadImageFromResources(string fileDirectory)

@@ -23,5 +23,9 @@
         OrderDetailsViewModel GetUpdate();
 
         Task<bool> ChangeStatusAsync(string status, string orderId);
+
+        ICollection<OrderCollectionViewModel> GetAll();
+
+        ICollection<OrderCollectionViewModel> GetOrdersByUserName(string userName);
     }
 }

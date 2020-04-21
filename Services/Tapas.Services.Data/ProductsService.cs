@@ -1,6 +1,7 @@
 ﻿namespace Tapas.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -77,9 +78,9 @@
                 }).FirstOrDefault();
         }
 
-        public bool ExistProductById(string categoryId)
+        public bool ExistProductById(string productId)
         {
-            return this.productsRepo.All().Any(x => x.Id == categoryId);
+            return this.productsRepo.AllWithDeleted().Any(x => x.Id == productId);
         }
 
         public DetailsProductViewModel GetDetailsProductById(string productId)
@@ -113,7 +114,7 @@
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
+                    ImageUrl = x.ImageUrl,
                     CategoryId = x.CategoryId,
                     Price = x.Price,
                     Allergens = this.allergensRepository
@@ -197,6 +198,31 @@
                 .FirstOrDefault();
             this.productsRepo.Delete(product);
             await this.productsRepo.SaveChangesAsync();
+        }
+
+        public ICollection<DetailsProductViewModel> GetAllProducts(bool isDeleted)
+        {
+            return this.productsRepo.AllWithDeleted()
+                .Where(x => x.IsDeleted == isDeleted)
+                .Select(x => new DetailsProductViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    CategoryName = x.Category.Name,
+                    Price = x.Price,
+                    IsDeleted = x.IsDeleted,
+                })
+                .OrderBy(x => x.Name)
+                .ToList();
+        }
+
+        public void Activate(string productId)
+        {
+            var product = this.productsRepo.AllWithDeleted()
+                .Where(x => x.Id == productId)
+                .FirstOrDefault();
+            product.IsDeleted = false;
+            this.productsRepo.SaveChanges();
         }
     }
 }

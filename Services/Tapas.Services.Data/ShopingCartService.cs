@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Tapas.Common;
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
@@ -74,6 +74,7 @@
                     UserId = x.ApplicationUserId,
                     ShopingItems = x.CartItems.Select(c => new ShopingItemsViewModel()
                     {
+                        Id = c.Id,
                         ProductId = c.ProductId,
                         ProductName = c.Product.Name,
                         ProductPrice = c.Product.Price,
@@ -94,7 +95,7 @@
                         Id = x.Id,
                         Name = x.Name,
                         Price = x.Price,
-                        ImageUrl = x.ImageUrl,
+                        ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                         Allergens = x.Allergens
                             .Select(c => new DetailsAllergenViewModel()
                             {

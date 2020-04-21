@@ -111,5 +111,32 @@
 
             return this.Redirect("/");
         }
+
+        public IActionResult GetProducts(bool isDeleted)
+        {
+            if (!isDeleted)
+            {
+                this.ViewData["Title"] = "Активни";
+            }
+            else
+            {
+                this.ViewData["Title"] = "Неактивни";
+            }
+
+            this.ViewData["IsDeleted"] = isDeleted;
+            var model = this.productsService.GetAllProducts(isDeleted);
+            return this.View(model);
+        }
+
+        public IActionResult Аctivate(string productId)
+        {
+            if (!this.productsService.ExistProductById(productId))
+            {
+                return this.NotFound();
+            }
+
+            this.productsService.Activate(productId);
+            return this.View("/");//TO DO
+        }
     }
 }

@@ -47,6 +47,11 @@
         [HttpPost]
         public async Task<IActionResult> Create(OrderInpitModel model)
         {
+            if (this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+
             var user = await this.userManager.GetUserAsync(this.User);
             var id = await this.ordersService.CreateAsync(user, model);
             await this.hub.Clients.All.SendAsync("NewOrder", id);
@@ -72,5 +77,30 @@
 
             return this.View(model);
         }
+
+        public IActionResult All()
+        {
+            var model = this.ordersService.GetAll();
+            return this.View(model);
+        }
+
+        public async Task<IActionResult> OrdersByUser(string userName)
+        {
+            if (string.IsNullOrEmpty(userName))
+            {
+                return this.NotFound();
+            }
+
+            var user = await this.userManager.FindByNameAsync(userName);
+
+            if (user == null)
+            {
+                return this.NotFound();
+            }
+
+            var model = this.ordersService.GetOrdersByUserName(userName);
+            return this.View(model);
+        }
+
     }
 }

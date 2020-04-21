@@ -1,0 +1,54 @@
+﻿@model List<Tapas.Web.ViewModels.Orders.OrderCollectionViewModel>
+@{
+    ViewData["Title"] = "All";
+}
+
+<h1 class="text-center">Всички поръчки</h1>
+
+<hr class="hr-tapas" />
+
+<hr class="hr-tapas" />
+<div class="container bg-light">
+    <table class="table">
+        <thead>
+            <tr class="row">
+                <th class="col-sm-1">
+                    @Html.Label("Номер")
+                </th>
+                <th class="col-sm-3">
+                    @Html.Label("Клиент")
+                </th>
+                <th class="col-sm-3">
+                    @Html.Label("Поръчана")
+                </th>
+                <th class="col-sm-3">
+                    @Html.Label("Цена")
+                </th>
+                <th class="col-sm-2">
+                    @Html.Label("Опаковка")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="row">
+                    <td class="col-sm-1">
+                        <a class="btn btn-lg btn-default" href"#">@Html.DisplayFor(x => item.Id)</a> 
+                    </td>
+                    <td class="col-sm-3">
+                        <a class="btn btn-lg btn-default" href="/Orders/OrdersByUser?userName=@item.UserName">@Html.DisplayFor(x => item.UserName)</a>
+                    </td>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.DateTime)
+                    </td>
+                    <td class="col-sm-3">
+                    </td>
+                    <td class="col-sm-2">
+                        @Html.Label("Опаковка")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
