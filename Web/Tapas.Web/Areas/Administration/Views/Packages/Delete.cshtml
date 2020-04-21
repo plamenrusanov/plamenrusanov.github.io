@@ -1,0 +1,26 @@
+﻿@model Tapas.Web.ViewModels.Administration.Categories.CategoryViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1 class="text-center">@ViewData["Title"] Category</h1>
+
+<hr />
+
+<div class="mx-auto">
+    <div class="row d-flex justify-content-around">
+        <h2 class="text-center">Name</h2>
+        <h3 class="text-center">@Model.Name</h3>
+    </div>
+
+    <hr class="hr-event">
+
+    <div class="row d-flex justify-content-around">
+        <a onclick="history.back()" class="col-md-6 btn btn-secondary btn-lg active">Back</a>
+        <a asp-area="Administration" asp-controller="Categories" 
+                    asp-action="OnDelete" asp-route-categoryId="@Model.Id"
+           class="col-md-6 btn btn-secondary btn-lg active" role="button" area-pressed="true">Delete</a>
+    </div>
+</div>
+

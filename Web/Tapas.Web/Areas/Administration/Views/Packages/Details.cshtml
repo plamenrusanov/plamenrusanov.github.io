@@ -1,0 +1,30 @@
+﻿@model Tapas.Web.ViewModels.Administration.Packages.PackageViewModel
+
+@{
+    ViewData["Title"] = "Детайли";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<hr class="hr-tapas" />
+
+<div class="mx-auto">
+    <div class="row d-flex justify-content-around">
+        <h2 class="text-center">Name</h2>
+        <h3 class="text-center">@Model.Name</h3>
+    </div>
+    <div class="row d-flex justify-content-around">
+        <h2 class="text-center">Name</h2>
+        <h3 class="text-center">@Model.Price</h3>
+    </div>
+
+    <hr class="hr-tapas">
+
+    <div class="row d-flex justify-content-around">
+        <a onclick="history.back()" class="col-md-6 btn btn-secondary btn-lg active">Назад</a>
+        <a asp-area="Administration" asp-controller="Categories" 
+                    asp-action="Edit" asp-route-categoryId="@Model.Id"
+           class="col-md-6 btn btn-secondary btn-lg active" role="button" area-pressed="true">Редактирай</a>
+    </div>
+</div>
+

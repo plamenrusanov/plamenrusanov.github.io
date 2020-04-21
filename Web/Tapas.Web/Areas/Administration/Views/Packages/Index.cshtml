@@ -1,0 +1,37 @@
+﻿@model List<Tapas.Web.ViewModels.Administration.Packages.PackageViewModel>
+@{
+    this.ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-md-9 justify-content-center">
+        <h1>@this.ViewData["Title"]</h1>
+    </div>
+    <div class="col-md-3 justify-content-end">
+        <a class="btn btn-primary" asp-area="Administration" asp-controller="Packages"
+           asp-action="Add">Добави опаковка</a>
+    </div>
+</div>
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <h3>@item.Name</h3>
+        </div>
+        <div class="col-md-3 text-center">
+            <h3>@item.Price</h3>
+        </div>
+        <div class="col-md-2 justify-content-md-center">
+            <a class="btn btn-primary" asp-area="Administration" asp-controller="Packages" 
+                    asp-action="Edit" asp-route-categoryId="@item.Id">Редактирай</a>
+        </div> 
+        <div class="col-md-2 justify-content-md-center">
+            <a class="btn btn-primary" asp-area="Administration" asp-controller="Packages" 
+                    asp-action="Details" asp-route-categoryId="@item.Id">Детайли</a>
+        </div> 
+        <div class="col-md-2 justify-content-md-center">
+            <a class="btn btn-primary" asp-area="Administration" asp-controller="Packages" 
+                    asp-action="Delete" asp-route-categoryId="@item.Id">Изтрий</a>
+        </div>
+    </div>
+}
