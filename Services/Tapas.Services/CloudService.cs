@@ -33,8 +33,9 @@
             };
 
             var uploadResult = this.Cloudinary().Upload(uploadParams);
-
-            var url = uploadResult.Uri.AbsolutePath.Insert(24, "f_auto/");
+            var url = uploadResult.Uri.AbsolutePath;
+            var index = url.LastIndexOf("/");
+            url = url.Substring(index + 1, url.Length - (index + 1));
             return await Task.FromResult<string>(url);
         }
 
@@ -46,7 +47,10 @@
             };
 
             var uploadResult = this.Cloudinary().Upload(uploadParams);
-            return await Task.FromResult<string>(uploadResult.Uri.AbsolutePath);
+            var url = uploadResult.Uri.AbsolutePath;
+            var index = url.LastIndexOf("/");
+            url = url.Substring(index + 1, url.Length - (index + 1));
+            return await Task.FromResult<string>(url);
         }
 
         private Cloudinary Cloudinary() => new Cloudinary(this.account);

@@ -22,17 +22,20 @@
         private readonly ICloudService cloudService;
         private readonly IRepository<Allergen> allergensRepository;
         private readonly IRepository<Category> categoriesRepository;
+        private readonly IDeletableEntityRepository<Package> packageRepository;
 
         public ProductsService(
             IDeletableEntityRepository<Product> productsRepo,
             ICloudService cloudService,
             IRepository<Allergen> allergensRepository,
-            IRepository<Category> categoriesRepository)
+            IRepository<Category> categoriesRepository,
+            IDeletableEntityRepository<Package> packageRepository)
         {
             this.productsRepo = productsRepo;
             this.cloudService = cloudService;
             this.allergensRepository = allergensRepository;
             this.categoriesRepository = categoriesRepository;
+            this.packageRepository = packageRepository;
         }
 
         public async Task AddAsync(ProductInputViewModel model)
@@ -43,6 +46,9 @@
                 Name = model.Name,
                 Price = model.Price,
                 CategoryId = model.CategoryId,
+                Weight = model.Weight,
+                Description = model.Description,
+                Package = this.packageRepository.All().Where(x => x.Id == model.PackageId).FirstOrDefault(),
                 Allergens = model.Allergens
                 .Select(x => new AllergensProducts()
                 {
@@ -70,6 +76,7 @@
                     Price = x.Price,
                     ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                     CategoryId = x.CategoryId,
+                    Weight = x.Weight,
                     Allergens = x.Allergens
                     .Select(c => new AlergenDetailsViewModel()
                     {

@@ -46,6 +46,7 @@
                         ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                         Price = x.Price,
                         CategoryId = x.CategoryId,
+                        Weight = x.Weight,
                     }).ToList().Take(12);
                 return model;
             }
@@ -60,6 +61,7 @@
                        ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                        Price = x.Price,
                        CategoryId = x.CategoryId,
+                       Weight = x.Weight,
                    }).ToList();
             return model;
         }

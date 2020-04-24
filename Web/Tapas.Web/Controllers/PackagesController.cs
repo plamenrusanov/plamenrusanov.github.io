@@ -1,7 +1,5 @@
-﻿namespace Tapas.Web.Areas.Administration.Controllers
+﻿namespace Tapas.Web.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -28,8 +26,8 @@
                 return this.RedirectToPage("/Account/Login");
             }
 
-            var categories = this.packagesService.All();
-            return this.View(categories);
+            var packages = this.packagesService.All();
+            return this.View(packages);
         }
 
         public IActionResult Add()
@@ -115,6 +113,5 @@
 
             return this.RedirectToAction("Index");
         }
-
     }
 }

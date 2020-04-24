@@ -7,7 +7,6 @@
 
     public class OrderDetailsViewModel
     {
-
         public int OrderId { get; set; }
 
         public string AddInfo { get; set; }

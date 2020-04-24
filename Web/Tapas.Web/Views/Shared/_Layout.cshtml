@@ -29,21 +29,31 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Доставка</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                Кетъринг
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Хапки</a>
+                                <a class="dropdown-item" href="#">Оборудване</a>
+                                <a class="dropdown-item" href="#">Събития</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" href="#">Галерия</a>
                         </li>
                         @if (User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Packages" asp-action="Index">Опаковки</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Packages" asp-action="Index">Опаковки</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Administration" asp-controller="Categories" asp-action="Index">Категорий</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Addreses" asp-action="Add">Адрес</a>
+                                <a class="nav-link text-dark" href="/Addreses/Create">Адрес</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -65,8 +75,8 @@
                                 </div>
                             </li>
                         }
-                        <li class="nav-item SCItem">
-                            <a class="nav-link cart-link" asp-area="" asp-controller="ShopingCart" asp-action="Index"></a>
+                        <li class="nav-item">
+                            <a class="nav-link cart-link" asp-area="" asp-controller="ShopingCart" asp-action="Index"><h2> 🛒</h2></a>
                         </li>
                     </ul>
                 </div>

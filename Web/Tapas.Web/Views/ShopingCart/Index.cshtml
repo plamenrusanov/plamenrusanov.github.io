@@ -7,49 +7,51 @@
 
 <h1 class="text-center">Твоята количка</h1>
 <hr class="hr-tapas" />
-<table class="table">
-    <thead>
-        <tr class="row">
-            <th class="col-sm-1">
-                #
-            </th>
-            <th class="col-sm-3">
-                @Html.DisplayName("Продукт")
-            </th>
-            <th class="col-sm-3">
-                @Html.DisplayName("Количество")
-            </th>
-            <th class="col-sm-3">
-                @Html.DisplayName("Цена")
-            </th>
-            <th class="col-sm-2">
-                @Html.DisplayName("Actions")
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ShopingItems)
-        {
+<div class="bg-light">
+    <table class="table">
+        <thead>
             <tr class="row">
-                <td class="col-sm-1">
-                    @(i++)
-                </td>
-                <td class="col-sm-3">
-                    @Html.DisplayFor(x => item.ProductName)
-                </td>
-                <td class="col-sm-3">
-                    @Html.DisplayFor(x => item.Quantity)
-                </td>
-                <td class="col-sm-3">
-                    @Html.DisplayFor(x => item.ItemPrice)
-                </td>
-                <td class="col-sm-2">
-                    <a class="btn btn-danger btn-lg" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.Id">Изтрий</a>
-                </td>
+                <th class="col-sm-1">
+                    #
+                </th>
+                <th class="col-sm-3">
+                    @Html.DisplayName("Продукт")
+                </th>
+                <th class="col-sm-3">
+                    @Html.DisplayName("Количество")
+                </th>
+                <th class="col-sm-3">
+                    @Html.DisplayName("Цена")
+                </th>
+                <th class="col-sm-2">
+                    @Html.DisplayName("Actions")
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ShopingItems)
+            {
+                <tr class="row">
+                    <td class="col-sm-1">
+                        @(i++)
+                    </td>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.ProductName)
+                    </td>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.Quantity)
+                    </td>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.ItemPrice)
+                    </td>
+                    <td class="col-sm-2">
+                        <a class="btn btn-danger btn-lg" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.Id">Изтрий</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <hr class="hr-tapas" />
 <div class="row">
     <div class="col-md-8">
@@ -69,13 +71,10 @@
 </div>
 <hr class="hr-tapas" />
 <div class="row">
-    <div class="col-md-4 text-center">
+    <div class="col-md-6 text-center">
         <a class="btn btn-primary btn-lg" href="/">Към менюто</a>
     </div>
-    <div class="col-md-4 text-center">
-        <a class="btn btn-danger btn-lg" href="/ShopingCart/Clear?shopingCartId=@Model.Id">Към менюто</a>
-    </div>
-    <div class="col-md-4 text-center">
+    <div class="col-md-6 text-center">
         <a class="btn btn-primary btn-lg" href="/Orders/Create">Поръчай</a>
     </div>
 </div>

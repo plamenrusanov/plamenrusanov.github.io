@@ -3,67 +3,73 @@
 @{
     var i = 1;
 }
-<table class="table">
-    <thead>
-        <tr class="row">
-            <th class="col-sm-1">
-                #
-            </th>
-            <th class="col-sm-3">
-                @Html.Label("Продукт")
-            </th>
-            <th class="col-sm-2">
-                @Html.Label("Количество")
-            </th>
-            <th class="col-sm-3">
-                @Html.Label("Цена")
-            </th>
-            @if (this.User.IsInRole(GlobalConstants.AdministratorName) || this.User.IsInRole(GlobalConstants.OperatorName))
-            {
-                <th class="col-sm-3">
-                    @Html.Label("Опаковка")
-                </th>
-            }
-            else
-            {
-                <th class="col-sm-3">
-                    @Html.Label("Цена")
-                </th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr class="row">
-                @Html.Hidden("ProductId", item.ProductId, new { @class = "form-control", @name = "ProductId" })
-                <td class="col-sm-1">
-                    @(i++)
-                </td>
-                <td class="col-sm-3">
-                    @Html.DisplayFor(x => item.ProductName, "CartItems", "ProductName", new { htmlAttributes = new { @class = "form-control" } })
-                </td>
-                <td class="col-sm-2">
-                    @Html.DisplayFor(x => item.Quantity, "CartItems", "Quanttity", new { htmlAttributes = new { @class = "form-control" } })
-                </td>
-                <td class="col-sm-3">
-                    @Html.DisplayFor(x => item.ItemPrice, "CartItems", "ItemPrice", new { htmlAttributes = new { @class = "form-control" } })
-                </td>
-                @if (this.User.IsInRole(GlobalConstants.AdministratorName) || this.User.IsInRole(GlobalConstants.OperatorName))
-                {
-                    <td class="col-sm-3">
-                        @Html.Label("Опаковка")
-                    </td>
-                }
-                else
-                {
-                    <td class="col-sm-3">
+    <div class="bg-light">
+        <table class="table">
+            <thead>
+                <tr class="row">
+                    <th class="col-md-1">
+                        #
+                    </th>
+                    <th class="col-md-3">
+                        @Html.Label("Продукт")
+                    </th>
+                    <th class="col-md-2">
+                        @Html.Label("Количество")
+                    </th>
+                    <th class="col-md-3">
                         @Html.Label("Цена")
-                    </td>
+                    </th>
+                    @if (this.User.IsInRole(GlobalConstants.AdministratorName) || this.User.IsInRole(GlobalConstants.OperatorName))
+                    {
+                        <th class="col-md-3">
+                            @Html.Label("Опаковка")
+                        </th>
+                    }
+                    else
+                    {
+                        <th class="col-md-3">
+                            @Html.Label("Цена")
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="row">
+                        @Html.Hidden("ProductId", item.ProductId, new { @class = "form-control", @name = "ProductId" })
+                        <td class="col-md-1">
+                            @(i++)
+                        </td>
+                        <td class="col-md-3">
+                            @Html.DisplayFor(x => item.ProductName, "CartItems", "ProductName", new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td class="col-md-2">
+                            @Html.DisplayFor(x => item.Quantity, "CartItems", "Quanttity", new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td class="col-md-3">
+                            @Html.DisplayFor(x => item.ItemPrice, "CartItems", "ItemPrice", new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        @if (this.User.IsInRole(GlobalConstants.AdministratorName) || this.User.IsInRole(GlobalConstants.OperatorName))
+                        {
+                            <td class="col-md-3">
+                                @Html.Label("Опаковка")
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="col-md-3">
+                                @Html.Label("Цена")
+                            </td>
+                        }
+                    </tr>
                 }
-            </tr>
-        }
-    </tbody>
-</table>
+            </tbody>
+        </table>
+        <div class="row">
+            <p class="col-md-9 text-dark">Опаковки</p>
+            <p class="col-md-3 text-dark">Цената на опаковките</p>
+        </div>
+    </div>
 
 

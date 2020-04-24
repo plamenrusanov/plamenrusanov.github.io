@@ -2,13 +2,10 @@
 {
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Tapas.Common;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.Categories;
 
-    [Authorize(Roles = GlobalConstants.AdministratorName)]
     public class CategoriesController : AdministrationController
     {
         private const string CategoryExist = "Category already exist.";

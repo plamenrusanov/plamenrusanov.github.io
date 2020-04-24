@@ -45,6 +45,7 @@
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create(OrderInpitModel model)
         {
             if (this.ModelState.IsValid)
@@ -101,6 +102,5 @@
             var model = this.ordersService.GetOrdersByUserName(userName);
             return this.View(model);
         }
-
     }
 }

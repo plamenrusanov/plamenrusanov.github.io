@@ -54,12 +54,12 @@
             <div class="row">
                 @foreach (var product in Model.Products)
                 {
-                    <a class=" btn col-lg-4 col-md-6 mb-4" href="~/ShopingCart/AddItem?productId=@product.Id">
+                    <a class="carda btn col-lg-4 col-md-6 mb-4" href="~/ShopingCart/AddItem?productId=@product.Id">
                         <div class="card h-100">
-                            <img class="card-img-top" src="https://res.cloudinary.com@(product.ImageUrl)" width="200" height="200" alt="@product.Name">
+                            <img class="card-img-top" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_140,w_200/v1587540778/@(product.ImageUrl)" alt="@product.Name">
                             <div class="card-body">
                                 <h4 class="text-center"> @product.Name </h4>
-                                <h6>@product.Price лв.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;гр.</h6>
+                                <h6>@product.Price лв.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@product.Weight гр.</h6>
                             </div>
                         </div>
                     </a>

@@ -24,7 +24,6 @@
     using Tapas.Web.Hubs;
     using Tapas.Web.ViewModels;
 
-
     public class Startup
     {
         private readonly IConfiguration configuration;

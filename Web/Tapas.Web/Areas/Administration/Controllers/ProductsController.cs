@@ -10,18 +10,23 @@
 
     public class ProductsController : AdministrationController
     {
+        private const string Active = "Активни";
+        private const string Inactive = "Неактивни";
         private readonly IProductsService productsService;
         private readonly ICategoriesService categoriesService;
         private readonly IAllergensService allergensService;
+        private readonly IPackagesService packagesService;
 
         public ProductsController(
             IProductsService productsService,
             ICategoriesService categoriesService,
-            IAllergensService allergensService)
+            IAllergensService allergensService,
+            IPackagesService packagesService)
         {
             this.productsService = productsService;
             this.categoriesService = categoriesService;
             this.allergensService = allergensService;
+            this.packagesService = packagesService;
         }
 
         public IActionResult Add()
@@ -35,11 +40,13 @@
                     Name = x.Name,
                 }).ToList(),
                 AvailableAllergens = this.allergensService.All().ToList(),
+                AvailablePackages = this.packagesService.All().ToList(),
             };
             return this.View(model);
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Add([FromForm]ProductInputViewModel inputModel)
         {
             if (!this.ModelState.IsValid)
@@ -76,6 +83,7 @@
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Edit(EditProductViewModel viewModel)
         {
             if (!this.ModelState.IsValid)
@@ -114,15 +122,7 @@
 
         public IActionResult GetProducts(bool isDeleted)
         {
-            if (!isDeleted)
-            {
-                this.ViewData["Title"] = "Активни";
-            }
-            else
-            {
-                this.ViewData["Title"] = "Неактивни";
-            }
-
+            this.ViewData["Title"] = isDeleted ? Inactive : Active;
             this.ViewData["IsDeleted"] = isDeleted;
             var model = this.productsService.GetAllProducts(isDeleted);
             return this.View(model);
@@ -136,7 +136,7 @@
             }
 
             this.productsService.Activate(productId);
-            return this.View("/");//TO DO
+            return this.Redirect("/");
         }
     }
 }

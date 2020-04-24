@@ -4,7 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-@using (Html.BeginForm("Create", "Orders", FormMethod.Post, new { @class="bg-white" }))
+<h1 class="text-center">Оформи поръчка</h1>
+<hr class="hr-tapas" />
+@using (Html.BeginForm("Create", "Orders", FormMethod.Post))
 {
     @Html.AntiForgeryToken();
     @Html.ValidationSummary(true);
@@ -28,10 +30,10 @@
 
     <div class="col-md-6">
         <div class="row form-group">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
-        <div class="row"><a class="btn btn-default" href="/Addreses/Create">Добави адрес</a></div>
+        <div class="row"><a class="btn btn-primary" href="/Addreses/Create">Добави адрес</a></div>
         <div class="row form-group ">@Html.TextAreaFor(x => x.AddInfo, 3, 30, new { @class = "form-control" })</div>
         <div class="row"></div>
-        <div class="row"><button class="btn btn-default" type="submit">Добави адрес</button></div>
+        <div class="row"><button class="btn btn-primary" type="submit">Изпрати поръчка</button></div>
     </div>
 }
 

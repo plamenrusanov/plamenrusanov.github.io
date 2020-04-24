@@ -16,6 +16,8 @@
 
         public string CategoryId { get; set; }
 
+        public int Weight { get; set; }
+
         public virtual ICollection<AlergenDetailsViewModel> Allergens { get; set; }
     }
 }

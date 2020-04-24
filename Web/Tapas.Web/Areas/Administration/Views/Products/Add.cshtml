@@ -1,31 +1,60 @@
 ﻿@model Tapas.Web.ViewModels.Administration.Products.ProductInputViewModel
 @using Tapas.Common
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Добави продукт";
 }
 
-<div><h1 class="text-center">Add Product</h1></div>
+<div><h1 class="text-center">@ViewData["Title"]</h1></div>
 
 
-<hr />
+<hr class="hr-tapas" />
 <form enctype="multipart/form-data" asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="Add">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+            <div class="row form-group">
+                <h4 class="col-md-4">@Html.LabelFor(x => x.Name, "Име", new { @class = "control-label" })</h4>
+                @Html.EditorFor(x => x.Name, ViewData["Title"].ToString(), "Name", new { htmlAttributes = new { @class = "col-md-8 form-control" } })
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input class="form-control" required asp-for="Price" type="text">
+            <div class=" row form-group">
+                <h4 class="col-md-4">@Html.LabelFor(x => x.Price, "Цена", new { @class = "control-label" })</h4>
+                @Html.EditorFor(x => x.Price, ViewData["Title"].ToString(), "Price", new { htmlAttributes = new { @class = "col-md-8 form-control" } })
+                @Html.ValidationMessage("Price", "Ползвай запетая за разделител!", new { @class = "text-danger" })
             </div>
+            <div class=" row form-group">
+                <h4 class="col-md-4">@Html.LabelFor(x => x.Weight, "Грамаж", new { @class = "control-label" })</h4>
+                @Html.EditorFor(x => x.Weight, ViewData["Title"].ToString(), "Weight", new { htmlAttributes = new { @class = "col-md-8 form-control" } })
+            </div>
+            <div class="row form-group">
+                <h4 class="col-md-4">@Html.LabelFor(x => x.Description, "Описание", new { @class = "control-label" })</h4>
+                @Html.TextAreaFor(x => x.Description, 3, 50, new { @class = "col-md-8 form-control" })
+            </div>
+            <div class="row form-group">
+                <h4 class="col-md-4">@Html.LabelFor(x => x.Image, "Снимка", new { @class = "control-label" })</h4>
+                @Html.EditorFor(x => x.Image, ViewData["Title"].ToString(), "Image", new { htmlAttributes = new { @class = "col-md-8 form-control-file", @type = "file" } })
+            </div>
+
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select class="form-control" asp-for="CategoryId">
+            <div class="row form-group">
+                <h4 class="col-md-4"> @Html.LabelFor(x => x.PackageId, "Опаковка", new { @class = "control-label" })</h4>
+                <select class="col-md-8 form-control" asp-for="PackageId">
+                    @foreach (var item in Model.AvailablePackages)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+
+            </div>
+            <div class="row form-group">
+                <h4 class="col-md-10"> @Html.LabelFor(x => x.MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
+                @Html.EditorFor(x => x.MaxProductsInPackage, ViewData["Title"].ToString(), "MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control" } })
+
+            </div>
+            <div class="row form-group">
+                <h4 class="col-md-4"> @Html.LabelFor(x => x.CategoryId, "Категория", new { @class = "control-label" })</h4>
+                <select class="col-md-8 form-control" asp-for="CategoryId">
                     @foreach (var item in Model.AvailableCategories)
                     {
                         <option value="@item.Id">@item.Name</option>
@@ -33,6 +62,7 @@
                 </select>
             </div>
             <div class="row form-group">
+                <h4 class="col-md-12"> @Html.LabelFor(x => x.Allergens, "Алергени", new { @class = "control-label" })</h4>
                 @foreach (var item in Model.AvailableAllergens)
                 {
                     <div class="col-md-4 checkbox">
@@ -46,15 +76,11 @@
             </div>
         </div>
     </div>
-    <hr />
-    <div class="row form-group justify-content-center">
-        <label asp-for="Image" class="control-label justify-content-center"></label>
-        <input type="file" class="form-control-file" asp-for="Image" />
-    </div>
-    <hr />
+
+    <hr class="hr-tapas" />
     <div class="row">
         <div class="col-md-6 justify-content-center">
-            <a asp-action="Index">Back to List</a>
+            <a href="/" class="btn btn-primary">Назаад</a>
         </div>
         <div class="col-md-6 form-group justify-content-center">
             <input type="submit" value="Create" class="btn btn-primary" />
