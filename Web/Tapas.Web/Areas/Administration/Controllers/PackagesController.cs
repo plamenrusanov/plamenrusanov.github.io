@@ -1,4 +1,4 @@
-﻿namespace Tapas.Web.Controllers
+﻿namespace Tapas.Web.Areas.Administration.Controllers
 {
     using System.Threading.Tasks;
 
@@ -9,7 +9,7 @@
     using Tapas.Web.ViewModels.Administration.Packages;
 
     [Authorize(Roles = GlobalConstants.AdministratorName)]
-    public class PackagesController : Controller
+    public class PackagesController : AdministrationController
     {
         private const string PackageExist = "Package already exist.";
         private readonly IPackagesService packagesService;

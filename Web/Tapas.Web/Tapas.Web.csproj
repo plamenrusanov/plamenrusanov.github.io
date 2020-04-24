@@ -62,22 +62,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controllers\PackagesController.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="Areas\Administration\Views\Categories\Add.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="Views\Packages\Add.cshtml">
+    <Content Update="Areas\Administration\Views\Packages\Add.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="Views\Packages\Edit.cshtml">
+    <Content Update="Areas\Administration\Views\Packages\Edit.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="Views\Packages\Index.cshtml">
+    <Content Update="Areas\Administration\Views\Packages\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Areas\Administration\Views\Products\Delete.cshtml">
