@@ -78,8 +78,8 @@
                         Id = c.Id,
                         ProductId = c.ProductId,
                         ProductName = c.Product.Name,
-                        ProductPrice = c.Product.Price,
-                        Quantity = c.Quantity,
+                        //ProductPrice = c.Product.Price,
+                        //Quantity = c.Quantity,
                     }).ToList(),
                 }).FirstOrDefault();
         }
@@ -95,15 +95,15 @@
                     {
                         Id = x.Id,
                         Name = x.Name,
-                        Price = x.Price,
-                        ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
-                        Allergens = x.Allergens
-                            .Select(c => new DetailsAllergenViewModel()
-                            {
-                                Id = c.AllergenId,
-                                Name = c.Allergen.Name,
-                                ImageUrl = c.Allergen.ImageUrl,
-                            }).ToList(),
+                        //Price = x.Price,
+                        //ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
+                        //Allergens = x.Allergens
+                        //    .Select(c => new DetailsAllergenViewModel()
+                        //    {
+                        //        Id = c.AllergenId,
+                        //        Name = c.Allergen.Name,
+                        //        ImageUrl = c.Allergen.ImageUrl,
+                        //    }).ToList(),
                     }).FirstOrDefault(),
                 ShopingCart = this.GetShopingCart(user),
             };

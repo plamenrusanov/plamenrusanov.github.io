@@ -4,8 +4,8 @@
 
     public abstract class BaseDeletableModel<TKey> : BaseModel<TKey>, IDeletableEntity
     {
-        public bool IsDeleted { get; set; }
+        public virtual bool IsDeleted { get; set; }
 
-        public DateTime? DeletedOn { get; set; }
+        public virtual DateTime? DeletedOn { get; set; }
     }
 }

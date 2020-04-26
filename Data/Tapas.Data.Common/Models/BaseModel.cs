@@ -8,8 +8,8 @@
         [Key]
         public TKey Id { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        public virtual DateTime CreatedOn { get; set; }
 
-        public DateTime? ModifiedOn { get; set; }
+        public virtual DateTime? ModifiedOn { get; set; }
     }
 }

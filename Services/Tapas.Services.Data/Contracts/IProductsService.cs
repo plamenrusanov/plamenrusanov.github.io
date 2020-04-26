@@ -9,7 +9,7 @@
     {
         Task AddAsync(ProductInputViewModel inputModel);
 
-        ProductViewModel GetProductById(string productId);
+        MenuProductViewModel GetProductById(string productId);
 
         DetailsProductViewModel GetDetailsProductById(string productId);
 

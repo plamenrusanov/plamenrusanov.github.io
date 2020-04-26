@@ -1,6 +1,6 @@
 ﻿@model Tapas.Web.ViewModels.Administration.Products.EditProductViewModel
 @{
-  ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit";
 }
 
 <h1 class="text-center">Редактирай продукта</h1>
@@ -14,7 +14,7 @@
     @Html.HiddenFor(x => x.ImageUrl, new { @class = "form-control" })
 
     <hr class="hr-tapas" />
-    <!--Name and Price-->
+    <!--Name and Category-->
     <div class="row">
         <div class="form-group col-sm-6">
             <div class="row">
@@ -22,20 +22,18 @@
                     <h3>@Html.LabelFor(x => x.Name, "Продукт")</h3>
                 </div>
                 <div class="editor-field col-sm-6">
-                    @Html.EditorFor(x => x.Name)
+                    @Html.EditorFor(x => x.Name, "", "Name", new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
         <div class="form-group col-sm-6">
             <div class="row">
-                <div class="col-sm-6 text-center">
-                    <h3>@Html.LabelFor(x => x.Price, "Цена")</h3>
+                <div class="col-md-6 text-center">
+                    <h3>@Html.LabelFor(model => model.CategoryId, "Категория", new { })</h3>
                 </div>
-                <div class="editor-field col-sm-6">
-                    @Html.EditorFor(x => x.Price, new { @class = "form-control", @type = "text" })
-                    <h6>@Html.LabelFor(x => x.Price, "Ползвай запетая!")</h6>
-                    @Html.ValidationMessageFor(x => x.Price, string.Empty, new { htmlAttributes = new { @class = "text-danger", @color = "red" } })
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.CategoryId, Model.AvailableCategories, new { @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -48,56 +46,52 @@
         </div>
         <div class="col-sm-9 ">
             <div class="row">
-                @for (var a = 0;a <  Model.Allergens.Count; a++)
+                @for (var a = 0; a < Model.Allergens.Count; a++)
                 {
-                <div class="col-sm-1">
-                    <div class="row">
-                        @Html.LabelFor(x => x.Allergens[a], Model.Allergens[a].Text)
+                    <div class="col-sm-1 m-2">
+                        <div class="row">
+                            @Html.LabelFor(x => x.Allergens[a], Model.Allergens[a].Text)
+                        </div>
+                        <div class="row">
+                            @Html.EditorFor(m => m.Allergens[a].Selected)
+                            @Html.HiddenFor(m => m.Allergens[a].Text)
+                            @Html.HiddenFor(m => m.Allergens[a].Value)
+                        </div>
+
                     </div>
-                    <div class="row">
-                        @Html.EditorFor(m => m.Allergens[a].Selected)
-                        @Html.HiddenFor(m => m.Allergens[a].Text)
-                        @Html.HiddenFor(m => m.Allergens[a].Value)
-                    </div>
-                   
-                </div>
                 }
             </div>
         </div>
     </div>
     <hr class="hr-tapas" />
-    <!--Image-->
+    <!--Image and Description-->
     <div class="row">
-        <div class="col-md-6">
-            <img class="img-thumbnail" src="https://res.cloudinary.com@(Model.ImageUrl)" width="400" height="270" alt="@Model.Name">
+        <div class="col-lg-4 col-md-6">
+            <img class="responsive" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_235,w_350,f_auto/v1586767202/k4yosrnrf2mlyw6rfcfe.jpg" width="350" height="235" alt="@Model.Name">
         </div>
-        <div class="col-md-6  form-group ">
-            <div class="editor-label">
-                <h3>@Html.LabelFor(model => model.Image, "Нова снимка")</h3>
-            </div>
-            <div class="form-control-file editor-field">
-                @Html.TextBoxFor(model => model.Image, new { type = "file", @class="form-group", @title=@Model.Name})
-                @Html.ValidationMessageFor(model => model.Image)
-            </div>
+        <div class="col-lg-4 col-md-6 form-group ">
+            <h6>@Html.LabelFor(model => model.Image, "Нова снимка")</h6>
+            @Html.EditorFor(model => model.Image, new { type = "file", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Image)
         </div>
-    </div>
-    <hr class="hr-tapas" />
-    <!--Category-->
-    <div class="row form-group ">
-        <div class="col-md-3">
-            <h3>@Html.LabelFor(model => model.CategoryId, "Категория", new { })</h3>
-        </div>
-        <div class="col-md-auto ">
-            @Html.DropDownListFor(model => model.CategoryId, Model.AvailableCategories, new { @class="form-control"})
+        <div class="col-lg-4 col-md-6 form-group">
+            <h6>@Html.LabelFor(x => x.Description, "Описание", new { @class = "control-label" })</h6>
+            @Html.TextAreaFor(x => x.Description, 3, 50, new { @class = "form-control" })
         </div>
     </div>
     <hr class="hr-tapas" />
+    <!--Sizes-->
+
+    <hr class="hr-tapas" />
+    <!--Buttons-->
     <div class="row">
         <div class="col-md-6 form-group text-center">
-            <button type="submit" class="btn btn-primary btn-lg active">Edit</button>
+            <button type="submit" class="btn btn-primary btn-lg active">Радактирай</button>
+        </div>
+        <div class="col-md-6 text-center">
+            <button onclick="" class="btn btn-primary btn-lg active">Добави размер</button>
         </div>
     </div>
-
 </form>
 
 

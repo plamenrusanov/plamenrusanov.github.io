@@ -18,14 +18,14 @@
 
     public class ProductsService : IProductsService
     {
-        private readonly IDeletableEntityRepository<Product> productsRepo;
+        private readonly IDeletableEntityRepository<MenuProduct> productsRepo;
         private readonly ICloudService cloudService;
         private readonly IRepository<Allergen> allergensRepository;
         private readonly IRepository<Category> categoriesRepository;
         private readonly IDeletableEntityRepository<Package> packageRepository;
 
         public ProductsService(
-            IDeletableEntityRepository<Product> productsRepo,
+            IDeletableEntityRepository<MenuProduct> productsRepo,
             ICloudService cloudService,
             IRepository<Allergen> allergensRepository,
             IRepository<Category> categoriesRepository,
@@ -40,21 +40,35 @@
 
         public async Task AddAsync(ProductInputViewModel model)
         {
-            // var even = mapper.Map<Event>(model);
-            var product = new Product()
+            var product = new MenuProduct()
             {
                 Name = model.Name,
-                Price = model.Price,
                 CategoryId = model.CategoryId,
-                Weight = model.Weight,
                 Description = model.Description,
-                Package = this.packageRepository.All().Where(x => x.Id == model.PackageId).FirstOrDefault(),
-                Allergens = model.Allergens
-                .Select(x => new AllergensProducts()
+                Sizes = new List<ProductSize>()
                 {
-                    AllergenId = x,
-                }).ToList(),
+                },
             };
+
+            foreach (var item in model.Allergens)
+            {
+                product.Allergens.Add(new AllergensProducts()
+                {
+                    ProductId = product.Id,
+                    AllergenId = item,
+                });
+            }
+
+            product.Sizes.Add(
+                    new ProductSize()
+                    {
+                        SizeName = model.ProductSize.SizeName,
+                        PackageId = model.ProductSize.PackageId,
+                        Price = model.ProductSize.Price,
+                        Weight = model.ProductSize.Weight,
+                        MaxProductsInPackage = model.ProductSize.MaxProductsInPackage,
+                        MenuProductId = product.Id,
+                    });
 
             if (model.Image != null)
             {
@@ -65,23 +79,23 @@
             await this.productsRepo.SaveChangesAsync();
         }
 
-        public ProductViewModel GetProductById(string productId)
+        public MenuProductViewModel GetProductById(string productId)
         {
             return this.productsRepo.All()
                 .Where(x => x.Id == productId)
-                .Select(x => new ProductViewModel()
+                .Select(x => new MenuProductViewModel()
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Price = x.Price,
-                    ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
-                    CategoryId = x.CategoryId,
-                    Weight = x.Weight,
-                    Allergens = x.Allergens
-                    .Select(c => new AlergenDetailsViewModel()
-                    {
-                        AllergenId = c.AllergenId,
-                    }).ToList(),
+                    //Price = x.Price,
+                    //ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
+                    //CategoryId = x.CategoryId,
+                    //Weight = x.Weight,
+                    //Allergens = x.Allergens
+                    //.Select(c => new AlergenDetailsViewModel()
+                    //{
+                    //    AllergenId = c.AllergenId,
+                    //}).ToList(),
                 }).FirstOrDefault();
         }
 
@@ -98,7 +112,6 @@
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Price = x.Price,
                     ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                     CategoryId = x.CategoryId,
                     CategoryName = x.Category.Name,
@@ -123,7 +136,6 @@
                     Name = x.Name,
                     ImageUrl = x.ImageUrl,
                     CategoryId = x.CategoryId,
-                    Price = x.Price,
                     Allergens = this.allergensRepository
                     .All()
                     .Select(c => new SelectListItem()
@@ -140,6 +152,7 @@
                             Text = c.Name,
                             Selected = x.CategoryId == c.Id ? true : false,
                         }).ToList(),
+
                 })
                 .FirstOrDefault();
         }
@@ -155,7 +168,6 @@
                 .Where(x => x.Id == model.Id)
                 .FirstOrDefault();
             product.Name = model.Name;
-            product.Price = model.Price;
             product.ImageUrl = model.ImageUrl;
             product.CategoryId = model.CategoryId;
 
@@ -168,6 +180,7 @@
                         product.Allergens
                             .Add(new AllergensProducts()
                             {
+                                ProductId = product.Id,
                                 AllergenId = item.Value,
                             });
                     }
@@ -216,7 +229,7 @@
                     Id = x.Id,
                     Name = x.Name,
                     CategoryName = x.Category.Name,
-                    Price = x.Price,
+                    //Price = x.Price,
                     IsDeleted = x.IsDeleted,
                 })
                 .OrderBy(x => x.Name)

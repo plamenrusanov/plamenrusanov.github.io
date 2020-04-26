@@ -83,8 +83,8 @@
                     .Select(x => new ShopingItemsViewModel()
                     {
                         ProductId = x.ProductId,
-                        ProductName = x.Product.Name,
-                        ProductPrice = x.Product.Price,
+                        //ProductName = x.Product.Name,
+                        //ProductPrice = x.Product.Price,
                         Quantity = x.Quantity,
                     }).ToList(),
                 Status = order.Status,
@@ -127,8 +127,8 @@
                     .Select(x => new ShopingItemsViewModel()
                     {
                         ProductId = x.ProductId,
-                        ProductName = x.Product.Name,
-                        ProductPrice = x.Product.Price,
+                        //ProductName = x.Product.Name,
+                        //ProductPrice = x.Product.Price,
                         Quantity = x.Quantity,
                     }).ToList(),
             };
@@ -144,7 +144,7 @@
                     AddressInfo = x.Address.AddInfo,
                     CartItems = x.Bag.CartItems.Select(c => new ShopingItemsViewModel()
                     {
-                        ProductName = c.Product.Name,
+                        //ProductName = c.Product.Name,
                         Quantity = c.Quantity,
                     }).ToList(),
                     CreatedOn = x.CreatedOn.ToLocalTime().ToString("HH:mm:ss"),

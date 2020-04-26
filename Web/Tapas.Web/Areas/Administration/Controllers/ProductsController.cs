@@ -7,6 +7,7 @@
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.Categories;
     using Tapas.Web.ViewModels.Administration.Products;
+    using Tapas.Web.ViewModels.Administration.Sizes;
 
     public class ProductsController : AdministrationController
     {
@@ -40,7 +41,10 @@
                     Name = x.Name,
                 }).ToList(),
                 AvailableAllergens = this.allergensService.All().ToList(),
-                AvailablePackages = this.packagesService.All().ToList(),
+                ProductSize = new ProductSizeInputModel()
+                {
+                    AvailablePackages = this.packagesService.All().ToList(),
+                },
             };
             return this.View(model);
         }

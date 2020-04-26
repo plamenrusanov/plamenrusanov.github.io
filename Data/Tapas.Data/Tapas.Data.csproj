@@ -11,13 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200420150219_addPackage.cs" />
-    <Compile Remove="Migrations\20200420150219_addPackage.Designer.cs" />
-    <Compile Remove="Migrations\20200420150521_AddPackage.cs" />
-    <Compile Remove="Migrations\20200420150521_AddPackage.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
@@ -51,6 +44,12 @@
     <ProjectReference Include="..\..\Services\Tapas.Services\Tapas.Services.csproj" />
     <ProjectReference Include="..\..\Tapas.Common\Tapas.Common.csproj" />
     <ProjectReference Include="..\Tapas.Data.Models\Tapas.Data.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Configurations\AllergensProductsConfiguration.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>

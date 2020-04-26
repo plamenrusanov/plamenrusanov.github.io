@@ -57,6 +57,11 @@ body {
     height: auto;
 }
 
+.responsive {
+    width: 100%;
+    height: auto;
+}
+
 .footer {
     position: absolute;
     bottom: 0;

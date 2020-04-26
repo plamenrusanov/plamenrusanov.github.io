@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tapas.Data.Migrations
 {
-    public partial class First : Migration
+    public partial class InheritanceProduct2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,6 +59,25 @@ namespace Tapas.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Packages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
+                    MaxProducts = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Packages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShopingCarts",
                 columns: table => new
                 {
@@ -93,7 +112,7 @@ namespace Tapas.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,8 +125,13 @@ namespace Tapas.Data.Migrations
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    CategoryId1 = table.Column<string>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: false),
+                    PackageId = table.Column<int>(nullable: true),
+                    NumberOfBits = table.Column<int>(nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(5, 2)", nullable: true),
                     CategoryId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -117,6 +141,18 @@ namespace Tapas.Data.Migrations
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories_CategoryId1",
+                        column: x => x.CategoryId1,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Products_Packages_PackageId",
+                        column: x => x.PackageId,
+                        principalTable: "Packages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -163,7 +199,9 @@ namespace Tapas.Data.Migrations
                 columns: table => new
                 {
                     AllergenId = table.Column<string>(nullable: false),
-                    ProductId = table.Column<string>(nullable: false)
+                    ProductId = table.Column<string>(nullable: false),
+                    CateringProductId = table.Column<string>(nullable: true),
+                    MenuProductId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -173,11 +211,63 @@ namespace Tapas.Data.Migrations
                         column: x => x.AllergenId,
                         principalTable: "Allergens",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AllergensProducts_Products_CateringProductId",
+                        column: x => x.CateringProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AllergensProducts_Products_MenuProductId",
+                        column: x => x.MenuProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AllergensProducts_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductSizes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    SizeName = table.Column<string>(nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
+                    Weight = table.Column<int>(nullable: false),
+                    PackageId = table.Column<int>(nullable: true),
+                    MenuProductId = table.Column<string>(nullable: true),
+                    CateringProductId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSizes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductSizes_Products_CateringProductId",
+                        column: x => x.CateringProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductSizes_Products_MenuProductId",
+                        column: x => x.MenuProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductSizes_Packages_PackageId",
+                        column: x => x.PackageId,
+                        principalTable: "Packages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -194,7 +284,8 @@ namespace Tapas.Data.Migrations
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     ProductId = table.Column<string>(nullable: true),
                     ShopingCartId = table.Column<string>(nullable: true),
-                    Quantity = table.Column<int>(nullable: false)
+                    Quantity = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -269,7 +360,7 @@ namespace Tapas.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -295,7 +386,7 @@ namespace Tapas.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -342,7 +433,7 @@ namespace Tapas.Data.Migrations
                     AddInfo = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
                     AddressId = table.Column<string>(nullable: true),
-                    ShopingCartId = table.Column<string>(nullable: true),
+                    BagId = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -355,8 +446,8 @@ namespace Tapas.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Orders_ShopingCarts_ShopingCartId",
-                        column: x => x.ShopingCartId,
+                        name: "FK_Orders_ShopingCarts_BagId",
+                        column: x => x.BagId,
                         principalTable: "ShopingCarts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -372,6 +463,16 @@ namespace Tapas.Data.Migrations
                 name: "IX_Allergens_IsDeleted",
                 table: "Allergens",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AllergensProducts_CateringProductId",
+                table: "AllergensProducts",
+                column: "CateringProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AllergensProducts_MenuProductId",
+                table: "AllergensProducts",
+                column: "MenuProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AllergensProducts_ProductId",
@@ -453,9 +554,9 @@ namespace Tapas.Data.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_ShopingCartId",
+                name: "IX_Orders_BagId",
                 table: "Orders",
-                column: "ShopingCartId");
+                column: "BagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
@@ -463,14 +564,49 @@ namespace Tapas.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Packages_IsDeleted",
+                table: "Packages",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoryId1",
+                table: "Products",
+                column: "CategoryId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_IsDeleted",
                 table: "Products",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_PackageId",
+                table: "Products",
+                column: "PackageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductSizes_CateringProductId",
+                table: "ProductSizes",
+                column: "CateringProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductSizes_IsDeleted",
+                table: "ProductSizes",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductSizes_MenuProductId",
+                table: "ProductSizes",
+                column: "MenuProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductSizes_PackageId",
+                table: "ProductSizes",
+                column: "PackageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShopingCartItems_IsDeleted",
@@ -517,6 +653,9 @@ namespace Tapas.Data.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "ProductSizes");
+
+            migrationBuilder.DropTable(
                 name: "ShopingCartItems");
 
             migrationBuilder.DropTable(
@@ -536,6 +675,9 @@ namespace Tapas.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Packages");
 
             migrationBuilder.DropTable(
                 name: "ShopingCarts");

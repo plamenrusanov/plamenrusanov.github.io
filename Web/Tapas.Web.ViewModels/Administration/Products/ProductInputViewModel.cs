@@ -7,6 +7,7 @@
     using Tapas.Web.ViewModels.Administration.Allergens;
     using Tapas.Web.ViewModels.Administration.Categories;
     using Tapas.Web.ViewModels.Administration.Packages;
+    using Tapas.Web.ViewModels.Administration.Sizes;
 
     public class ProductInputViewModel
     {
@@ -15,40 +16,26 @@
             this.AvailableAllergens = new HashSet<AllergenViewModel>();
             this.Allergens = new HashSet<string>();
             this.AvailableCategories = new HashSet<CategoryViewModel>();
-            this.AvailablePackages = new HashSet<PackageViewModel>();
+            this.ProductSize = new ProductSizeInputModel();
         }
 
         [Required]
         public string Name { get; set; }
 
-        [Required]
-        [DataType(DataType.Currency)]
-        public decimal Price { get; set; }
-
         [DataType(DataType.Upload)]
         public IFormFile Image { get; set; }
-
-        [Required]
-        public string CategoryId { get; set; }
 
         public string Description { get; set; }
 
         [Required]
-        public int Weight { get; set; }
-
-        [Required]
-        [Range(1, 20)]
-        public int MaxProductsInPackage { get; set; }
-
-        [Required]
-        public int PackageId { get; set; }
+        public string CategoryId { get; set; }
 
         public ICollection<CategoryViewModel> AvailableCategories { get; set; }
 
         public ICollection<AllergenViewModel> AvailableAllergens { get; set; }
 
-        public ICollection<PackageViewModel> AvailablePackages { get; set; }
-
         public ICollection<string> Allergens { get; set; }
+
+        public ProductSizeInputModel ProductSize { get; set; }
     }
 }

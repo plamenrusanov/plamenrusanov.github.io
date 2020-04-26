@@ -1,6 +1,5 @@
 ﻿namespace Tapas.Services.Data
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     using Tapas.Common;
@@ -13,13 +12,15 @@
 
     public class HomeService : IHomeService
     {
-        private readonly IRepository<Category> categoriesRepository;
-        private readonly IRepository<Product> productsRepository;
+        private readonly IDeletableEntityRepository<Category> categoriesRepository;
+        private readonly IDeletableEntityRepository<MenuProduct> menuRepository;
 
-        public HomeService(IRepository<Category> categoriesRepository, IRepository<Product> productsRepository)
+        public HomeService(
+            IDeletableEntityRepository<Category> categoriesRepository,
+            IDeletableEntityRepository<MenuProduct> menuRepository)
         {
             this.categoriesRepository = categoriesRepository;
-            this.productsRepository = productsRepository;
+            this.menuRepository = menuRepository;
         }
 
         public HomeIndexViewModel CategoryWhitProducts(string categoryId = null)
@@ -35,34 +36,36 @@
                 }).ToList(),
             };
 
-            if (categoryId == null)
+            if (this.categoriesRepository.All().Any(x => x.Id == categoryId))
             {
-                model.Products = this.productsRepository
-                    .All()
-                    .Select(x => new ProductViewModel()
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
-                        Price = x.Price,
-                        CategoryId = x.CategoryId,
-                        Weight = x.Weight,
-                    }).ToList().Take(12);
+                model.Products = this.menuRepository
+                  .All()
+                  .Where(x => x.CategoryId == categoryId)
+                  .Select(x => new MenuProductViewModel()
+                  {
+                      Id = x.Id,
+                      Name = x.Name,
+                      ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
+                      IsOneSize = x.Sizes.Count == 1,
+                      Sizes = x.Sizes.Select(s => s.SizeName).ToList(),
+                      Weight = x.Sizes.Count == 1 ? x.Sizes.FirstOrDefault().Weight : default,
+                      Price = x.Sizes.Count == 1 ? x.Sizes.FirstOrDefault().Price : default,
+                  }).ToList();
                 return model;
             }
 
-            model.Products = this.productsRepository
-                   .All()
-                   .Where(x => x.CategoryId == categoryId)
-                   .Select(x => new ProductViewModel()
-                   {
-                       Id = x.Id,
-                       Name = x.Name,
-                       ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
-                       Price = x.Price,
-                       CategoryId = x.CategoryId,
-                       Weight = x.Weight,
-                   }).ToList();
+            model.Products = this.menuRepository
+                .All()
+                .Select(x => new MenuProductViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
+                    IsOneSize = x.Sizes.Count == 1,
+                    Sizes = x.Sizes.Select(s => s.SizeName).ToList(),
+                    Weight = x.Sizes.Count == 1 ? x.Sizes.FirstOrDefault().Weight : default,
+                    Price = x.Sizes.Count == 1 ? x.Sizes.FirstOrDefault().Price : default,
+                }).ToList().Take(12);
             return model;
         }
     }

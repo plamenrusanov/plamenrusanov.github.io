@@ -161,7 +161,17 @@ namespace Tapas.Data.Migrations
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CateringProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("MenuProductId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("AllergenId", "ProductId");
+
+                    b.HasIndex("CateringProductId");
+
+                    b.HasIndex("MenuProductId");
 
                     b.HasIndex("ProductId");
 
@@ -450,7 +460,7 @@ namespace Tapas.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.HasKey("Id");
 
@@ -464,7 +474,7 @@ namespace Tapas.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CategoryId")
+                    b.Property<string>("CategoryId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -474,6 +484,10 @@ namespace Tapas.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
@@ -488,24 +502,76 @@ namespace Tapas.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PackageId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(5, 2)");
-
-                    b.Property<int>("Weight")
+                    b.Property<int?>("PackageId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId1");
 
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("PackageId");
 
                     b.ToTable("Products");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Product");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.ProductSize", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CareringProductId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CateringProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaxProductsInPackage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MenuProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("PackageId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(5, 2)");
+
+                    b.Property<string>("SizeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CateringProductId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("MenuProductId");
+
+                    b.HasIndex("PackageId");
+
+                    b.ToTable("ProductSizes");
                 });
 
             modelBuilder.Entity("Tapas.Data.Models.ShopingCart", b =>
@@ -580,12 +646,44 @@ namespace Tapas.Data.Migrations
                     b.ToTable("ShopingCartItems");
                 });
 
+            modelBuilder.Entity("Tapas.Data.Models.CateringProduct", b =>
+                {
+                    b.HasBaseType("Tapas.Data.Models.Product");
+
+                    b.Property<int?>("NumberOfBits")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("CateringProduct");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.EquipmentForRent", b =>
+                {
+                    b.HasBaseType("Tapas.Data.Models.Product");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(5, 2)");
+
+                    b.HasDiscriminator().HasValue("EquipmentForRent");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.MenuProduct", b =>
+                {
+                    b.HasBaseType("Tapas.Data.Models.Product");
+
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasDiscriminator().HasValue("MenuProduct");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Tapas.Data.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -612,7 +710,7 @@ namespace Tapas.Data.Migrations
                     b.HasOne("Tapas.Data.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Tapas.Data.Models.ApplicationUser", null)
@@ -627,7 +725,7 @@ namespace Tapas.Data.Migrations
                     b.HasOne("Tapas.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -636,13 +734,21 @@ namespace Tapas.Data.Migrations
                     b.HasOne("Tapas.Data.Models.Allergen", "Allergen")
                         .WithMany("Products")
                         .HasForeignKey("AllergenId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tapas.Data.Models.Product", "Product")
+                    b.HasOne("Tapas.Data.Models.CateringProduct", null)
                         .WithMany("Allergens")
+                        .HasForeignKey("CateringProductId");
+
+                    b.HasOne("Tapas.Data.Models.MenuProduct", null)
+                        .WithMany("Allergens")
+                        .HasForeignKey("MenuProductId");
+
+                    b.HasOne("Tapas.Data.Models.Product", "Product")
+                        .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -677,15 +783,28 @@ namespace Tapas.Data.Migrations
 
             modelBuilder.Entity("Tapas.Data.Models.Product", b =>
                 {
-                    b.HasOne("Tapas.Data.Models.Category", "Category")
+                    b.HasOne("Tapas.Data.Models.Category", null)
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId1");
+
+                    b.HasOne("Tapas.Data.Models.Package", null)
+                        .WithMany("Products")
+                        .HasForeignKey("PackageId");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.ProductSize", b =>
+                {
+                    b.HasOne("Tapas.Data.Models.CateringProduct", "CateringProduct")
+                        .WithMany("Sizes")
+                        .HasForeignKey("CateringProductId");
+
+                    b.HasOne("Tapas.Data.Models.MenuProduct", "MenuProduct")
+                        .WithMany("Sizes")
+                        .HasForeignKey("MenuProductId");
 
                     b.HasOne("Tapas.Data.Models.Package", "Package")
-                        .WithMany("Products")
-                        .HasForeignKey("PackageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("PackageId");
                 });
 
             modelBuilder.Entity("Tapas.Data.Models.ShopingCartItem", b =>
@@ -697,6 +816,13 @@ namespace Tapas.Data.Migrations
                     b.HasOne("Tapas.Data.Models.ShopingCart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("ShopingCartId");
+                });
+
+            modelBuilder.Entity("Tapas.Data.Models.MenuProduct", b =>
+                {
+                    b.HasOne("Tapas.Data.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618
         }
