@@ -15,5 +15,9 @@
         public int Quantity { get; set; }
 
         public string Description { get; set; }
+
+        public int SizeId { get; set; }
+
+        public virtual ProductSize Size { get; set; }
     }
 }

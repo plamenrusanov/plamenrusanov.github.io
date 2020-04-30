@@ -4,7 +4,7 @@
 
     public class AddItemViewModel
     {
-        public DetailsProductViewModel Product { get; set; }
+        public DetailsProductAddItemVM Product { get; set; }
 
         public ShopingCartViewModel ShopingCart { get; set; }
 

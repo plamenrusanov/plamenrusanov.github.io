@@ -80,13 +80,12 @@
             {
                 return this.RedirectToPage(GlobalConstants.LoginPageRoute);
             }
-
             try
             {
                 this.cartService.AddItem(model);
                 return this.Redirect(GlobalConstants.IndexRoute);
             }
-            catch
+            catch (Exception e)
             {
                 return this.View();
             }

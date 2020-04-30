@@ -5,7 +5,7 @@
     using Tapas.Web.ViewModels.Administration.Categories;
     using Tapas.Web.ViewModels.Administration.Products;
 
-    public class HomeIndexViewModel
+    public class ProductsIndexViewModel
     {
 
         public virtual IEnumerable<MenuProductViewModel> Products { get; set; }

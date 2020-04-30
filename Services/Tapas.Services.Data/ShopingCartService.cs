@@ -9,20 +9,24 @@
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.Allergens;
     using Tapas.Web.ViewModels.Administration.Products;
+    using Tapas.Web.ViewModels.Administration.Sizes;
     using Tapas.Web.ViewModels.ShopingCart;
     using Tapas.Web.ViewModels.ShopingCartItems;
 
     public class ShopingCartService : IShopingCartService
     {
         private readonly IDeletableEntityRepository<ShopingCart> cartRepository;
-        private readonly IDeletableEntityRepository<Product> productRepository;
+        private readonly IDeletableEntityRepository<MenuProduct> productRepository;
+        private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
 
         public ShopingCartService(
             IDeletableEntityRepository<ShopingCart> cartRepository,
-            IDeletableEntityRepository<Product> productRepository)
+            IDeletableEntityRepository<MenuProduct> productRepository,
+            IDeletableEntityRepository<ProductSize> sizeRepository)
         {
             this.cartRepository = cartRepository;
             this.productRepository = productRepository;
+            this.sizeRepository = sizeRepository;
         }
 
         public void AddItem(AddItemViewModel model)
@@ -37,8 +41,13 @@
                 .Where(x => x.Id == model.Product.Id)
                 .FirstOrDefault();
 
+            var size = this.sizeRepository.All()
+                .Where(x => x.Id == model.Product.Sizes[0].SizeId)
+                .FirstOrDefault();
+
             cart.CartItems.Add(new ShopingCartItem()
             {
+                SizeId = size.Id,
                 ProductId = product.Id,
                 Quantity = model.Quantity,
             });
@@ -91,19 +100,29 @@
                 Product = this.productRepository
                     .All()
                     .Where(x => x.Id == productId)
-                    .Select(x => new DetailsProductViewModel()
+                    .Select(x => new DetailsProductAddItemVM()
                     {
                         Id = x.Id,
                         Name = x.Name,
-                        //Price = x.Price,
-                        //ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
-                        //Allergens = x.Allergens
-                        //    .Select(c => new DetailsAllergenViewModel()
-                        //    {
-                        //        Id = c.AllergenId,
-                        //        Name = c.Allergen.Name,
-                        //        ImageUrl = c.Allergen.ImageUrl,
-                        //    }).ToList(),
+                        Description = x.Description,
+                        ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
+                        Allergens = x.Allergens
+                            .Select(c => new DetailsAllergenViewModel()
+                            {
+                                Id = c.AllergenId,
+                                Name = c.Allergen.Name,
+                                ImageUrl = c.Allergen.ImageUrl,
+                            }).ToList(),
+                        Sizes = x.Sizes
+                            .Select(c => new ProductSizeViewModel()
+                            {
+                                SizeId = c.Id,
+                                SizeName = c.SizeName,
+                                Price = c.Price,
+                                Weight = c.Weight,
+                                MaxProductsInPackage = c.MaxProductsInPackage,
+                                PackagePrice = c.Package.Price,
+                            }).ToList(),
                     }).FirstOrDefault(),
                 ShopingCart = this.GetShopingCart(user),
             };

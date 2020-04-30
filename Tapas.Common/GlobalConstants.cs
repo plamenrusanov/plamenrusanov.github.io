@@ -16,7 +16,7 @@
 
         public const string AreaAdmin = "Administration";
 
-        public const string DefaultProductImage = "/duxtyuzpy/image/upload/f_auto/v1585466876/utvaxhqgzon5lczgkoak.jpg";
+        public const string DefaultProductImage = "utvaxhqgzon5lczgkoak.jpg";
 
         public const string LoginPageRoute = "/Account/Login";
 

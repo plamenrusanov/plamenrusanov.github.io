@@ -15,9 +15,9 @@
 
         bool ExistProductById(string productId);
 
-        EditProductViewModel GetEditProductById(string productId);
+        EditProductModel GetEditProductById(string productId);
 
-        Task EditProductAsync(EditProductViewModel model);
+        Task EditProductAsync(EditProductModel model);
 
         DeleteProductViewModel GetDeleteProductById(string productId);
 
@@ -26,5 +26,7 @@
         ICollection<DetailsProductViewModel> GetAllProducts(bool isDeleted);
 
         void Activate(string productId);
+
+        ProductsIndexViewModel CategoryWhitProducts(string categoryId = null);
     }
 }

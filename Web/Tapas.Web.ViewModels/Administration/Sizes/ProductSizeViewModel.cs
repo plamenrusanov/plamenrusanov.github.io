@@ -4,16 +4,18 @@
 
     public class ProductSizeViewModel
     {
-        public int Id { get; set; }
+        public int SizeId { get; set; }
 
-        public string Name { get; set; }
+        public string SizeName { get; set; }
 
         public decimal Price { get; set; }
 
         public int Weight { get; set; }
 
-        public int PackageId { get; set; }
+        public int MaxProductsInPackage { get; set; }
 
-        public virtual PackageViewModel Package { get; set; }
+        public decimal PackagePrice { get; set; }
+
+        public decimal SubTotal => this.Price + this.PackagePrice;
     }
 }

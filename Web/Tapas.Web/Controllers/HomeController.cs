@@ -22,15 +22,9 @@
 
         public IActionResult Index()
         {
-            var homeIndexViewModel = this.homeService.CategoryWhitProducts();
-            return this.View(homeIndexViewModel);
+            return this.View();
         }
 
-        public IActionResult GetProductsByCategory(string categoryId)
-        {
-            var homeIndexViewModel = this.homeService.CategoryWhitProducts(categoryId);
-            return this.View("Index", homeIndexViewModel);
-        }
 
         public IActionResult Privacy()
         {

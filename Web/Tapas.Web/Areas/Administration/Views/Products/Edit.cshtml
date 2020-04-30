@@ -1,4 +1,4 @@
-﻿@model Tapas.Web.ViewModels.Administration.Products.EditProductViewModel
+﻿@model Tapas.Web.ViewModels.Administration.Products.EditProductModel
 @{
     ViewData["Title"] = "Edit";
 }
@@ -81,16 +81,62 @@
     </div>
     <hr class="hr-tapas" />
     <!--Sizes-->
+    <ul class="form-group" id="listSizes" name="Sizes" value ="@Model.Sizes" >
+        @for(var i = 0; i < Model.Sizes.Count; i++)
+        {
+            
+         <li class="form-row list-group-item" id="li@(i)">
+            @*@await Html.PartialAsync("_EditProductSizePartial", item)*@
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row form-group">
+                        <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].SizeName, "Име на размера", new { @class = "control-label" })</h4>
+                        @Html.EditorFor(x => Model.Sizes[i].SizeName, ViewData["Title"].ToString(), Model.Sizes[i].SizeName, new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                        <span asp-validation-for="@Model.Sizes" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class=" row form-group">
+                        <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Price, "Цена", new { @class = "control-label" })</h4>
+                        @Html.EditorFor(x => Model.Sizes[i].Price, ViewData["Title"].ToString(), "Sizes[i].Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class=" row form-group">
+                        <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Weight, "Грамаж", new { @class = "control-label" })</h4>
+                        @Html.EditorFor(x => Model.Sizes[i].Weight, ViewData["Title"].ToString(), "Model.Sizes[i].Weight", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row form-group">
+                        <h4 class="col-md-6"> @Html.LabelFor(x => Model.Sizes[i].PackageId, "Опаковка", new { @class = "control-label" })</h4>
+                        <select class="col-md-6 form-control" for="item.">
+                            @foreach (var package in Model.Sizes[i].Packages)
+                            {
+                                <option value="@package.Id">@package.Name</option>
+                            }
+                        </select>
 
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row form-group">
+                        <h4 class="col-md-10"> @Html.LabelFor(x => Model.Sizes[i].MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
+                        @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, ViewData["Title"].ToString(), "Sizes.MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control" } })
+
+                    </div>
+                </div>
+            </div>
+        </li>
+        }
+    </ul>
     <hr class="hr-tapas" />
     <!--Buttons-->
     <div class="row">
         <div class="col-md-6 form-group text-center">
             <button type="submit" class="btn btn-primary btn-lg active">Радактирай</button>
         </div>
-        <div class="col-md-6 text-center">
-            <button onclick="" class="btn btn-primary btn-lg active">Добави размер</button>
-        </div>
+      
     </div>
 </form>
 

@@ -1,0 +1,35 @@
+﻿@model Tapas.Web.ViewModels.Administration.Sizes.ProductSizeViewModel
+
+@{
+    Layout = null;
+}
+<div id="maxProducts" style="opacity:0">@Model.MaxProductsInPackage</div>
+<input type="hidden" class="form-control" name="Product.Sizes[0].SizeId" value="@Model.SizeId" />
+<div class="col-md-2">
+    <h6 class="text-center">@Html.Label("Цена")</h6>
+    <h4 class="text-center" id="productPrice">@Model.Price лв.</h4>
+</div>
+<div class="col-md-2">
+    <h6 class="text-center">@Html.Label("Тегло")</h6>
+    <h4 class="text-center">@Model.Weight гр.</h4>
+</div>
+<div class="col-md-2">
+    <h6 class="text-center">@Html.Label("Опаковка")</h6>
+    <h4 class="text-center" id="packagePrice">@Model.PackagePrice лв.</h4>
+</div>
+
+<div class="col-md-2 form-group justify-content-around">
+    <h6 class="text-center">@Html.Label("Количество")</h6>
+    <div class="quantity buttons_added row">
+        <a id="minus" class="btn col-sm-4 form-control" onclick="minus()">◀</a>
+        <input name="Quantity" id="theInput" type="text" size="4" class="form-control input-text qty text col-sm-4" title="Количество" value="1" min="1" step="1">
+        <a id="plus" class="btn col-sm-4 form-control justify-content-around" onclick="plus()">▶</a>
+    </div>
+</div>
+<div class="col-md-2">
+    <h6 class="text-center">@Html.Label("Междинна сума")</h6>
+    <h4 class="text-center" id="subTotal">@Model.SubTotal лв.</h4>
+</div>
+<div class="col-md-2 form-group text-center mt-3">
+    <button type="submit" class="btn btn-primary btn-lg active">Добави</button>
+</div>

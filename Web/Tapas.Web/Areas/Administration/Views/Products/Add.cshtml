@@ -55,49 +55,53 @@
         </div>
     </div>
     <hr class="hr-tapas" />
-    <div class="row form-row">
-        <div class="col-md-6">
-            <div class="row form-group">
-                <h4 class="col-md-6">@Html.LabelFor(x => x.ProductSize.SizeName, "Име на размера", new { @class = "control-label" })</h4>
-                @Html.EditorFor(x => x.ProductSize.SizeName, ViewData["Title"].ToString(), "ProductSize.SizeName", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
-                <span asp-validation-for="ProductSize.SizeName" class="text-danger"></span>
+    @for (int i = 0; i < Model.Sizes.Length; i++)
+    {
+        <div class="row form-row">
+            <div class="col-md-6">
+                <div class="row form-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].SizeName, "Име на размера", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].SizeName, ViewData["Title"].ToString(), Model.Sizes[i].SizeName, new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                    <span asp-validation-for="@Model.Sizes[i].SizeName" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class=" row form-group">
-                <h4 class="col-md-6">@Html.LabelFor(x => x.ProductSize.Price, "Цена", new { @class = "control-label" })</h4>
-                @Html.EditorFor(x => x.ProductSize.Price, ViewData["Title"].ToString(), "ProductSize.Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+            <div class="col-md-6">
+                <div class=" row form-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Price, "Цена", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].Price, ViewData["Title"].ToString(), $"Sizes[{i}].Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class=" row form-group">
-                <h4 class="col-md-6">@Html.LabelFor(x => x.ProductSize.Weight, "Грамаж", new { @class = "control-label" })</h4>
-                @Html.EditorFor(x => x.ProductSize.Weight, ViewData["Title"].ToString(), "ProductSize.Weight", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+            <div class="col-md-6">
+                <div class=" row form-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Weight, "Грамаж", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].Weight, ViewData["Title"].ToString(), $"Sizes[{i}].Weight", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="row form-group">
-                <h4 class="col-md-6"> @Html.LabelFor(x => x.ProductSize.PackageId, "Опаковка", new { @class = "control-label" })</h4>
-                <select class="col-md-6 form-control" asp-for="ProductSize.PackageId">
-                    @foreach (var package in Model.ProductSize.AvailablePackages)
-                    {
-                        <option value="@package.Id">@package.Name</option>
-                    }
-                </select>
+            <div class="col-md-6">
+                <div class="row form-group">
+                    <h4 class="col-md-6"> @Html.LabelFor(x => Model.Sizes[i].PackageId, "Опаковка", new { @class = "control-label" })</h4>
+                    <select class="col-md-6 form-control" asp-for="Sizes[i].PackageId">
+                        @foreach (var package in Model.AvailablePackages)
+                        {
+                            <option value="@package.Id">@package.Name</option>
+                        }
+                    </select>
 
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row form-group">
+                    <h4 class="col-md-10"> @Html.LabelFor(x => Model.Sizes[i].MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, ViewData["Title"].ToString(), $"Sizes[{i}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value=1 } })
+
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="row form-group">
-                <h4 class="col-md-10"> @Html.LabelFor(x => x.ProductSize.MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
-                @Html.EditorFor(x => x.ProductSize.MaxProductsInPackage, ViewData["Title"].ToString(), "ProductSize.MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control" } })
-
-            </div>
-        </div>
-    </div>
+        <hr class="hr-tapas" />
+    }
 
 
-    <hr class="hr-tapas" />
+
     <div class="row">
         <div class="col-md-6 justify-content-center">
             <a href="/" class="btn btn-primary">Назаад</a>

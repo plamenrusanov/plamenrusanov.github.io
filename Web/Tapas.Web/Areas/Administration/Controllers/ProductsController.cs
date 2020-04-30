@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.Categories;
@@ -30,22 +30,29 @@
             this.packagesService = packagesService;
         }
 
+        [AllowAnonymous]
+        public IActionResult Index()
+        {
+            var homeIndexViewModel = this.productsService.CategoryWhitProducts();
+            return this.View(homeIndexViewModel);
+        }
+
+        [AllowAnonymous]
+        public IActionResult GetProductsByCategory(string categoryId)
+        {
+            var homeIndexViewModel = this.productsService.CategoryWhitProducts(categoryId);
+            return this.View("Index", homeIndexViewModel);
+        }
+
         public IActionResult Add()
         {
             var model = new ProductInputViewModel()
             {
-                AvailableCategories = this.categoriesService.All()
-                .Select(x => new CategoryViewModel()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                }).ToList(),
+                AvailableCategories = this.categoriesService.All().ToList(),
                 AvailableAllergens = this.allergensService.All().ToList(),
-                ProductSize = new ProductSizeInputModel()
-                {
-                    AvailablePackages = this.packagesService.All().ToList(),
-                },
+                AvailablePackages = this.packagesService.All().ToList(),
             };
+
             return this.View(model);
         }
 
@@ -88,7 +95,7 @@
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Edit(EditProductViewModel viewModel)
+        public async Task<IActionResult> Edit(EditProductModel viewModel)
         {
             if (!this.ModelState.IsValid)
             {

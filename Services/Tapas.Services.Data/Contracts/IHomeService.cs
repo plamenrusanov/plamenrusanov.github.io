@@ -4,6 +4,5 @@
 
     public interface IHomeService
     {
-        HomeIndexViewModel CategoryWhitProducts(string categoryId = null);
     }
 }

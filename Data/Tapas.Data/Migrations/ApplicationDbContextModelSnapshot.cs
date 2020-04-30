@@ -635,6 +635,9 @@ namespace Tapas.Data.Migrations
                     b.Property<string>("ShopingCartId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("SizeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
@@ -642,6 +645,8 @@ namespace Tapas.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.HasIndex("ShopingCartId");
+
+                    b.HasIndex("SizeId");
 
                     b.ToTable("ShopingCartItems");
                 });
@@ -816,6 +821,12 @@ namespace Tapas.Data.Migrations
                     b.HasOne("Tapas.Data.Models.ShopingCart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("ShopingCartId");
+
+                    b.HasOne("Tapas.Data.Models.ProductSize", "Size")
+                        .WithMany()
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tapas.Data.Models.MenuProduct", b =>

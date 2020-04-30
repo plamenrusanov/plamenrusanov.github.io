@@ -7,116 +7,201 @@
 
 
 <div class="container">
+    <!--AddedProduct-->
+    <h1 class="text-center">Добави</h1>
+    <hr class="hr-tapas" />
     <div class="row">
-        <!--AddedProduct-->
-        <div class="col-md-6">
-            <div class="row">
-                <img src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_270,w_400/v1587540009/@(Model.Product.ImageUrl)" alt="@Model.Product.Name">
-            </div>
-            <form asp-controller="ShopingCart" asp-action="AddItem">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    @Html.HiddenFor(x => x.Product.Id, new { @class = "form-control" })
-                    @Html.HiddenFor(x => x.ShopingCart.Id, new { @class = "form-control" })
-                </div>
-                <div class="row">
-                    <h4>@Html.DisplayFor(x => x.Product.Name)</h4>
-                </div>
-                <div class="row">
-                    <h4>@Html.DisplayFor(x => x.Product.Price) лв.</h4>
-                </div>
-                <div class="row">
-                    @foreach (var item in Model.Product.Allergens)
-                    {
-                        <div class="col-md-1">
-                            <img src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_45,w_45/v1587540009/@(item.ImageUrl)" alt="@item.Name">
-                            <span>@Html.Label(item.Name)</span>
-                        </div>
-                    }
-                </div>
-                <div class="row form-group justify-content-around">
-                    <div class="quantity buttons_added row">
-                        <input id="minus" type="button" class="minus col-sm-4 form-control" value="◀">
-                        <input asp-for="@Model.Quantity" id="theInput" type="text" size="4" class="form-control input-text qty text col-sm-4" title="Qty" value="1" min="1" step="1">
-                        <input id="plus" type="button" class="plus col-sm-4 form-control justify-content-around" value="▶">
-                    </div>
-                </div>
+        <div class="col-md-4">
+            <img class="responsive" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_200,w_300/v1587540009/@(Model.Product.ImageUrl)" alt="@Model.Product.Name">
+        </div>
+        <div class="col-md-4 text-center mt-3">
+            <h2>@Html.DisplayFor(x => x.Product.Name)</h2>
+            <h5 id="sizeName"></h5>
+            <div>@Html.DisplayFor(x => x.Product.Description)</div>
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center">Алергени</h3>
 
+            @if (Model.Product.Allergens.Count == 0)
+            {
+                <p>Липсват данни за наличие на алергени.</p>
+            }
+            @foreach (var item in Model.Product.Allergens)
+            {
+             
+                <div class="ml-5 pl-5">
+                    <img src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_35,w_35/v1587540009/@(item.ImageUrl)" alt="@item.Name">
+                    <span>@Html.Label(item.Name)</span>
+                </div>
+            }
+        </div>
+    </div>
+    <hr class="hr-tapas" />
+    <div class="container">
+        <form asp-controller="ShopingCart" asp-action="AddItem">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @Html.HiddenFor(x => x.Product.Id, new { @class = "form-control" })
+                @Html.HiddenFor(x => x.ShopingCart.Id, new { @class = "form-control" })
+            </div>
+            @if (Model.Product.Sizes.Count != 1)
+            {
+                <div class="row" id="detailSection">
+                    <h4 class="text-center col-md-3">Избери размер</h4>
+                    @foreach (var item in Model.Product.Sizes)
+                    {
+                        <a class="btn btn-light blink ml-3" href="#" id="@item.SizeId" onclick="GetModel(@item.SizeId)">@item.SizeName</a>
+                    }
+
+                </div>
+            }
+            else
+            {
+               <div id="maxProducts" style="opacity:0">@Model.Product.Sizes[0].MaxProductsInPackage</div>
                 <div class="row">
-                    <div class="col-md-6 form-group text-center">
+
+                    <input type="hidden" class="form-control" name="Product.Sizes[0].SizeId" value="@Model.Product.Sizes[0].SizeId" />
+                    <div class="col-md-2">
+                        <h6>@Html.Label("Цена")</h6>
+                        <h4 id="productPrice">@Model.Product.Sizes[0].Price лв.</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h6>@Html.Label("Тегло")</h6>
+                        <h4>@Model.Product.Sizes[0].Weight гр.</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h6>@Html.Label("Опаковка")</h6>
+                        <h4 id="packagePrice">@Model.Product.Sizes[0].PackagePrice лв.</h4>
+                    </div>
+
+                    <div class="col-md-2 form-group justify-content-around">
+                        <h6>@Html.Label("Количество")</h6>
+                        <div class="quantity buttons_added row">
+                            <a id="minus" class="btn col-sm-4 form-control" onclick="minus()">◀</a>
+                            <input name="Quantity" id="theInput" type="text" size="4" class="form-control input-text qty text col-sm-4" title="Количество" value="1" min="1" step="1">
+                            <a id="plus" class="btn col-sm-4 form-control justify-content-around" onclick="plus()">▶</a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <h6>@Html.Label("Междинна сума")</h6>
+                        <h4 id="subTotal">@Model.Product.Sizes[0].SubTotal лв.</h4>
+                    </div>
+                    <div class="col-md-2 form-group text-center mt-3">
                         <button type="submit" class="btn btn-primary btn-lg active">Добави</button>
                     </div>
                 </div>
-            </form>
-        </div>
-        <!--ShopingCart-->
-        <div class="col-md-6">
-            <h1 class="text-center">Твоята количка</h1>
-            <hr class="hr-tapas" />
-            <div class="bg-light">
-                <table class="table justify-content-center">
-                    <thead>
-                        <tr class="row">
-                            <th class="col-sm-1">
-                                #
-                            </th>
-                            <th class="col-sm-3">
-                                @Html.DisplayName("Продукт")
-                            </th>
-                            <th class="col-sm-3">
-                                @Html.DisplayName("Количество")
-                            </th>
-                            <th class="col-sm-3">
-                                @Html.DisplayName("Цена")
-                            </th>
-                            <th class="col-sm-2">
-                                @Html.DisplayName("Actions")
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.ShopingCart.ShopingItems)
-                        {
-                            <tr class="row">
-                                <td class="col-sm-1">
-                                    @(i++)
-                                </td>
-                                <td class="col-sm-3">
-                                    @Html.DisplayFor(x => item.ProductName)
-                                </td>
-                                <td class="col-sm-3">
-                                    @Html.DisplayFor(x => item.Quantity)
-                                </td>
-                                <td class="col-sm-3">
-                                    @{price = item.ProductPrice * item.Quantity; }
-                                    @Html.DisplayFor(x => price)
-                                </td>
-                                <td class="col-sm-2">
-                                    <a class="btn btn-danger btn-sm" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.ShopingCart.Id">Изтрий</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <hr class="hr-tapas" />
-            
+            }
 
-        </div>
+        </form>
     </div>
 </div>
+<!--ShopingCart-->
+<hr class="hr-tapas" />
+<h1 class="text-center">Твоята количка</h1>
+<hr class="hr-tapas" />
+<div class="bg-light">
+    <table class="table justify-content-center">
+        <thead>
+            <tr class="row">
+                <th class="col-sm-1">
+                    #
+                </th>
+                <th class="col-sm-3">
+                    @Html.DisplayName("Продукт")
+                </th>
+                <th class="col-sm-3">
+                    @Html.DisplayName("Количество")
+                </th>
+                <th class="col-sm-3">
+                    @Html.DisplayName("Цена")
+                </th>
+                <th class="col-sm-2">
+                    @Html.DisplayName("Actions")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ShopingCart.ShopingItems)
+            {
+                <tr class="row">
+                    <td class="col-sm-1">
+                        @(i++)
+                    </td>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.ProductName)
+                    </td>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.Quantity)
+                    </td>
+                    <td class="col-sm-3">
+                        @{price = item.ProductPrice * item.Quantity; }
+                        @Html.DisplayFor(x => price)
+                    </td>
+                    <td class="col-sm-2">
+                        <a class="btn btn-danger btn-sm" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.ShopingCart.Id">Изтрий</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<hr class="hr-tapas" />
+
+
 @section Scripts
 {
     <script>
-        var input = document.getElementById('theInput');
-        document.getElementById('plus').onclick = function () {
-            if (input.value < 10) {
-                input.value = parseInt(input.value, 10) + 1
+        function DisplaySizeName(sizeId) {
+            var sizeName = document.getElementById(sizeId).innerHTML;
+            document.getElementById("sizeName").innerHTML = sizeName;
+        }
+
+        function GetModel(sizeId) {
+            DisplaySizeName(sizeId);
+            $.ajax({
+                url: `/Administration/Sizes/GetSizeModel?sizeId=${sizeId}`,
+                success: function (response) {
+                    document.getElementById("detailSection").innerHTML = response;
+                }
+            });
+        }
+    </script>
+    <script>
+        function getPrice(str) {
+            var index = str.indexOf(" ");
+            str = str.substring(0, index);
+            str = str.replace(",", ".");
+            var number = parseFloat(str);
+            return number;
+        }
+
+        function updateSubTotal(qty) {
+            var productPrice = document.getElementById("productPrice").innerText;
+            productPrice = getPrice(productPrice);
+            var packagePrice = document.getElementById("packagePrice").innerText;
+            packagePrice = getPrice(packagePrice);
+            var maxProd = document.getElementById("maxProducts").innerText;
+            maxProd = parseInt(maxProd);
+            var subTotal = (productPrice * qty) + (Math.ceil(qty / maxProd) * packagePrice);
+            subTotal = subTotal.toFixed(2);
+            subTotal = subTotal.toString();
+            subTotal = subTotal.replace(".", ",");
+            document.getElementById("subTotal").innerHTML = `${subTotal} лв.`;
+        }
+
+        function minus() {
+            var input = document.getElementById('theInput');
+            if (input.value > 1) {
+                input.value = parseInt(input.value, 10) - 1;
+                updateSubTotal(input.value);
             }
         }
-        document.getElementById('minus').onclick = function () {
-            if (input.value > 1) {
-                input.value = parseInt(input.value, 10) - 1
+
+        function plus() {
+            var input = document.getElementById('theInput');
+            if (input.value < 10) {
+                input.value = parseInt(input.value, 10) + 1;
+                updateSubTotal(input.value);
             }
         }
     </script>

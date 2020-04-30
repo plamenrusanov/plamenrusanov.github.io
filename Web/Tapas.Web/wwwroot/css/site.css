@@ -40,7 +40,7 @@ html {
     min-height: 100%;
 }
 
-body {
+#body {
     margin-bottom: 60px;
     background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_900,w_1600,f_auto/v1586767202/k4yosrnrf2mlyw6rfcfe.jpg");
     height: auto;
@@ -55,6 +55,13 @@ body {
     color: ghostwhite;
     width: 100%;
     height: auto;
+}
+
+.carosel {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height:auto;
 }
 
 .responsive {
@@ -121,12 +128,12 @@ li { /*Order/Index*/
     height: 40px;
 }
 .bg-light-transperant {
-    position: relative;
     background: rgba(255, 255, 255, 0.5);
     color: white;
     width: 100%;
     height: auto;
 }
+
 h1 {
     color: #007bff;
 }
@@ -181,5 +188,14 @@ a.carda:hover {
 
     100% {
         transform: translate(1px, -2px) rotate(-1deg);
+    }
+}
+.blink {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
     }
 }

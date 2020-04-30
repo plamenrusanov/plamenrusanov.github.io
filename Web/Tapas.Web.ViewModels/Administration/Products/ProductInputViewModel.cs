@@ -16,7 +16,9 @@
             this.AvailableAllergens = new HashSet<AllergenViewModel>();
             this.Allergens = new HashSet<string>();
             this.AvailableCategories = new HashSet<CategoryViewModel>();
-            this.ProductSize = new ProductSizeInputModel();
+            this.Sizes = new InputProductSizeModel[3];
+            this.AvailablePackages = new List<PackageViewModel>();
+            this.Seed();
         }
 
         [Required]
@@ -36,6 +38,16 @@
 
         public ICollection<string> Allergens { get; set; }
 
-        public ProductSizeInputModel ProductSize { get; set; }
+        public List<PackageViewModel> AvailablePackages { get; set; }
+
+        public InputProductSizeModel[] Sizes { get; set; }
+
+        protected void Seed()
+        {
+            this.Sizes[0] = new InputProductSizeModel();
+            this.Sizes[1] = new InputProductSizeModel();
+            this.Sizes[2] = new InputProductSizeModel();
+        }
+
     }
 }
