@@ -24,7 +24,7 @@
 
             @if (Model.Product.Allergens.Count == 0)
             {
-                <p>Липсват данни за наличие на алергени.</p>
+                <p>Липсват данни за наличие<br /> на алергени.</p>
             }
             @foreach (var item in Model.Product.Allergens)
             {
@@ -57,7 +57,7 @@
             }
             else
             {
-               <div id="maxProducts" style="opacity:0">@Model.Product.Sizes[0].MaxProductsInPackage</div>
+                <div id="maxProducts" style="opacity:0">@Model.Product.Sizes[0].MaxProductsInPackage</div>
                 <div class="row">
 
                     <input type="hidden" class="form-control" name="Product.Sizes[0].SizeId" value="@Model.Product.Sizes[0].SizeId" />
@@ -86,8 +86,17 @@
                         <h6>@Html.Label("Междинна сума")</h6>
                         <h4 id="subTotal">@Model.Product.Sizes[0].SubTotal лв.</h4>
                     </div>
-                    <div class="col-md-2 form-group text-center mt-3">
-                        <button type="submit" class="btn btn-primary btn-lg active">Добави</button>
+                    <div class="col-md-2 form-group">
+                        <h6>@Html.Label("Уточнения")</h6>
+                        @Html.TextAreaFor(x => x.Description, 2, 20, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        <a class="btn btn-primary btn-lg" href="/Administration/Products/">Меню</a>
+                    </div>
+                    <div class="col-md-6 form-group text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Добави</button>
                     </div>
                 </div>
             }

@@ -3,7 +3,7 @@
 @{
     Layout = null;
 }
-<div id="maxProducts" style="opacity:0">@Model.MaxProductsInPackage</div>
+<div id="maxProducts" style="opacity:0; width:0px; height:0px;">@Model.MaxProductsInPackage</div>
 <input type="hidden" class="form-control" name="Product.Sizes[0].SizeId" value="@Model.SizeId" />
 <div class="col-md-2">
     <h6 class="text-center">@Html.Label("Цена")</h6>
@@ -30,6 +30,13 @@
     <h6 class="text-center">@Html.Label("Междинна сума")</h6>
     <h4 class="text-center" id="subTotal">@Model.SubTotal лв.</h4>
 </div>
-<div class="col-md-2 form-group text-center mt-3">
-    <button type="submit" class="btn btn-primary btn-lg active">Добави</button>
+<div class="col-md-2 form-group">
+    <h6>@Html.Label("Уточнения")</h6>
+    @Html.TextArea("Description", "", 2, 20, new { @class = "form-control" })
+</div>
+<div class="col-md-6 text-center">
+    <a class="btn btn-primary btn-lg" href="/Administration/Products/">Меню</a>
+</div>
+<div class="col-md-6 form-group text-center">
+    <button type="submit" class="btn btn-primary btn-lg">Добави</button>
 </div>

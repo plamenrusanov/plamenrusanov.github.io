@@ -4,7 +4,7 @@
 {
     if (item.Status != "Unprocessed")
     {
-        <li class="btn btn-success btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)">
+        <li class="btn btn-success btn-lg order-li" onclick="orderDetails(@item.Id)" id="li@(item.Id)">
             <h5>
                 Поръчка: <strong id="orderId">@item.Id</strong>
             </h5>

@@ -41,17 +41,19 @@ html {
 }
 
 #body {
+    /*https: //res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_900,w_1600,f_auto/v1586767202/k4yosrnrf2mlyw6rfcfe.jpg*/ 
     margin-bottom: 60px;
-    background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_900,w_1600,f_auto/v1586767202/k4yosrnrf2mlyw6rfcfe.jpg");
+    background-image: url("/Images/1._MG_5972.jpg");
     height: auto;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment:fixed;
 }
 
 #main-transperant {
     position: relative;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.5);
     color: ghostwhite;
     width: 100%;
     height: auto;
@@ -110,13 +112,9 @@ table { /*ShopingCart*/
     background-color: white;
 }
 
-li { /*Order/Index*/
+.order-li { /*Order/Index*/
     margin-top: 2px;
     margin-bottom: 2px;
-}
-.cart-link {
-    padding-top: 20px;
-    padding-bottom: 20px;
 }
 .card-item{
     color:whitesmoke;
@@ -128,10 +126,13 @@ li { /*Order/Index*/
     height: 40px;
 }
 .bg-light-transperant {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 1);
     color: white;
     width: 100%;
     height: auto;
+}
+.nav-link{
+    padding:0;
 }
 
 h1 {

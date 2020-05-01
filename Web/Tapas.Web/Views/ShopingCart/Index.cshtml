@@ -11,19 +11,22 @@
     <table class="table">
         <thead>
             <tr class="row">
-                <th class="col-sm-1">
+                <th class="col-md-1">
                     #
                 </th>
-                <th class="col-sm-3">
+                <th class="col-md-3">
                     @Html.DisplayName("Продукт")
                 </th>
-                <th class="col-sm-3">
+                <th class="col-md-2">
                     @Html.DisplayName("Количество")
                 </th>
-                <th class="col-sm-3">
+                <th class="col-md-2">
                     @Html.DisplayName("Цена")
                 </th>
-                <th class="col-sm-2">
+                <th class="col-md-2">
+                    @Html.DisplayName("Описание")
+                </th>
+                <th class="col-md-2">
                     @Html.DisplayName("Actions")
                 </th>
             </tr>
@@ -32,30 +35,53 @@
             @foreach (var item in Model.ShopingItems)
             {
                 <tr class="row">
-                    <td class="col-sm-1">
+                    <td class="col-md-1">
                         @(i++)
                     </td>
-                    <td class="col-sm-3">
+                    <td class="col-md-3">
                         @Html.DisplayFor(x => item.ProductName)
                     </td>
-                    <td class="col-sm-3">
+                    <td class="col-md-2">
                         @Html.DisplayFor(x => item.Quantity)
                     </td>
-                    <td class="col-sm-3">
+                    <td class="col-md-2">
                         @Html.DisplayFor(x => item.ItemPrice)
                     </td>
-                    <td class="col-sm-2">
-                        <a class="btn btn-danger btn-lg" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.Id">Изтрий</a>
+                    <td class="col-md-2">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                            Modal
+                        </button>
+                    </td>
+                    <td class="col-md-2">
+                        <a class="btn btn-danger btn-sm" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.Id">Изтрий</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+<div class="row">
+    <div class="col-md-8">
+        <h5>Опаковки</h5>
+    </div>
+    <div class="col-md-4 text-center">
+        <h5>@Model.PackegesPrice лв.</h5>
+    </div>
+</div>
+@if (Model.DeliveryFee != 0)
+{
+    <div class="row">
+        <div class="col-md-8">
+            <h5>Доставка</h5>
+        </div>
+        <div class="col-md-4 text-center">
+            <h5>@Model.DeliveryFee лв.</h5>
+        </div>
+    </div>
+}
 <hr class="hr-tapas" />
 <div class="row">
     <div class="col-md-8">
-        <p>&#8270; Oпаковката е включена в цената!</p>
         @if (Model.TotalPrice < 10)
         {
             <p>&#8270; Поръчка под 10 лева заплаща 2 лева за доставка!</p>
@@ -66,15 +92,43 @@
         }
     </div>
     <div class="col-md-4">
-        <h3>@Html.LabelFor(x => x.TotalPrice): @Html.DisplayFor(x => x.TotalPrice)</h3>
+        <h3>@Html.LabelFor(x => x.TotalPrice): @Html.DisplayFor(x => x.TotalPrice) лв.</h3>
     </div>
 </div>
 <hr class="hr-tapas" />
 <div class="row">
     <div class="col-md-6 text-center">
-        <a class="btn btn-primary btn-lg" href="/">Към менюто</a>
+        <a class="btn btn-primary btn-lg" href="/Administration/Products/">Към менюто</a>
     </div>
     <div class="col-md-6 text-center">
         <a class="btn btn-primary btn-lg" href="/Orders/Create">Поръчай</a>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color:black">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
+    </script>
+
+}

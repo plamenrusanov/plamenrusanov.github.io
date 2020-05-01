@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Services.Data
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -76,7 +77,7 @@
 
         public ShopingCartViewModel GetShopingCart(ApplicationUser user)
         {
-            return this.cartRepository.All()
+            var model = this.cartRepository.All()
                 .Where(x => x.Id == user.ShopingCart.Id)
                 .Select(x => new ShopingCartViewModel()
                 {
@@ -87,10 +88,17 @@
                         Id = c.Id,
                         ProductId = c.ProductId,
                         ProductName = c.Product.Name,
-                        //ProductPrice = c.Product.Price,
-                        //Quantity = c.Quantity,
+                        ProductPrice = c.Size.Price,
+                        Quantity = c.Quantity,
                     }).ToList(),
+                    PackegesPrice = x.CartItems.Sum(c => Math.Ceiling((decimal)c.Quantity / c.Size.MaxProductsInPackage) * c.Size.Package.Price),
                 }).FirstOrDefault();
+            if (model.PackegesPrice + model.ShopingItems.Sum(x => x.ItemPrice) < GlobalConstants.OrderPriceMin)
+            {
+                model.DeliveryFee = GlobalConstants.DeliveryFee;
+            }
+
+            return model;
         }
 
         public AddItemViewModel GetShopingModel(ApplicationUser user, string productId)

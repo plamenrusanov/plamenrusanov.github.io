@@ -50,6 +50,11 @@
         // GET
         public async Task<ActionResult> AddItem(string productId)
         {
+            if (string.IsNullOrEmpty(productId))
+            {
+                return this.NotFound();
+            }
+
             if (this.User == null)
             {
                 return this.RedirectToPage(GlobalConstants.LoginPageRoute);
@@ -83,7 +88,7 @@
             try
             {
                 this.cartService.AddItem(model);
-                return this.Redirect(GlobalConstants.IndexRoute);
+                return this.RedirectToAction("Index");
             }
             catch (Exception e)
             {
