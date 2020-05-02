@@ -7,128 +7,173 @@
 
 <h1 class="text-center">Твоята количка</h1>
 <hr class="hr-tapas" />
-<div class="bg-light">
-    <table class="table">
-        <thead>
-            <tr class="row">
-                <th class="col-md-1">
-                    #
-                </th>
-                <th class="col-md-3">
-                    @Html.DisplayName("Продукт")
-                </th>
-                <th class="col-md-2">
-                    @Html.DisplayName("Количество")
-                </th>
-                <th class="col-md-2">
-                    @Html.DisplayName("Цена")
-                </th>
-                <th class="col-md-2">
-                    @Html.DisplayName("Описание")
-                </th>
-                <th class="col-md-2">
-                    @Html.DisplayName("Actions")
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.ShopingItems)
-            {
+@if (Model.ShopingItems.Count == 0)
+{
+    <h4 class="text-center mt-5 mb-5">Количката е празна.</h4>
+}
+else
+{
+    <div class="bg-light">
+        <table class="table">
+            <thead>
                 <tr class="row">
-                    <td class="col-md-1">
-                        @(i++)
-                    </td>
-                    <td class="col-md-3">
-                        @Html.DisplayFor(x => item.ProductName)
-                    </td>
-                    <td class="col-md-2">
-                        @Html.DisplayFor(x => item.Quantity)
-                    </td>
-                    <td class="col-md-2">
-                        @Html.DisplayFor(x => item.ItemPrice)
-                    </td>
-                    <td class="col-md-2">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
-                            Modal
-                        </button>
+                    <th class="col-md-1">
+                        #
+                    </th>
+                    <th class="col-md-3">
+                        @Html.DisplayName("Продукт")
+                    </th>
+                    <th class="col-md-2">
+                        @Html.DisplayName("Количество")
+                    </th>
+                    <th class="col-md-2">
+                        @Html.DisplayName("Цена")
+                    </th>
+                    <th class="col-md-2">
+                        @Html.DisplayName("Описание")
+                    </th>
+                    <th class="col-md-2">
+                        @Html.DisplayName("Actions")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ShopingItems)
+                {
+                    <tr class="row">
+                        <td class="col-md-1">
+                            @(i++)
+                        </td>
+                        <td class="col-md-3" id="name@(item.Id)">
+                            @Html.DisplayFor(x => item.ProductName)
+                        </td>
+                        <td class="col-md-2">
+                            @Html.DisplayFor(x => item.Quantity)
+                        </td>
+                        <td class="col-md-2">
+                            @Html.DisplayFor(x => item.ItemPrice)
+                        </td>
+                        <td class="col-md-2">
+                            @* data-toggle="modal" data-target="#exampleModalCenter" data-id="@item.Id" *@
+                        <a class="btn btn-primary btn-sm" onclick="GetDescription(@item.Id)">Описание</a>
+                            <button hidden data-toggle="modal" data-target="#exampleModalCenter" id="button@(item.Id)"></button>
                     </td>
                     <td class="col-md-2">
                         <a class="btn btn-danger btn-sm" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.Id">Изтрий</a>
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
-</div>
-<div class="row">
-    <div class="col-md-8">
-        <h5>Опаковки</h5>
+            </tbody>
+        </table>
     </div>
-    <div class="col-md-4 text-center">
-        <h5>@Model.PackegesPrice лв.</h5>
-    </div>
-</div>
-@if (Model.DeliveryFee != 0)
-{
     <div class="row">
         <div class="col-md-8">
-            <h5>Доставка</h5>
+            <h5>Опаковки</h5>
         </div>
         <div class="col-md-4 text-center">
-            <h5>@Model.DeliveryFee лв.</h5>
+            <h5>@Model.PackegesPrice лв.</h5>
+        </div>
+    </div>
+    @if (Model.DeliveryFee != 0)
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <h5>Доставка</h5>
+            </div>
+            <div class="col-md-4 text-center">
+                <h5>@Model.DeliveryFee лв.</h5>
+            </div>
+        </div>
+    }
+    <hr class="hr-tapas" />
+    <div class="row">
+        <div class="col-md-8">
+            @if (Model.DeliveryFee != 0)
+            {
+                <p>&#8270; Поръчка под 10 лева заплаща 2 лева за доставка!</p>
+            }
+            else if (Model.TotalPrice < 25)
+            {
+                <p>&#8270; Поръчка над 25 лева получава подарък!</p>
+            }
+        </div>
+        <div class="col-md-4">
+            <h3>@Html.LabelFor(x => x.TotalPrice): @Html.DisplayFor(x => x.TotalPrice) лв.</h3>
+            <h1 id="resp"></h1>
         </div>
     </div>
 }
-<hr class="hr-tapas" />
-<div class="row">
-    <div class="col-md-8">
-        @if (Model.TotalPrice < 10)
-        {
-            <p>&#8270; Поръчка под 10 лева заплаща 2 лева за доставка!</p>
-        }
-        else if (Model.TotalPrice < 25)
-        {
-            <p>&#8270; Поръчка над 25 лева получава подарък!</p>
-        }
-    </div>
-    <div class="col-md-4">
-        <h3>@Html.LabelFor(x => x.TotalPrice): @Html.DisplayFor(x => x.TotalPrice) лв.</h3>
-    </div>
-</div>
+
 <hr class="hr-tapas" />
 <div class="row">
     <div class="col-md-6 text-center">
         <a class="btn btn-primary btn-lg" href="/Administration/Products/">Към менюто</a>
     </div>
-    <div class="col-md-6 text-center">
-        <a class="btn btn-primary btn-lg" href="/Orders/Create">Поръчай</a>
-    </div>
+    @if (Model.ShopingItems.Count != 0)
+    {
+        <div class="col-md-6 text-center">
+            <a class="btn btn-primary btn-lg" href="/Orders/Create">Поръчай</a>
+        </div>
+    }
+
 </div>
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle" style="color:black">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color:black"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-
+                <form>
+                    <div class="form-group">
+                        <span>Добави описание</span>
+                        <div id="sciId" hidden></div>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <a class="btn btn-secondary" data-dismiss="modal" id="closeModal" >Close</a>
+                <a class="btn btn-primary" onclick="SetDescription()">Save changes</a>
             </div>
         </div>
     </div>
 </div>
 @section Scripts{
     <script>
-        $('#myModal').on('shown.bs.modal', function () {
-            $('#myInput').trigger('focus')
-        })
+        function SetDescription() {
+            var itemId = document.getElementById("sciId").value;
+            var message = document.getElementById("message-text").value;
+            $.ajax({
+                url: `/ShopingCart/SetDescription?id=${itemId}&message=${message}`,
+                success: function (responce) {
+                    var el = document.getElementById("closeModal");
+                    el.click();
+                }
+
+            });
+        }
+
+
+        function GetDescription(itemId) {
+            $.ajax({
+                url: `/ShopingCart/GetDescription?id=${itemId}`,
+                success: function (response) {
+                    var el = document.getElementById(`button${itemId}`);
+                    el.click();
+                    var elem = document.getElementById("message-text");
+                    elem.value = response;
+                    var productName = document.getElementById(`name${itemId}`).innerText;
+                    document.getElementById("exampleModalLongTitle").innerText = productName;
+                    var sciId = document.getElementById("sciId");
+                    sciId.value = itemId;
+                }
+            });
+        }
     </script>
 
 }

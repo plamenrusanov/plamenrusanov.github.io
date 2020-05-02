@@ -16,6 +16,7 @@
         public int PackageId { get; set; }
 
         [Required]
+        [Range(1, 100)]
         public int MaxProductsInPackage => 1;
     }
 }

@@ -11,17 +11,21 @@
     </ul>
     <nav class="white" role="navigation">
 
-        <div class="nav-wrapper container">      
-            <a id="logo-container" href="/" class="brand-logo">Logo</a>
-            <ul class="right hide-on-small-and-down">
+        <div class="nav-wrapper container">         
+            <ul class="left hide-on-small-and-down">
+                <li> <a href="/" class="b-l"></a></li>
                 <li><a href="/Administration/Products">Меню</a></li>
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Кетъринг<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a href="/Administration/Products">Галерия</a></li>
-
+                <li><a asp-area="" asp-controller="ShopingCart" asp-action="Index" style="font-size:2rem;">🛒</a></li>
             </ul>
 
             <ul id="nav-mobile" class="sidenav">
-                <li><a href="#">Navbar Link</a></li>
+                <li><a href="/Administration/Products">Меню</a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Кетъринг<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a href="/Administration/Products">Галерия</a></li>
+                <li><a class="nav-link" asp-area="" asp-controller="ShopingCart" asp-action="Index" style="font-size:2rem;">🛒</a></li>
+
             </ul>
             <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         </div>

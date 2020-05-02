@@ -19,15 +19,18 @@
         private readonly IDeletableEntityRepository<ShopingCart> cartRepository;
         private readonly IDeletableEntityRepository<MenuProduct> productRepository;
         private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
+        private readonly IDeletableEntityRepository<ShopingCartItem> itemRepository;
 
         public ShopingCartService(
             IDeletableEntityRepository<ShopingCart> cartRepository,
             IDeletableEntityRepository<MenuProduct> productRepository,
-            IDeletableEntityRepository<ProductSize> sizeRepository)
+            IDeletableEntityRepository<ProductSize> sizeRepository,
+            IDeletableEntityRepository<ShopingCartItem> itemRepository)
         {
             this.cartRepository = cartRepository;
             this.productRepository = productRepository;
             this.sizeRepository = sizeRepository;
+            this.itemRepository = itemRepository;
         }
 
         public void AddItem(AddItemViewModel model)
@@ -51,6 +54,7 @@
                 SizeId = size.Id,
                 ProductId = product.Id,
                 Quantity = model.Quantity,
+                Description = model.Description,
             });
             this.cartRepository.SaveChanges();
         }
@@ -73,6 +77,11 @@
 
             cart.CartItems.Remove(productCartItem);
             this.cartRepository.SaveChanges();
+        }
+
+        public string GetDescription(int id)
+        {
+            return this.itemRepository.All().Where(x => x.Id == id).FirstOrDefault().Description;
         }
 
         public ShopingCartViewModel GetShopingCart(ApplicationUser user)
@@ -134,6 +143,14 @@
                     }).FirstOrDefault(),
                 ShopingCart = this.GetShopingCart(user),
             };
+        }
+
+        public void SetDescription(int id, string message)
+        {
+            var cartItem = this.itemRepository.All().Where(x => x.Id == id).FirstOrDefault();
+            cartItem.Description = message;
+
+            this.itemRepository.SaveChanges();
         }
     }
 }

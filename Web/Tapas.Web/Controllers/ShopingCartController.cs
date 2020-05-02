@@ -85,6 +85,7 @@
             {
                 return this.RedirectToPage(GlobalConstants.LoginPageRoute);
             }
+
             try
             {
                 this.cartService.AddItem(model);
@@ -129,5 +130,23 @@
 
             return this.RedirectToAction(nameof(this.Index));
         }
+
+        public string GetDescription(int id)
+        {
+            var desc = this.cartService.GetDescription(id);
+            if (desc is null)
+            {
+                desc = string.Empty;
+            }
+
+            return desc;
+        }
+
+        public string SetDescription(int id, string message)
+        {
+            this.cartService.SetDescription(id, message);
+            return "";
+        }
+
     }
 }

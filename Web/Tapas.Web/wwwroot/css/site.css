@@ -54,7 +54,7 @@ html {
 #main-transperant {
     position: relative;
     background: rgba(255, 255, 255, 0.5);
-    color: ghostwhite;
+    color: black;
     width: 100%;
     height: auto;
 }

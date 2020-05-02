@@ -17,5 +17,9 @@
         void AddItem(AddItemViewModel model);
 
         void DeleteItem(int itemId, string shopingCartId);
+
+        string GetDescription(int id);
+
+        void SetDescription(int id, string message);
     }
 }
