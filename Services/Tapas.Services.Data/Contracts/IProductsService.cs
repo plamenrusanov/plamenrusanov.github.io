@@ -9,8 +9,6 @@
     {
         Task AddAsync(ProductInputViewModel inputModel);
 
-        MenuProductViewModel GetProductById(string productId);
-
         DetailsProductViewModel GetDetailsProductById(string productId);
 
         bool ExistProductById(string productId);

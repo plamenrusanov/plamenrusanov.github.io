@@ -7,6 +7,11 @@
 
     public class MenuProductViewModel
     {
+        public MenuProductViewModel()
+        {
+            this.Sizes = new List<ProductSizeViewModel>();
+        }
+
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -19,6 +24,6 @@
 
         public decimal? Price { get; set; }
 
-        public List<string> Sizes { get; set; }
+        public List<ProductSizeViewModel> Sizes { get; set; }
     }
 }

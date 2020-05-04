@@ -28,7 +28,6 @@
         private readonly IDeletableEntityRepository<Package> packageRepository;
         private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
 
-
         public ProductsService(
             IDeletableEntityRepository<MenuProduct> productsRepo,
             ICloudService cloudService,
@@ -43,7 +42,6 @@
             this.categoriesRepository = categoriesRepository;
             this.packageRepository = packageRepository;
             this.sizeRepository = sizeRepository;
-
         }
 
         private List<PackageViewModel> GetAvailablePackigesVM => this.packageRepository
@@ -103,26 +101,6 @@
 
             await this.productsRepo.AddAsync(product);
             await this.productsRepo.SaveChangesAsync();
-        }
-
-        public MenuProductViewModel GetProductById(string productId)
-        {
-            return this.productsRepo.All()
-                .Where(x => x.Id == productId)
-                .Select(x => new MenuProductViewModel()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    //Price = x.Price,
-                    //ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
-                    //CategoryId = x.CategoryId,
-                    //Weight = x.Weight,
-                    //Allergens = x.Allergens
-                    //.Select(c => new AlergenDetailsViewModel()
-                    //{
-                    //    AllergenId = c.AllergenId,
-                    //}).ToList(),
-                }).FirstOrDefault();
         }
 
         public bool ExistProductById(string productId)
@@ -196,7 +174,6 @@
                 .FirstOrDefault();
         }
 
-
         public async Task EditProductAsync(EditProductModel model)
         {
             if (model.Image != null)
@@ -269,7 +246,6 @@
                     Id = x.Id,
                     Name = x.Name,
                     CategoryName = x.Category.Name,
-                    //Price = x.Price,
                     IsDeleted = x.IsDeleted,
                 })
                 .OrderBy(x => x.Name)
@@ -309,7 +285,11 @@
                       Name = x.Name,
                       ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                       IsOneSize = x.Sizes.Count == 1,
-                      Sizes = x.Sizes.Select(s => s.SizeName).ToList(),
+                      Sizes = x.Sizes.Select(s => new ProductSizeViewModel()
+                      {
+                          SizeName = s.SizeName,
+                          Price = s.Price,
+                      }).ToList(),
                       Weight = x.Sizes.Count == 1 ? x.Sizes.FirstOrDefault().Weight : default,
                       Price = x.Sizes.Count == 1 ? x.Sizes.FirstOrDefault().Price : default,
                   }).ToList();
@@ -324,7 +304,11 @@
                     Name = x.Name,
                     ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
                     IsOneSize = x.Sizes.Count == 1,
-                    Sizes = x.Sizes.Select(s => s.SizeName).ToList(),
+                    Sizes = x.Sizes.Select(s => new ProductSizeViewModel()
+                    {
+                        SizeName = s.SizeName,
+                        Price = s.Price,
+                    }).ToList(),
                     Weight = x.Sizes.Count == 1 ? x.Sizes.FirstOrDefault().Weight : default,
                     Price = x.Sizes.Count == 1 ? x.Sizes.FirstOrDefault().Price : default,
                 }).ToList().Take(12);

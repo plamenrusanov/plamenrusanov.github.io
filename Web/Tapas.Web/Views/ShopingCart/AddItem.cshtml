@@ -50,7 +50,7 @@
                     <h4 class="text-center col-md-3">Избери размер</h4>
                     @foreach (var item in Model.Product.Sizes)
                     {
-                        <a class="btn btn-light blink ml-3" href="#" id="@item.SizeId" onclick="GetModel(@item.SizeId)">@item.SizeName</a>
+                        <a class="btn btn-info blink ml-3" href="#" id="@item.SizeId" onclick="GetModel(@item.SizeId)">@item.SizeName</a>
                     }
 
                 </div>
