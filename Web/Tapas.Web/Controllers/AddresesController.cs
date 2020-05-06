@@ -39,21 +39,18 @@
         {
             if (string.IsNullOrEmpty(latitude) || string.IsNullOrEmpty(longitude))
             {
-                // TO DO
+                return null;
             }
 
-            if (this.Request.Headers.ContainsKey(GlobalConstants.RefererHeader))
+            AddressInputModel model = new AddressInputModel();
+            try
             {
-                var refererValue = default(Microsoft.Extensions.Primitives.StringValues);
-                bool result = this.Request.Headers.TryGetValue(GlobalConstants.RefererHeader, out refererValue);
-                if (result)
-                {
-                    var uri = new Uri(refererValue);
-                    this.ViewData.Add(GlobalConstants.RefererHeader, uri.PathAndQuery);
-                }
+                model = await this.addresesService.GetAddressAsync(latitude, longitude);
             }
-
-            var model = await this.addresesService.GetAddressAsync(latitude, longitude);
+            catch (Exception)
+            {
+                return null;
+            }
 
             return model;
         }

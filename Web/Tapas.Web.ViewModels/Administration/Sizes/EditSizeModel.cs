@@ -1,10 +1,18 @@
 ﻿namespace Tapas.Web.ViewModels.Administration.Sizes
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class EditProductSizeModel
+    using Tapas.Web.ViewModels.Administration.Packages;
+
+    public class EditSizeModel
     {
+        public EditSizeModel()
+        {
+            this.Packages = new List<PackageViewModel>();
+        }
+
         public int SizeId { get; set; }
 
         [Required]
@@ -16,7 +24,7 @@
         public decimal Price { get; set; }
 
         [Required]
-        [Range(10, 5000)]
+        [Range(1, 5000)]
         public int Weight { get; set; }
 
         [Required]
@@ -25,5 +33,7 @@
 
         [Required]
         public int? PackageId { get; set; }
+
+        public List<PackageViewModel> Packages { get; set; }
     }
 }

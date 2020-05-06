@@ -1,7 +1,5 @@
 ﻿namespace Tapas.Web.ViewModels.Administration.Sizes
 {
-    using Tapas.Web.ViewModels.Administration.Packages;
-
     public class ProductSizeViewModel
     {
         public int SizeId { get; set; }

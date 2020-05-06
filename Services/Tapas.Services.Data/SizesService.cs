@@ -15,16 +15,26 @@
         private readonly IDeletableEntityRepository<MenuProduct> menuRepository;
         private readonly IDeletableEntityRepository<Package> packageRepository;
         private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
+        private readonly IDeletableEntityRepository<ShopingCartItem> shopingCartItemRepository;
 
         public SizesService(
             IDeletableEntityRepository<MenuProduct> menuRepository,
             IDeletableEntityRepository<Package> packageRepository,
-            IDeletableEntityRepository<ProductSize> sizeRepository)
+            IDeletableEntityRepository<ProductSize> sizeRepository,
+            IDeletableEntityRepository<ShopingCartItem> shopingCartItemRepository)
         {
             this.menuRepository = menuRepository;
             this.packageRepository = packageRepository;
             this.sizeRepository = sizeRepository;
+            this.shopingCartItemRepository = shopingCartItemRepository;
         }
+
+        private List<PackageViewModel> AvailablePackages => this.packageRepository
+          .All().Select(p => new PackageViewModel()
+          {
+              Id = p.Id,
+              Name = p.Name,
+          }) .ToList();
 
         public bool ExistById(int sizeId)
         {
@@ -46,18 +56,24 @@
                 }).FirstOrDefault();
         }
 
-        public List<EditProductSizeModel> GetSizesOfProduct(string productId)
+        public object GetExtraSize(int index)
+        {
+            return new ExtraSize()
+            {
+                Index = index,
+                AvailablePackages = this.AvailablePackages,
+            };
+        }
+
+        public List<EditSizeModel> GetSizesOfProduct(string productId)
         {
             var sizes = this.menuRepository
                 .All()
                 .Where(x => x.Id == productId)
                 .SelectMany(x => x.Sizes)
                 .ToList();
-            var packages = this.packageRepository
-                .All()
-                .ToList();
 
-            return sizes.Select(x => new EditProductSizeModel()
+            return sizes.Select(x => new EditSizeModel()
             {
                 SizeId = x.Id,
                 SizeName = x.SizeName,
@@ -65,13 +81,44 @@
                 Weight = x.Weight,
                 PackageId = x.PackageId,
                 MaxProductsInPackage = x.MaxProductsInPackage,
-                Packages = packages
-                    .Select(p => new PackageViewModel()
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                    }).ToList(),
+                Packages = this.AvailablePackages,
             }).ToList();
+        }
+
+        public string Remove(int id)
+        {
+            var productSize = this.sizeRepository.All().FirstOrDefault(x => x.Id == id);
+            if (productSize is null)
+            {
+                throw new Exception();
+            }
+
+            var product = this.menuRepository.All().FirstOrDefault(x => x.Id == productSize.MenuProductId);
+            if (product is null)
+            {
+                throw new Exception();
+            }
+
+            if (product.Sizes.Count <= 1)
+            {
+                throw new Exception();
+            }
+
+            if (this.shopingCartItemRepository.All().Any(c => c.SizeId == id))
+            {
+                var listOfItems = this.shopingCartItemRepository.All().Where(x => x.SizeId == id).ToList();
+
+                foreach (var item in listOfItems)
+                {
+                    this.shopingCartItemRepository.HardDelete(item);
+                }
+
+                this.shopingCartItemRepository.SaveChanges();
+            }
+
+            this.sizeRepository.HardDelete(productSize);
+            this.sizeRepository.SaveChanges();
+            return productSize.MenuProductId;
         }
     }
 }

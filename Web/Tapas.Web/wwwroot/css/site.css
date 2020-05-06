@@ -58,12 +58,18 @@ html {
     width: 100%;
     height: auto;
 }
+.remove-button {
+    height: 30px;
+    width: 90px;
+    background-color: red;
+    border-radius: 5px;
+}
 
 .carosel {
     position: absolute;
     overflow: hidden;
     width: 100%;
-    height:auto;
+    height: auto;
 }
 
 .responsive {
@@ -87,6 +93,7 @@ html {
 
 .hr-tapas {
     border: 2px solid grey;
+    width:100%;
 }
 
 table { /*ShopingCart*/

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Tapas.Common;
     using Tapas.Data.Common;
@@ -27,6 +27,7 @@
         private readonly IRepository<Category> categoriesRepository;
         private readonly IDeletableEntityRepository<Package> packageRepository;
         private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
+        private string productZeroSizes = "Продукта не може да съществува без размер.";
 
         public ProductsService(
             IDeletableEntityRepository<MenuProduct> productsRepo,
@@ -142,6 +143,8 @@
                     Name = x.Name,
                     ImageUrl = x.ImageUrl,
                     CategoryId = x.CategoryId,
+                    Description = x.Description,
+                    AvailablePackages = packages,
                     Allergens = this.allergensRepository
                         .All()
                         .Select(c => new SelectListItem()
@@ -168,7 +171,7 @@
                             Price = c.Price,
                             Weight = c.Weight,
                             PackageId = c.PackageId,
-                            Packages = packages,
+                            MaxProductsInPackage = c.MaxProductsInPackage,
                         }).ToList(),
                 })
                 .FirstOrDefault();
@@ -187,6 +190,38 @@
             product.Name = model.Name;
             product.ImageUrl = model.ImageUrl;
             product.CategoryId = model.CategoryId;
+            product.Description = model.Description;
+
+            foreach (var size in model.Sizes)
+            {
+                if (size.SizeId == 0)
+                {
+                    product.Sizes.Add(new ProductSize()
+                    {
+                        SizeName = size.SizeName,
+                        Price = size.Price,
+                        Weight = size.Weight,
+                        MaxProductsInPackage = size.MaxProductsInPackage,
+                        PackageId = size.PackageId,
+                        MenuProductId = product.Id,
+                    });
+                }
+                else
+                {
+                    var s = product.Sizes.Where(x => x.Id == size.SizeId).FirstOrDefault();
+                    if (s is null)
+                    {
+                        continue;
+                    }
+
+                    s.SizeName = size.SizeName;
+                    s.Price = size.Price;
+                    s.Weight = size.Weight;
+                    s.MaxProductsInPackage = size.MaxProductsInPackage;
+                    s.MenuProductId = product.Id;
+                    s.PackageId = size.PackageId;
+                }
+            }
 
             foreach (var item in model.Allergens)
             {
@@ -210,6 +245,11 @@
                         product.Allergens.Remove(allergenProduct);
                     }
                 }
+            }
+
+            if (product.Sizes.Count == 0)
+            {
+                throw new ArgumentException(this.productZeroSizes);
             }
 
             await this.productsRepo.SaveChangesAsync();

@@ -1,0 +1,50 @@
+﻿@model Tapas.Web.ViewModels.Administration.Sizes.ExtraSize
+
+@{
+    Layout = null;
+}
+@Html.Hidden($"Sizes[{Model.Index}].SizeId")
+<div class="col-md-6">
+    <div class="row form-group">
+        <h4 class="col-md-6">@Html.Label($"Име на размер {Model.Index + 1}")</h4>
+        @Html.Editor($"Sizes[{Model.Index}].SizeName", "", $"Sizes[{Model.Index}].SizeName", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+        <span asp-validation-for="Sizes[@Model.Index].SizeName" class="text-danger"></span>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class=" row form-group">
+        <h4 class="col-md-6">@Html.Label("Цена")</h4>
+        @Html.Editor($"Sizes[{Model.Index}].Price", "", $"Sizes[{Model.Index}].Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+        <span asp-validation-for="Sizes[@Model.Index].Price" class="text-danger"></span>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class=" row form-group">
+        <h4 class="col-md-6">@Html.Label("Грамаж")</h4>
+        @Html.Editor($"Sizes[{Model.Index}].Weight", "", $"Sizes[{Model.Index}].Weight", new { htmlAttributes = new { @class = "col-md-6 form-control", @type = "number" } })
+        <span asp-validation-for="Sizes[@Model.Index].Weight" class="text-danger"></span>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="row form-group">
+        <h4 class="col-md-6"> @Html.Label("Опаковка")</h4>
+        <select class="col-md-6 form-control" name="Sizes[@Model.Index].PackageId">
+            @foreach (var package in Model.AvailablePackages)
+            {
+                <option value="@package.Id">@package.Name</option>
+            }
+        </select>
+
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="row form-group">
+        <h4 class="col-md-10"> @Html.Label("Максимален брой продукти в опаковка")</h4>
+        @Html.Editor($"Sizes[{Model.Index}].MaxProductsInPackage", "", $"Sizes[{Model.Index}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value = "1", type = "number" } })
+        <span asp-validation-for="Sizes[@Model.Index].MaxProductsInPackage" class="text-danger"></span>
+    </div>
+</div>
+<div class="col-md-6">
+    <div onclick="Remove(0, @Model.Index)" class="remove-button">Премахни</div>
+</div>
+<hr class="hr-tapas" />

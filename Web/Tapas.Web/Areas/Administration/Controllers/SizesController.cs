@@ -1,9 +1,7 @@
 ﻿namespace Tapas.Web.Areas.Administration.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
     using Tapas.Services.Data.Contracts;
-    using Tapas.Web.ViewModels.Administration.Sizes;
 
     public class SizesController : AdministrationController
     {
@@ -32,11 +30,6 @@
             return this.View(model);
         }
 
-        public IActionResult Add(List<EditProductSizeModel> model)
-        {
-            return this.RedirectToAction("");
-        }
-
         public IActionResult GetSizeModel(string sizeId)
         {
             if (string.IsNullOrEmpty(sizeId))
@@ -59,6 +52,25 @@
             var model = this.sizesService.GetDetailModel(id);
 
             return this.View(model);
+        }
+
+        public IActionResult AddSizeModel(int index)
+        {
+            var model = this.sizesService.GetExtraSize(index);
+            return this.View(model);
+        }
+
+        public IActionResult Remove(int id)
+        {
+            try
+            {
+                this.sizesService.Remove(id);
+                return this.Ok();
+            }
+            catch (System.Exception)
+            {
+                return this.NotFound();
+            }
         }
     }
 }

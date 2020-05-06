@@ -14,9 +14,9 @@
             <button class="btn btn-primary" id="child">Добави адрес</button>
             <hr />
             <form asp-area="" asp-controller="Addreses" asp-action="Create">
-                <div class="form-group">@Html.HiddenFor(x => x.Latitude, new { @id = "latitude", @class = "form-control"  })</div>
-                <div class="form-group">@Html.HiddenFor(x => x.Longitude, new { @id = "longitude", @class = "form-control"  })</p></div>
-                <div class="form-group">@Html.HiddenFor(x => x.DisplayName, new { @id = "displayName", @class = "form-control"  })</div>
+                <div class="form-group">@Html.HiddenFor(x => x.Latitude, new { @id = "latitude", @class = "form-control" })</div>
+                <div class="form-group">@Html.HiddenFor(x => x.Longitude, new { @id = "longitude", @class = "form-control" })</p></div>
+                <div class="form-group">@Html.HiddenFor(x => x.DisplayName, new { @id = "displayName", @class = "form-control" })</div>
                 <div class="row form-group ">
                     <div class="col-md-4"><h5><label>Град: </label></h5></div>
                     <div class="col-md-8">@Html.EditorFor(x => x.City, new { htmlAttributes = new { @id = "city", @class = "form-control" } })</div>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="row form-group ">
                     <label>Допълнителна информация</label>
-                    @Html.TextAreaFor(x => x.AddInfo, 5, 30, new { @id="addInfo", @class="form-control"})
+                    @Html.TextAreaFor(x => x.AddInfo, 5, 30, new { @id = "addInfo", @class = "form-control" })
                 </div>
                 <div class="row form-group">
                     <button type="submit" class="btn btn-primary" value="Create">Добави</button>
@@ -58,18 +58,7 @@
 </div>
 
 @section Scripts{
-    <script>
-        $("#child").click(function () {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    Send(position.coords.latitude, position.coords.longitude);
-                });
-            } else {
-                Send(undefined, undefined);
-            }
-        });
 
-    </script>
     <script>
 
         function Send(x, y) {
@@ -93,7 +82,7 @@
                         document.getElementById("block").value = response.block;
                     }
                     if (response.entry !== "undefined") {
-                         document.getElementById("entry").value = response.entry;
+                        document.getElementById("entry").value = response.entry;
                     }
                     if (response.latitude !== "undefined") {
                         document.getElementById("latitude").value = response.latitude;
@@ -107,5 +96,17 @@
                 }
             });
         };
+    </script>
+    <script>
+        $(document).ready(function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    Send(position.coords.latitude, position.coords.longitude);
+                });
+            } else {
+                Send(undefined, undefined);
+            }
+        });
+
     </script>
 }

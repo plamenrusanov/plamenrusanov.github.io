@@ -145,8 +145,7 @@
         public string SetDescription(int id, string message)
         {
             this.cartService.SetDescription(id, message);
-            return "";
+            return "Ok";
         }
-
     }
 }

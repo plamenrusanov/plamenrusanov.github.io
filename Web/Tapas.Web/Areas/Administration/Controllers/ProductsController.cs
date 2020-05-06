@@ -1,9 +1,12 @@
 ﻿namespace Tapas.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.Categories;
     using Tapas.Web.ViewModels.Administration.Products;
@@ -72,82 +75,182 @@
 
         public IActionResult Details(string productId)
         {
+            if (string.IsNullOrEmpty(productId))
+            {
+                return this.NotFound();
+            }
+
             if (!this.productsService.ExistProductById(productId))
             {
                 return this.NotFound();
             }
 
-            var viewModel = this.productsService.GetDetailsProductById(productId);
+            try
+            {
+                var viewModel = this.productsService.GetDetailsProductById(productId);
+                return this.View(viewModel);
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
+            }
 
-            return this.View(viewModel);
         }
 
         public IActionResult Edit(string productId)
         {
+            if (string.IsNullOrEmpty(productId))
+            {
+                return this.NotFound();
+            }
+
             if (!this.productsService.ExistProductById(productId))
             {
                 return this.NotFound();
             }
 
-            var viewModel = this.productsService.GetEditProductById(productId);
-            return this.View(viewModel);
+            try
+            {
+                var viewModel = this.productsService.GetEditProductById(productId);
+                return this.View(viewModel);
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
+            }
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Edit(EditProductModel viewModel)
+        public async Task<IActionResult> Edit(EditProductModel model)
         {
-            if (!this.ModelState.IsValid)
+            // todo
+
+            //if (!this.ModelState.IsValid)
+            //{
+            //    model.AvailableCategories = this.categoriesService
+            //        .All()
+            //        .Select(x => new SelectListItem()
+            //        {
+            //            Text = x.Name,
+            //            Value = x.Id,
+            //            Selected = x.Id == model.CategoryId ? true : false,
+            //        })
+            //        .ToList();
+            //    model.AvailablePackages = this.packagesService.All().ToList();
+            //    return this.View(model);
+            //}
+
+            try
             {
-                return this.View(viewModel);
+                await this.productsService.EditProductAsync(model);
+                return this.RedirectToAction("GetProducts", false);
             }
-
-            await this.productsService.EditProductAsync(viewModel);
-
-            return this.Redirect("/");
+            catch (ArgumentException ae)
+            {
+                model.AvailableCategories = this.categoriesService
+                    .All()
+                    .Select(x => new SelectListItem()
+                    {
+                        Text = x.Name,
+                        Value = x.Id,
+                        Selected = x.Id == model.CategoryId ? true : false,
+                    })
+                    .ToList();
+                model.AvailablePackages = this.packagesService.All().ToList();
+                return this.View(model);
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
+            }
         }
 
         public IActionResult Delete(string productId)
         {
+            if (string.IsNullOrEmpty(productId))
+            {
+                return this.NotFound();
+            }
+
             if (!this.productsService.ExistProductById(productId))
             {
                 return this.NotFound();
             }
 
-            var viewModel = this.productsService.GetDeleteProductById(productId);
+            try
+            {
+                var viewModel = this.productsService.GetDeleteProductById(productId);
+                return this.View(viewModel);
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
+            }
 
-            return this.View(viewModel);
         }
 
         public async Task<IActionResult> OnDelete(string productId)
         {
+            if (string.IsNullOrEmpty(productId))
+            {
+                return this.NotFound();
+            }
+
             if (!this.productsService.ExistProductById(productId))
             {
                 return this.NotFound();
             }
 
-            await this.productsService.DeleteProductAsync(productId);
-
-            return this.Redirect("/");
+            try
+            {
+                await this.productsService.DeleteProductAsync(productId);
+                return this.RedirectToAction("GetProducts", false);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("GetProducts", true);
+            }
         }
 
-        public IActionResult GetProducts(bool isDeleted)
+        public IActionResult GetProducts(bool isDeleted = false)
         {
             this.ViewData["Title"] = isDeleted ? Inactive : Active;
             this.ViewData["IsDeleted"] = isDeleted;
-            var model = this.productsService.GetAllProducts(isDeleted);
-            return this.View(model);
+            try
+            {
+                var model = this.productsService.GetAllProducts(isDeleted);
+                return this.View(model);
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
+            }
+
         }
 
-        public IActionResult Аctivate(string productId)
+        public IActionResult Activate(string productId)
         {
+            if (string.IsNullOrEmpty(productId))
+            {
+                return this.NotFound();
+            }
+
             if (!this.productsService.ExistProductById(productId))
             {
                 return this.NotFound();
             }
 
-            this.productsService.Activate(productId);
-            return this.Redirect("/");
+            try
+            {
+                this.productsService.Activate(productId);
+
+                return this.RedirectToAction("GetProducts", false);
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
+            }
         }
     }
 }
