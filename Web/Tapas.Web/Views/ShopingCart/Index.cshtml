@@ -42,76 +42,71 @@ else
                 {
                     <tr class="row">
                         <td class="col-md-1">
-                            @(i++)
+                            <tda>@(i++)</tda>
                         </td>
                         <td class="col-md-3" id="name@(item.Id)">
-                            @Html.DisplayFor(x => item.ProductName)
+                            <tda>@Html.DisplayFor(x => item.ProductName)</tda>
                         </td>
                         <td class="col-md-2">
-                            @Html.DisplayFor(x => item.Quantity)
+                            <tda>@Html.DisplayFor(x => item.Quantity)</tda>
                         </td>
                         <td class="col-md-2">
-                            @Html.DisplayFor(x => item.ItemPrice)
+                            <tda>@Html.DisplayFor(x => item.ItemPrice)</tda>
                         </td>
                         <td class="col-md-2">
-                            @* data-toggle="modal" data-target="#exampleModalCenter" data-id="@item.Id" *@
-                        <a class="btn btn-primary btn-sm" onclick="GetDescription(@item.Id)">Описание</a>
-                            <button hidden data-toggle="modal" data-target="#exampleModalCenter" id="button@(item.Id)"></button>
-                    </td>
-                    <td class="col-md-2">
-                        <a class="btn btn-danger btn-sm" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.Id">Изтрий</a>
-                    </td>
-                </tr>
-            }
+                            <tda>
+                                <a class="btn btn-primary btn-sm" onclick="GetDescription(@item.Id)">Описание</a>
+                                <button hidden data-toggle="modal" data-target="#exampleModalCenter" id="button@(item.Id)"></button>
+                            </tda>
+                        </td>
+                        <td class="col-md-2">
+                            <tda><a class="btn btn-danger btn-sm" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.Id">Изтрий</a></tda>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
     <div class="row">
-        <div class="col-md-8">
-            <h5>Опаковки</h5>
-        </div>
-        <div class="col-md-4 text-center">
-            <h5>@Model.PackegesPrice лв.</h5>
-        </div>
+        <h5 style="width:80%;">Опаковки</h5>
+        <h5>@Model.PackegesPrice лв.</h5>
     </div>
     @if (Model.DeliveryFee != 0)
     {
         <div class="row">
-            <div class="col-md-8">
-                <h5>Доставка</h5>
-            </div>
-            <div class="col-md-4 text-center">
-                <h5>@Model.DeliveryFee лв.</h5>
-            </div>
+            <h5 style="width:80%;">Доставка</h5>
+            <h5>@Model.DeliveryFee лв.</h5>
         </div>
     }
     <hr class="hr-tapas" />
     <div class="row">
-        <div class="col-md-8">
-            @if (Model.DeliveryFee != 0)
-            {
-                <p>&#8270; Поръчка под 10 лева заплаща 2 лева за доставка!</p>
-            }
-            else if (Model.TotalPrice < 25)
-            {
-                <p>&#8270; Поръчка над 25 лева получава подарък!</p>
-            }
-        </div>
-        <div class="col-md-4">
-            <h3>@Html.LabelFor(x => x.TotalPrice): @Html.DisplayFor(x => x.TotalPrice) лв.</h3>
-            <h1 id="resp"></h1>
-        </div>
+        @if (Model.TotalPrice < 10)
+        {
+            <p>&#8270; Минимална сума на поръчка 10 лева.</p>
+        }
+        else if (Model.TotalPrice < 15)
+        {
+            <p>&#8270; Поръчка под 15 лева заплаща доставка!</p>
+        }
+        else if (Model.TotalPrice < 25)
+        {
+            <p>&#8270; Поръчка над 25 лева получава подарък!</p>
+        }
+    </div>
+    <div class="row">
+        <h4 style="width:70%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.TotalPrice) лв.</h4>
+        <h1 id="resp"></h1>
     </div>
 }
 
 <hr class="hr-tapas" />
 <div class="row">
-    <div class="col-md-6 text-center">
+    <div class="col-50 text-center">
         <a class="btn btn-primary btn-lg" href="/Administration/Products/">Към менюто</a>
     </div>
-    @if (Model.ShopingItems.Count != 0)
+    @if (Model.ShopingItems.Count != 0 && Model.TotalPrice >= 10)
     {
-        <div class="col-md-6 text-center">
+        <div class="col-50 text-center">
             <a class="btn btn-primary btn-lg" href="/Orders/Create">Поръчай</a>
         </div>
     }
@@ -137,13 +132,14 @@ else
                 </form>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-secondary justify-content-start" data-dismiss="modal" id="closeModal" >Затвори</a>
+                <a class="btn btn-secondary justify-content-start" data-dismiss="modal" id="closeModal">Затвори</a>
                 <a class="btn btn-primary align-content-end" onclick="SetDescription()">Запази промените</a>
             </div>
         </div>
     </div>
 </div>
 @section Scripts{
+    <link rel="stylesheet" type="text/css" href="~/css/shopingCartTable.css">
     <script>
         function SetDescription() {
             var itemId = document.getElementById("sciId").value;

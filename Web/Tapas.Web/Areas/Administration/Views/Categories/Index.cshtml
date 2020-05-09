@@ -1,34 +1,57 @@
 ﻿@model List<Tapas.Web.ViewModels.Administration.Categories.CategoryViewModel>
 @{
+    Layout = "_AdminLayout";
     this.ViewData["Title"] = "Категорий";
 }
 
 <div class="row">
-    <div class="col-md-9 justify-content-center">
+    <div class="col-md-9 text-center">
         <h1>@this.ViewData["Title"]</h1>
     </div>
     <div class="col-md-3 justify-content-end">
         <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories"
-           asp-action="Add">Create Category</a>
+           asp-action="Add">Добави категория</a>
     </div>
 </div>
-@foreach (var item in Model)
-{
-    <div class="row">
-        <div class="col-md-6 text-center">
-            <h3>@item.Name</h3>
-        </div>
-        <div class="col-md-2 justify-content-md-center">
-            <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
-                    asp-action="Edit" asp-route-categoryId="@item.Id">Edit</a>
-        </div> 
-        <div class="col-md-2 justify-content-md-center">
-            <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
-                    asp-action="Details" asp-route-categoryId="@item.Id">Details</a>
-        </div> 
-        <div class="col-md-2 justify-content-md-center">
-            <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories" 
-                    asp-action="Delete" asp-route-categoryId="@item.Id">Delete</a>
-        </div>
-    </div>
-}
+<div class="container bg-light">
+    <table class="table">
+        <thead>
+            <tr class="row">
+                <th class="col-md-6">
+                    @Html.Label("Име")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Редактирай")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Детайли")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Изтрий")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="row">
+                    <td class="col-md-6">
+                        <h3>@item.Name</h3>
+                    </td>
+                    <td class="col-md-2">
+                        <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories"
+                           asp-action="Edit" asp-route-categoryId="@item.Id">Редактирай</a>
+                    </td>
+                    <td class="col-md-2">
+                        <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories"
+                           asp-action="Details" asp-route-categoryId="@item.Id">Детайли</a>
+                    </td>
+                    <td class="col-md-2">
+                        <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories"
+                           asp-action="Delete" asp-route-categoryId="@item.Id">Изтрий</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

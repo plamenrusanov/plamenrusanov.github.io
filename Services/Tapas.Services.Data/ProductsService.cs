@@ -4,16 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
+
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Tapas.Common;
-    using Tapas.Data.Common;
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Services.Contracts;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.Allergens;
-    using Tapas.Web.ViewModels.Administration.AllergensProducts;
     using Tapas.Web.ViewModels.Administration.Categories;
     using Tapas.Web.ViewModels.Administration.Packages;
     using Tapas.Web.ViewModels.Administration.Products;
@@ -199,9 +197,9 @@
                     product.Sizes.Add(new ProductSize()
                     {
                         SizeName = size.SizeName,
-                        Price = size.Price,
+                        Price = size.Price != 0 ? size.Price : throw new ArgumentException("Цената не може да е нула. Ползвай запетая!"),
                         Weight = size.Weight,
-                        MaxProductsInPackage = size.MaxProductsInPackage,
+                        MaxProductsInPackage = size.MaxProductsInPackage != 0 ? size.MaxProductsInPackage : throw new ArgumentException("Полето максимален брой в опаковка не може да е нула!"),
                         PackageId = size.PackageId,
                         MenuProductId = product.Id,
                     });
@@ -215,9 +213,9 @@
                     }
 
                     s.SizeName = size.SizeName;
-                    s.Price = size.Price;
+                    s.Price = size.Price != 0 ? size.Price : throw new ArgumentException("Цената не може да е нула. Ползвай запетая!");
                     s.Weight = size.Weight;
-                    s.MaxProductsInPackage = size.MaxProductsInPackage;
+                    s.MaxProductsInPackage = size.MaxProductsInPackage != 0 ? size.MaxProductsInPackage : throw new ArgumentException("Полето максимален брой в опаковка не може да е нула!");
                     s.MenuProductId = product.Id;
                     s.PackageId = size.PackageId;
                 }

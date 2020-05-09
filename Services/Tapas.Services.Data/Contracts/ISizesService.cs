@@ -12,7 +12,7 @@
 
         ProductSizeViewModel GetDetailModel(int sizeId);
 
-        object GetExtraSize(int index);
+        ExtraSize GetExtraSize(int index);
 
         string Remove(int id);
     }

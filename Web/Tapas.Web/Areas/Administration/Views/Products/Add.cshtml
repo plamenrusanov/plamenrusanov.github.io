@@ -1,6 +1,7 @@
 ﻿@model Tapas.Web.ViewModels.Administration.Products.ProductInputViewModel
 @using Tapas.Common
 @{
+    Layout = "_AdminLayout";
     ViewData["Title"] = "Добави продукт";
 }
 
@@ -69,12 +70,14 @@
                 <div class=" row form-group">
                     <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Price, "Цена", new { @class = "control-label" })</h4>
                     @Html.EditorFor(x => Model.Sizes[i].Price, ViewData["Title"].ToString(), $"Sizes[{i}].Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                <span asp-validation-for="@Model.Sizes[i].Price" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class=" row form-group">
                     <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Weight, "Грамаж", new { @class = "control-label" })</h4>
                     @Html.EditorFor(x => Model.Sizes[i].Weight, ViewData["Title"].ToString(), $"Sizes[{i}].Weight", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                <span asp-validation-for="@Model.Sizes[i].Weight" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
@@ -92,8 +95,8 @@
             <div class="col-md-6">
                 <div class="row form-group">
                     <h4 class="col-md-10"> @Html.LabelFor(x => Model.Sizes[i].MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
-                    @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, ViewData["Title"].ToString(), $"Sizes[{i}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value=1 } })
-
+                    @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, ViewData["Title"].ToString(), $"Sizes[{i}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value = 1 } })
+                    <span asp-validation-for="@Model.Sizes[i].MaxProductsInPackage" class="text-danger"></span>
                 </div>
             </div>
         </div>

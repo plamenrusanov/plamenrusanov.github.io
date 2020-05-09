@@ -148,17 +148,18 @@
             }
             catch (ArgumentException ae)
             {
-                model.AvailableCategories = this.categoriesService
-                    .All()
-                    .Select(x => new SelectListItem()
-                    {
-                        Text = x.Name,
-                        Value = x.Id,
-                        Selected = x.Id == model.CategoryId ? true : false,
-                    })
-                    .ToList();
-                model.AvailablePackages = this.packagesService.All().ToList();
-                return this.View(model);
+                return this.StatusCode(406, ae.Message);
+                //model.AvailableCategories = this.categoriesService
+                //    .All()
+                //    .Select(x => new SelectListItem()
+                //    {
+                //        Text = x.Name,
+                //        Value = x.Id,
+                //        Selected = x.Id == model.CategoryId ? true : false,
+                //    })
+                //    .ToList();
+                //model.AvailablePackages = this.packagesService.All().ToList();
+                //return this.View(model);
             }
             catch (Exception)
             {

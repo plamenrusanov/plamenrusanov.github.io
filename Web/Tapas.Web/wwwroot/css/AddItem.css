@@ -1,0 +1,25 @@
+﻿.col-50{
+    width:50%;
+}
+
+#theInput{
+    width:45px;
+    display:inline;
+}
+
+#minus, #plus {
+    padding: 0;
+    border: none;
+    font-size: 2rem;
+    padding-bottom: 7px;
+}
+
+.row {
+    margin: 0;
+}
+
+@media only screen and (max-width: 768px) {
+    .col-50{
+        width:100%;
+    }
+}

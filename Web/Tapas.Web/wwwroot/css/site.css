@@ -2,8 +2,12 @@
     white-space: normal;
     text-align: center;
     word-break: break-all;
+    margin-left:10px;
 }
 
+.navbar-toggler-icon{
+    margin:8px 10px;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -40,15 +44,38 @@ html {
     min-height: 100%;
 }
 
+.navbar{
+    padding:0;
+}
+
+a.nav-link.text-dark {
+    height: 64px;
+    padding-top: 17px;
+}
+
+ul li a {
+    -webkit-transition: background-color .3s;
+    transition: background-color .3s;
+    font-size: 18px;
+    color: #fff;
+    display: block;
+    padding: 0 15px 0 15px;
+    cursor: pointer;
+}
+
+ul li a:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 #body {
-    /*https: //res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_900,w_1600,f_auto/v1586767202/k4yosrnrf2mlyw6rfcfe.jpg*/ 
+    /*https: //res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_900,w_1600,f_auto/v1586767202/k4yosrnrf2mlyw6rfcfe.jpg*/
     margin-bottom: 60px;
-    background-image: url("/Images/1._MG_5972.jpg");
+    background-image: url("/Images/bg.jpg");
     height: auto;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-attachment:fixed;
+    background-attachment: fixed;
 }
 
 #main-transperant {
@@ -58,12 +85,41 @@ html {
     width: 100%;
     height: auto;
 }
+
+.waves-effect {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    vertical-align: middle;
+    z-index: 1;
+    -webkit-transition: .3s ease-out;
+    transition: .3s ease-out;
+}
+
+    .waves-effect.waves-light .waves-ripple {
+        background-color: rgba(255, 255, 255, 0.45);
+    }
+
+.row-group {
+    margin-right: 0 !important;
+}
+
 .remove-button {
     height: 30px;
     width: 90px;
     background-color: red;
     border-radius: 5px;
 }
+
+    .remove-button:hover {
+        cursor: pointer;
+    }
 
 .carosel {
     position: absolute;
@@ -93,14 +149,10 @@ html {
 
 .hr-tapas {
     border: 2px solid grey;
-    width:100%;
+    width: 100%;
 }
 
-table { /*ShopingCart*/
-    width: 90% !important;
-    margin-left: 5%;
-    margin-right: 5%;
-}
+
 
 #container-address { /*Addreses/Add*/
     min-height: 850px;
@@ -123,31 +175,35 @@ table { /*ShopingCart*/
     margin-top: 2px;
     margin-bottom: 2px;
 }
-.card-item{
-    color:whitesmoke;
-    border:solid 1px black;
+
+.card-item {
+    color: whitesmoke;
+    border: solid 1px black;
 }
+
 .brand-logo {
     background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_40,w_40,f_auto/v1587384461/logo.jpg");
     width: 40px;
     height: 40px;
+    border-radius: 5px;
 }
+
 .bg-light-transperant {
     background: rgba(255, 255, 255, 1);
     color: white;
     width: 100%;
     height: auto;
 }
-.nav-link{
-    padding:0;
-}
+
 
 h1 {
     color: #007bff;
 }
+
 .card {
-    border:1px solid black;
+    border: 1px solid black;
 }
+
 a.carda:hover {
     animation: shake 0.5s;
     animation-iteration-count: infinite;
@@ -198,6 +254,7 @@ a.carda:hover {
         transform: translate(1px, -2px) rotate(-1deg);
     }
 }
+
 .blink {
     animation: blinker 1s linear infinite;
 }

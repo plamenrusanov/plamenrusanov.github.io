@@ -1,28 +1,52 @@
-﻿
+﻿@using Tapas.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     Layout = "_IndexLayout";
 }
-<ul id="dropdown1" class="dropdown-content">
-    <li><a href="#!">one</a></li>
-    <li class="divider"></li>
-    <li><a href="#!">two</a></li>
-    <li class="divider"></li>
-    <li><a href="#!">three</a></li>
-</ul>
+
 <nav class="white" role="navigation">
 
     <div class="nav-wrapper container">
-        <ul class="left hide-on-small-and-down">
-            <li> <a href="/" class="b-l"></a></li>
+        <ul class="left"><li><a href="/" class="b-l"></a></li></ul>
+        <ul class="left hide-on-med-and-down">
             <li><a href="/Administration/Products">Меню</a></li>
-            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Кетъринг<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a href="/Administration/CateringFood/">Кетъринг</a></li>
             <li><a href="/Administration/Products">Галерия</a></li>
             <li><a asp-area="" asp-controller="ShopingCart" asp-action="Index" style="font-size:2rem;">🛒</a></li>
         </ul>
 
+        <ul class="right hide-on-med-and-down">
+            @if (this.SignInManager.IsSignedIn(this.User))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Здравей @(this.User.Identity.Name)!</a>
+                </li>
+                if (this.User.IsInRole(GlobalConstants.AdministratorName))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a asp-area="Identity" asp-page="/Account/Logout" class="nav-link text-dark">Logout</a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                </li>
+            }
+        </ul>
+
         <ul id="nav-mobile" class="sidenav">
             <li><a href="/Administration/Products">Меню</a></li>
-            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Кетъринг<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a href="/Administration/CateringFood/">Кетъринг</a></li>
             <li><a href="/Administration/Products">Галерия</a></li>
             <li><a class="nav-link" asp-area="" asp-controller="ShopingCart" asp-action="Index" style="font-size:2rem;">🛒</a></li>
 
@@ -57,13 +81,14 @@
         <div class="row">
 
             <div class="col s12 m4">
-                <a href="/Administration/Products/">
+                <a href="/Administration/CateringFood/">
                     <div class="icon-block">
 
-                        <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2>
-                        <h5 class="center">Решения за кетъринг</h5>
 
-                        <p class="light">Тук можете да разгледате нашите предложения за вкусната част на вашите събития.</p>
+                        <h2 class="center"><img src="~/Images/food.png" /></h2>
+                        <h5 class="center" style="color:black;">Решения за кетъринг</h5>
+
+                        <p class="light" style="color:black;">Тук можете да разгледате нашите предложения за вкусната част на вашите събития. Превъзходно оформени плата с вкусни хапки от които вашите гости ще останат възхитени.</p>
 
                     </div>
                 </a>
@@ -100,7 +125,7 @@
             </div>
         </div>
     </div>
-    <div class="parallax"><img src="~/Images/4._MG_6053.jpg" alt="Unsplashed background img 2"></div>
+    <div class="parallax"><img src="~/Images/Залата.jpg" alt="Unsplashed background img 2"></div>
 </div>
 
 <div class="container">
@@ -126,7 +151,7 @@
             </div>
         </div>
     </div>
-    <div class="parallax"><img src="~/Images/1._MG_5972.jpg" alt="Unsplashed background img 3"></div>
+    <div class="parallax"><img src="~/Images/Синя снимка.jpg" alt="Unsplashed background img 3"></div>
 </div>
 
 <footer class="page-footer teal">
@@ -166,23 +191,7 @@
 </footer>
 
 
-<!--  Scripts-->
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="~/lib/materialize/js/materialize.js"></script>
-<script src="~/lib/materialize/js/init.js"></script>
-<script>
-    $(".dropdown-trigger").dropdown();
-</script>
-<script>
-    function anc(url) {
-        $ajax({
-            url: url,
-            success: function (responce) {
 
-            }
-        });
-    }
-</script>
 
 
 

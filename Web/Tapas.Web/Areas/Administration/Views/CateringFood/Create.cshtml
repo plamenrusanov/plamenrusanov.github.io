@@ -1,0 +1,115 @@
+﻿@model Tapas.Web.ViewModels.Administration.CateringFood.CreateModel
+@{ 
+    Layout = "_AdminLayout";
+}
+<div><h1 class="text-center">Създай</h1></div>
+
+
+<hr class="hr-tapas" />
+<form enctype="multipart/form-data" asp-area="@GlobalConstants.AreaAdmin" asp-controller="CateringFood" asp-action="Create">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row form-group">
+                <h4 class="col-md-6">@Html.LabelFor(x => x.Name, "Име на продукта", new { @class = "control-label" })</h4>
+                @Html.EditorFor(x => x.Name, "", "Name", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="row form-group">
+                <h4 class="col-md-6">@Html.LabelFor(x => x.Description, "Описание", new { @class = "control-label" })</h4>
+                @Html.TextAreaFor(x => x.Description, 3, 50, new { @class = "col-md-6 form-control" })
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="row form-group">
+                <h4 class="col-md-6">@Html.LabelFor(x => x.Image, "Снимка", new { @class = "control-label" })</h4>
+                @Html.EditorFor(x => x.Image, "", "Image", new { htmlAttributes = new { @class = "col-md-6 form-control-file", @type = "file" } })
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="row form-group">
+                <h4 class="col-md-6">@Html.LabelFor(x => x.NumberOfBits, "Брой хапки", new { @class = "control-label" })</h4>
+                @Html.EditorFor(x => x.NumberOfBits, "", "NumberOfBits", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                <span asp-validation-for="NumberOfBits" class="text-danger"></span>
+            </div>
+            <div class="row form-group">
+                <h4 class="col-md-12"> @Html.LabelFor(x => x.Allergens, "Алергени", new { @class = "control-label" })</h4>
+                @foreach (var item in Model.AvailableAllergens)
+                {
+                    <div class="col-md-4 col-sm-6 checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   name="Allergens"
+                                   value="@item.Id" /> @item.Name
+                            </label>
+                        </div>
+                    }
+            </div>
+        </div>
+    </div>
+    <hr class="hr-tapas" />
+    @for (int i = 0; i < Model.Sizes.Count; i++)
+    {
+        <div class="row form-row">
+            <div class="col-md-6">
+                <div class="row form-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].SizeName, "Име на размера", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].SizeName, "", Model.Sizes[i].SizeName, new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                    <span asp-validation-for="@Model.Sizes[i].SizeName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class=" row form-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Price, "Цена", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].Price, "", $"Sizes[{i}].Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class=" row form-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Weight, "Грамаж", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].Weight, "", $"Sizes[{i}].Weight", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row form-group">
+                    <h4 class="col-md-6"> @Html.LabelFor(x => Model.Sizes[i].PackageId, "Опаковка", new { @class = "control-label" })</h4>
+                    <select class="col-md-6 form-control" asp-for="Sizes[i].PackageId">
+                        @foreach (var package in Model.AvailablePackages)
+                        {
+                            <option value="@package.Id">@package.Name</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row form-group">
+                    <h4 class="col-md-10"> @Html.LabelFor(x => Model.Sizes[i].MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, "", $"Sizes[{i}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value = 1 } })
+
+                </div>
+            </div>
+        </div>
+        <hr class="hr-tapas" />
+    }
+
+
+
+    <div class="row">
+        <div class="col-md-6 justify-content-center">
+            <a href="/" class="btn btn-primary">Назаад</a>
+        </div>
+        <div class="col-md-6 form-group justify-content-center">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}
+

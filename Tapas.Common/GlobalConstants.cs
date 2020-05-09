@@ -26,6 +26,6 @@
 
         public const decimal DeliveryFee = 2.00m;
 
-        public const decimal OrderPriceMin = 10m;
+        public const decimal OrderPriceMin = 15m;
     }
 }

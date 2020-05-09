@@ -17,6 +17,7 @@
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script type="text/javascript" src="~/lib/materialize/js/materialize.js"></script>
+        <script src="~/lib/materialize/js/init.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
@@ -25,6 +26,6 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
     </environment>
 
-   @* @this.RenderSection("Scripts", required: false)*@
+    @this.RenderSection("Scripts", required: false)
 </body>
 </html>

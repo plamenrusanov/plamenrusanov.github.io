@@ -20,15 +20,15 @@
             <div>@Html.DisplayFor(x => x.Product.Description)</div>
         </div>
         <div class="col-md-4">
-            <h3 class="text-center">Алергени</h3>
+            <h5 class="text-center">Алергени</h5>
 
             @if (Model.Product.Allergens.Count == 0)
             {
-                <p>Липсват данни за наличие<br /> на алергени.</p>
+                <p class="text-center">Липсват данни за наличие<br /> на алергени.</p>
             }
             @foreach (var item in Model.Product.Allergens)
             {
-             
+
                 <div class="ml-5 pl-5">
                     <img src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_35,w_35/v1587540009/@(item.ImageUrl)" alt="@item.Name">
                     <span>@Html.Label(item.Name)</span>
@@ -61,41 +61,42 @@
                 <div class="row">
 
                     <input type="hidden" class="form-control" name="Product.Sizes[0].SizeId" value="@Model.Product.Sizes[0].SizeId" />
-                    <div class="col-md-2">
-                        <h6>@Html.Label("Цена")</h6>
+                    <div class="col-50 row">
+                        <h4 style="width:50%;">@Html.Label("Цена")</h4>
                         <h4 id="productPrice">@Model.Product.Sizes[0].Price лв.</h4>
                     </div>
-                    <div class="col-md-2">
-                        <h6>@Html.Label("Тегло")</h6>
+                    <div class="col-50 row">
+                        <h4 style="width:50%;">@Html.Label("Тегло")</h4>
                         <h4>@Model.Product.Sizes[0].Weight гр.</h4>
                     </div>
-                    <div class="col-md-2">
-                        <h6>@Html.Label("Опаковка")</h6>
+
+                    <div class="col-50 row form-group ">
+                        <h4 style="width:50%;">@Html.Label("Количество")</h4>
+                        <div>
+                            <a id="minus" class="btn" onclick="minus()">◀</a>
+                            <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Количество" value="1" min="1" step="1">
+                            <a id="plus" class="btn" onclick="plus()">▶</a>
+                        </div>
+                    </div>
+                    <div class="col-50 row">
+                        <h4 style="width:50%;">@Html.Label("Опаковка")</h4>
                         <h4 id="packagePrice">@Model.Product.Sizes[0].PackagePrice лв.</h4>
                     </div>
 
-                    <div class="col-md-2 form-group justify-content-around">
-                        <h6>@Html.Label("Количество")</h6>
-                        <div class="quantity buttons_added row">
-                            <a id="minus" class="btn col-sm-4 form-control" onclick="minus()">◀</a>
-                            <input name="Quantity" id="theInput" type="text" size="4" class="form-control input-text qty text col-sm-4" title="Количество" value="1" min="1" step="1">
-                            <a id="plus" class="btn col-sm-4 form-control justify-content-around" onclick="plus()">▶</a>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <h6>@Html.Label("Междинна сума")</h6>
+                    <div class="col-50 row">
+                        <h4 style="width:50%;">@Html.Label("Междинна сума")</h4>
                         <h4 id="subTotal">@Model.Product.Sizes[0].SubTotal лв.</h4>
                     </div>
-                    <div class="col-md-2 form-group">
-                        <h6>@Html.Label("Уточнения")</h6>
+                    <div class="col-50 form-group">
+                        <small>@Html.Label("Уточнения")</small>
                         @Html.TextAreaFor(x => x.Description, 2, 20, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 text-center">
+                    <div class="text-center" style="width:50%;">
                         <a class="btn btn-primary btn-lg" href="/Administration/Products/">Меню</a>
                     </div>
-                    <div class="col-md-6 form-group text-center">
+                    <div class="form-group text-center" style="width:50%;">
                         <button type="submit" class="btn btn-primary btn-lg">Добави</button>
                     </div>
                 </div>
@@ -105,7 +106,7 @@
     </div>
 </div>
 <!--ShopingCart-->
-<hr class="hr-tapas" />
+@*<hr class="hr-tapas" />
 <h1 class="text-center">Твоята количка</h1>
 <hr class="hr-tapas" />
 <div class="bg-light">
@@ -154,11 +155,12 @@
         </tbody>
     </table>
 </div>
-<hr class="hr-tapas" />
+<hr class="hr-tapas" />*@
 
 
 @section Scripts
 {
+    <link rel="stylesheet" type="text/css" href="~/css/addItem.css">
     <script>
         function DisplaySizeName(sizeId) {
             var sizeName = document.getElementById(sizeId).innerHTML;

@@ -14,7 +14,7 @@
             <div class="list-group">
                 @foreach (var item in Model.Categories)
                 {
-                    <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="GetProductsByCategory" asp-route-categoryId="@item.Id" class="btn btn-default list-group-item "><h3>@item.Name</h3></a>
+                    <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="GetProductsByCategory" asp-route-categoryId="@item.Id" class="btn btn-default list-group-item"><h3>@item.Name</h3></a>
                 }
             </div>
 

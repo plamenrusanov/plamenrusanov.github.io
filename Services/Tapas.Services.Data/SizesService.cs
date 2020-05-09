@@ -56,7 +56,7 @@
                 }).FirstOrDefault();
         }
 
-        public object GetExtraSize(int index)
+        public ExtraSize GetExtraSize(int index)
         {
             return new ExtraSize()
             {

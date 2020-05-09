@@ -26,8 +26,16 @@
                 return this.NotFound();
             }
 
-            var model = this.sizesService.GetSizesOfProduct(productId);
-            return this.View(model);
+            try
+            {
+                var model = this.sizesService.GetSizesOfProduct(productId);
+                return this.View(model);
+            }
+            catch (System.Exception)
+            {
+                return this.BadRequest();
+            }
+
         }
 
         public IActionResult GetSizeModel(string sizeId)
@@ -49,15 +57,28 @@
                 return this.NotFound();
             }
 
-            var model = this.sizesService.GetDetailModel(id);
-
-            return this.View(model);
+            try
+            {
+                var model = this.sizesService.GetDetailModel(id);
+                return this.View(model);
+            }
+            catch (System.Exception)
+            {
+                return this.NotFound();
+            }
         }
 
         public IActionResult AddSizeModel(int index)
         {
-            var model = this.sizesService.GetExtraSize(index);
-            return this.View(model);
+            try
+            {
+                var model = this.sizesService.GetExtraSize(index);
+                return this.View(model);
+            }
+            catch (System.Exception)
+            {
+                return this.NotFound();
+            }
         }
 
         public IActionResult Remove(int id)

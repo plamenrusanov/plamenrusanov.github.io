@@ -11,6 +11,10 @@ nav .brand-logo {
     color: #444;
 }
 
+li a.nav-link.text-dark {
+    font-size: 1.2rem;
+}
+
 p {
     line-height: 2rem;
 }
@@ -64,4 +68,5 @@ footer.page-footer {
     height: 40px;
     margin-top:10px;
     margin-right:10px;
+    border-radius:5px;
 }
