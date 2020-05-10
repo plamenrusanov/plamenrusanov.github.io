@@ -36,6 +36,7 @@
         [AllowAnonymous]
         public IActionResult Index()
         {
+            this.ViewData["Title"] = "Меню";
             var homeIndexViewModel = this.productsService.CategoryWhitProducts();
             return this.View(homeIndexViewModel);
         }
@@ -43,8 +44,26 @@
         [AllowAnonymous]
         public IActionResult GetProductsByCategory(string categoryId)
         {
-            var homeIndexViewModel = this.productsService.CategoryWhitProducts(categoryId);
-            return this.View("Index", homeIndexViewModel);
+            if (string.IsNullOrEmpty(categoryId))
+            {
+                return this.NotFound();
+            }
+
+            if (!this.categoriesService.ExistCategoryById(categoryId))
+            {
+                return this.NotFound();
+            }
+
+            try
+            {
+                this.ViewData["Title"] = this.categoriesService.GetCategoryNameById(categoryId);
+                var homeIndexViewModel = this.productsService.CategoryWhitProducts(categoryId);
+                return this.View("Index", homeIndexViewModel);
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
+            }
         }
 
         public IActionResult Add()
@@ -68,9 +87,16 @@
                 return this.View();
             }
 
-            await this.productsService.AddAsync(inputModel);
+            try
+            {
+                await this.productsService.AddAsync(inputModel);
 
-            return this.Redirect("/");
+                return this.Redirect("/");
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
+            }
         }
 
         public IActionResult Details(string productId)
@@ -94,7 +120,6 @@
             {
                 return this.NotFound();
             }
-
         }
 
         public IActionResult Edit(string productId)
@@ -126,8 +151,8 @@
         {
             // todo
 
-            //if (!this.ModelState.IsValid)
-            //{
+            // if (!this.ModelState.IsValid)
+            // {
             //    model.AvailableCategories = this.categoriesService
             //        .All()
             //        .Select(x => new SelectListItem()
@@ -139,8 +164,7 @@
             //        .ToList();
             //    model.AvailablePackages = this.packagesService.All().ToList();
             //    return this.View(model);
-            //}
-
+            // }
             try
             {
                 await this.productsService.EditProductAsync(model);
@@ -149,7 +173,8 @@
             catch (ArgumentException ae)
             {
                 return this.StatusCode(406, ae.Message);
-                //model.AvailableCategories = this.categoriesService
+
+                // model.AvailableCategories = this.categoriesService
                 //    .All()
                 //    .Select(x => new SelectListItem()
                 //    {
@@ -158,8 +183,8 @@
                 //        Selected = x.Id == model.CategoryId ? true : false,
                 //    })
                 //    .ToList();
-                //model.AvailablePackages = this.packagesService.All().ToList();
-                //return this.View(model);
+                // model.AvailablePackages = this.packagesService.All().ToList();
+                // return this.View(model);
             }
             catch (Exception)
             {
@@ -188,7 +213,6 @@
             {
                 return this.BadRequest();
             }
-
         }
 
         public async Task<IActionResult> OnDelete(string productId)
@@ -227,7 +251,6 @@
             {
                 return this.NotFound();
             }
-
         }
 
         public IActionResult Activate(string productId)

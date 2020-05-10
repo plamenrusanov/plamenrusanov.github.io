@@ -7,6 +7,8 @@
 
     public interface ICategoriesService
     {
+        string GetCategoryNameById(string categoryId);
+
         bool ExistCategoryByName(string categoryName);
 
         bool ExistCategoryById(string categoryId);

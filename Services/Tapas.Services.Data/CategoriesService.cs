@@ -40,15 +40,31 @@
 
         public void Edit(CategoryViewModel categoryViewModel)
         {
+            if (string.IsNullOrEmpty(categoryViewModel.Id))
+            {
+                throw new ArgumentNullException();
+            }
+
             var category = this.categoriesRepository.All()
                 .Where(x => x.Id == categoryViewModel.Id)
                 .FirstOrDefault();
+
+            if (category is null)
+            {
+                throw new Exception();
+            }
+
             category.Name = categoryViewModel.Name;
             this.categoriesRepository.SaveChanges();
         }
 
         public CategoryViewModel GetCategoryViewModelById(string categoryId)
         {
+            if (!this.ExistCategoryById(categoryId))
+            {
+                throw new ArgumentException();
+            }
+
             return this.categoriesRepository.All()
                 .Where(x => x.Id == categoryId)
                 .Select(x => new CategoryViewModel()
@@ -71,11 +87,30 @@
 
         public void Remove(string categoryId)
         {
+            if (!this.ExistCategoryById(categoryId))
+            {
+                throw new ArgumentException();
+            }
+
             var category = this.GetCategoryById(categoryId);
 
             this.categoriesRepository.Delete(category);
             this.categoriesRepository.SaveChanges();
         }
+
+        public string GetCategoryNameById(string categoryId)
+        {
+            if (!this.ExistCategoryById(categoryId))
+            {
+                throw new ArgumentException();
+            }
+
+            return this.categoriesRepository.All()
+                .Where(x => x.Id == categoryId)
+                .Select(x => x.Name)
+                .FirstOrDefault();
+        }
+
 
         private Category GetCategoryById(string categoryId)
             => this.categoriesRepository.All().FirstOrDefault(x => x.Id == categoryId);

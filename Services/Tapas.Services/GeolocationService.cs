@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Services
 {
+    using System;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -20,6 +21,11 @@
 
         public async Task<PositionDto> GetAddressAsync(string latitude, string longitude)
         {
+            if (string.IsNullOrEmpty(latitude) || string.IsNullOrEmpty(longitude))
+            {
+                throw new ArgumentNullException();
+            }
+
             HttpClientHandler handler = new HttpClientHandler()
             {
                 AutomaticDecompression = DecompressionMethods.GZip,
@@ -37,9 +43,9 @@
                     var resultContent = await result.Content.ReadAsStringAsync();
                     dto = JsonConvert.DeserializeObject<PositionDto>(resultContent);
                 }
-                catch (System.Exception)
+                catch (Exception)
                 {
-                    return null;
+                    throw new Exception();
                 }
 
                 return dto;

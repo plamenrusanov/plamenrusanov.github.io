@@ -18,11 +18,6 @@
 
         public IActionResult Index()
         {
-            if (this.User == null)
-            {
-                return this.RedirectToPage("/Account/Login");
-            }
-
             var categories = this.categoriesService.All();
             return this.View(categories);
         }
@@ -46,20 +41,36 @@
                 return this.View();
             }
 
-            await this.categoriesService.AddAsync(inputModel.Name);
+            try
+            {
+                await this.categoriesService.AddAsync(inputModel.Name);
 
-            return this.RedirectToAction("Index");
+                return this.RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                return this.BadRequest();
+            }
+
         }
 
         public IActionResult Edit(string categoryId)
         {
-            var category = this.categoriesService.GetCategoryViewModelById(categoryId);
-            if (category == null)
+            try
             {
-                return this.NotFound();
+                var category = this.categoriesService.GetCategoryViewModelById(categoryId);
+                if (category == null)
+                {
+                    return this.NotFound();
+                }
+
+                return this.View(category);
+            }
+            catch (System.Exception)
+            {
+                return this.BadRequest();
             }
 
-            return this.View(category);
         }
 
         [HttpPost]
@@ -70,9 +81,17 @@
                 return this.View(viewModel);
             }
 
-            this.categoriesService.Edit(viewModel);
+            try
+            {
+                this.categoriesService.Edit(viewModel);
 
-            return this.RedirectToAction("Index");
+                return this.RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                return this.BadRequest();
+            }
+
         }
 
         public IActionResult Details(string categoryId)
@@ -82,9 +101,17 @@
                 return this.NotFound();
             }
 
-            var category = this.categoriesService.GetCategoryViewModelById(categoryId);
+            try
+            {
+                var category = this.categoriesService.GetCategoryViewModelById(categoryId);
 
-            return this.View(category);
+                return this.View(category);
+            }
+            catch (System.Exception)
+            {
+                return this.BadRequest();
+            }
+
         }
 
         public IActionResult Delete(string categoryId)
@@ -94,9 +121,17 @@
                 return this.NotFound();
             }
 
-            var category = this.categoriesService.GetCategoryViewModelById(categoryId);
+            try
+            {
+                var category = this.categoriesService.GetCategoryViewModelById(categoryId);
 
-            return this.View(category);
+                return this.View(category);
+            }
+            catch (System.Exception)
+            {
+                return this.BadRequest();
+            }
+
         }
 
         public IActionResult OnDelete(string categoryId)
@@ -106,9 +141,17 @@
                 return this.NotFound();
             }
 
-            this.categoriesService.Remove(categoryId);
+            try
+            {
+                this.categoriesService.Remove(categoryId);
 
-            return this.RedirectToAction("Index");
+                return this.RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                return this.BadRequest();
+            }
+
         }
     }
 }

@@ -10,6 +10,7 @@
         <link href="~/lib/jquery/dist/jquery.min.js" rel="application/json" asp-append-version="true" />
         <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/css/Dashboard.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment names="Staging,Production">
         <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
@@ -49,16 +50,16 @@
     <div class="container-fluid">
         <partial name="_CookieConsentPartial" />
         <div class="row">
-            <div class="col-sm-2">
-                <ul class="nav navbar flex-column navbar-light">
-                    <li class="nav-item">
+            <div class="col-lg-2">
+                <ul class="nav navbar flex-column navbar-light" style="display:block">
+                    <li class="nav-item text-center">
                         <a class="nav-link text-dark" asp-area="Administration" asp-controller="Packages" asp-action="Index">Опаковки</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item text-center ">
                         <a class="nav-link text-dark" asp-area="Administration" asp-controller="Categories" asp-action="Index">Категорий</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <li class="nav-item text-center dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                             Поръчки
                         </a>
                         <div class="dropdown-menu">
@@ -66,8 +67,8 @@
                             <a class="dropdown-item" href="/Orders/All">Всички</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <li class="nav-item text-center dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                             Продукти
                         </a>
                         <div class="dropdown-menu">
@@ -76,8 +77,8 @@
                             <a class="dropdown-item" href="/Administration/Products/GetProducts?isDeleted=@true">Неактивни</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    <li class="nav-item text-center dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                             Кетъринг плата
                         </a>
                         <div class="dropdown-menu">
@@ -89,9 +90,9 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-sm-10">
+            <div class="col-lg-10">
 
-                <main role="main" class="pb-3">
+                <main role="main" class="pb-3 pt-3">
                     @this.RenderBody()
                 </main>
             </div>

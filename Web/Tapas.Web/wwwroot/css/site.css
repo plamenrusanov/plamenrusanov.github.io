@@ -47,6 +47,15 @@ html {
 .navbar{
     padding:0;
 }
+#logout {
+    padding-top: 17px;
+    font-size: 18px;
+    padding-bottom: 18px;
+    border-radius: 0;
+}
+    #logout:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
 
 a.nav-link.text-dark {
     height: 64px;
@@ -86,26 +95,6 @@ ul li a:hover {
     height: auto;
 }
 
-.waves-effect {
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-    overflow: hidden;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    vertical-align: middle;
-    z-index: 1;
-    -webkit-transition: .3s ease-out;
-    transition: .3s ease-out;
-}
-
-    .waves-effect.waves-light .waves-ripple {
-        background-color: rgba(255, 255, 255, 0.45);
-    }
-
 .row-group {
     margin-right: 0 !important;
 }
@@ -121,12 +110,6 @@ ul li a:hover {
         cursor: pointer;
     }
 
-.carosel {
-    position: absolute;
-    overflow: hidden;
-    width: 100%;
-    height: auto;
-}
 
 .responsive {
     width: 100%;

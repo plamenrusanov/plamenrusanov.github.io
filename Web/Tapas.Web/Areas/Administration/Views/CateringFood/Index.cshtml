@@ -3,20 +3,32 @@
     ViewData["Title"] = "Кетъринг плата";
 }
 
-    <div class="container">
-        <div class="row">
-            @foreach (var product in Model)
-            {
-                <a class="carda btn col-lg-3 col-md-4 mb-4" href="~/ShopingCart/AddItem?productId=@product.Id">
-                    <div class="card h-100">
-                        <img class="card-img-top" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_140,w_200/v1587540778/@(product.ImageUrl)" alt="@product.Name">
-                        <div class="card-body">
-                            <h4 class="text-center"> @product.Name </h4>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <h1 class="my-4 text-center">@GlobalConstants.SystemName</h1>
+            <div class="list-group">
+                <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="CateringFood" asp-action="Index" class="btn btn-default list-group-item"><h3>Плата</h3></a>
+                <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="GetProductsByCategory" class="btn btn-default list-group-item"><h3>Оборудване</h3></a>
+                <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="GetProductsByCategory" class="btn btn-default list-group-item"><h3>Галерия</h3></a>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <img class="d-block img-fluid" src="~/Images/tapas-masa s hrana.jpg" height="350" width="900" alt="First slide">
+            <div class="row" id="cateringContent">
+                @foreach (var product in Model)
+                {
+                    <a class="carda btn col-lg-4 col-md-6 mb-4" href="~/ShopingCart/AddItem?productId=@product.Id">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_140,w_200/v1587540778/@(product.ImageUrl)" alt="@product.Name">
+                            <div class="card-body">
+                                <h4 class="text-center"> @product.Name </h4>
                                 <h6>@product.Sizes[0].Weight гр.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@product.Sizes[0].Price лв.</h6>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            }
-
+                    </a>
+                }
+            </div>
         </div>
     </div>
+</div>
