@@ -16,6 +16,7 @@
         <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
+    @this.RenderSection("Style", required: false)
 </head>
 <body>
     <header>
@@ -36,7 +37,7 @@
                             <a class="nav-link text-dark" asp-area="Administration" asp-controller="CateringFood" asp-action="Index">Кетъринг</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">Галерия</a>
+                            <a class="nav-link text-dark" href="/Orders/UserOrder">Моите поръчки</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="ShopingCart" asp-action="Index" style="font-size:2rem;">🛒</a>

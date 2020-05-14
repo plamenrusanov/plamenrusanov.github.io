@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Data.Models
 {
+    using System;
     using System.Collections.Generic;
 
     using Tapas.Data.Common.Models;
@@ -27,5 +28,13 @@
         public virtual ShopingCart Bag { get; set; }
 
         public OrderStatus Status { get; set; }
+
+        public int MinutesForDelivery { get; set; }
+
+        public DateTime ProcessingTime { get; set; }
+
+        public DateTime OnDeliveryTime { get; set; }
+
+        public DateTime DeliveredTime { get; set; }
     }
 }

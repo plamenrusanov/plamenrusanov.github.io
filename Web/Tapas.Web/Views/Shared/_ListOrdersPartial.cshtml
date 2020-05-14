@@ -2,17 +2,33 @@
 
 @foreach (var item in Model)
 {
-    if (item.Status != "Unprocessed")
+    if (item.Status == "Unprocessed")
     {
-        <li class="btn btn-success btn-lg order-li" onclick="orderDetails(@item.Id)" id="li@(item.Id)">
+        <li class="btn btn-danger btn-lg order-li" onclick="orderDetails(@item.Id)" id="li@(item.Id)" style="width:100%;">
             <h5>
                 Поръчка: <strong id="orderId">@item.Id</strong>
             </h5>
         </li>
     }
-    else
+    else if (item.Status == "Processed")
     {
-        <li class="btn btn-danger btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)">
+        <li class="btn btn-warning btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)" style="width:100%;">
+            <h5>
+                Поръчка: <strong id="orderId">@item.Id</strong>
+            </h5>
+        </li>
+    }
+    else if (item.Status == "OnDelivery")
+    {
+        <li class="btn btn-success btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)" style="width:100%;">
+            <h5>
+                Поръчка: <strong id="orderId">@item.Id</strong>
+            </h5>
+        </li>
+    }
+    else if (item.Status == "Delivered")
+    {
+        <li class="btn btn-info btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)" style="width:100%;">
             <h5>
                 Поръчка: <strong id="orderId">@item.Id</strong>
             </h5>

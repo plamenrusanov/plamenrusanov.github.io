@@ -1,41 +1,119 @@
 ﻿@model Tapas.Web.ViewModels.Orders.OrderInpitModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Поръчка";
+    var i = 1;
 }
 
 <h1 class="text-center">Оформи поръчка</h1>
 <hr class="hr-tapas" />
-@using (Html.BeginForm("Create", "Orders", FormMethod.Post))
-{
-    @Html.AntiForgeryToken();
-    @Html.ValidationSummary(true);
-    @await Html.PartialAsync("_ShopingCartPartial", Model.CartItems, ViewData);
-    <div class="row">
-        <div class="col-md-8">
-            <p>&#8270; Oпаковката е включена в цената!</p>
-            @if (Model.OrderPrice < 10)
+<div class="row">
+    <div class="p-1 col-md-6">
+        <div class="bg-light" style=" border-radius:5px;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:10%;">
+                            #
+                        </th>
+                        <th style="width:50%">
+                            @Html.Label("Продукт")
+                        </th>
+                        <th style="width:20%">
+                            @Html.Label("Количество")
+                        </th>
+                        <th style="width:20%">
+                            @Html.Label("Цена")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td style="width:10%;">
+                                @(i++)
+                            </td>
+                            <td style="width:50%;">
+                                @Html.DisplayFor(x => item.ProductName)
+                            </td>
+                            <td style="width:20%;">
+                                @Html.DisplayFor(x => item.Quantity)
+                            </td>
+                            <td style="width:20%;">
+                                @Html.DisplayFor(x => item.ItemPrice)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row  m-0">
+            <p class="text-dark" style="width:70%;">Опаковки</p>
+            <p class="text-dark" style="width:30%;">@Model.PackegesPrice.ToString("F2") лева</p>
+        </div>
+        <div class="row m-0">
+            @if (Model.OrderPrice < GlobalConstants.MOPTCDF)
             {
-                <p>&#8270; Поръчка под 10 лева заплаща 2 лева за доставка!</p>
+                <p>&#8270; Поръчка под @(GlobalConstants.MOPTCDF.ToString("F0")) лева заплаща доставка!</p>
             }
-            else if (Model.OrderPrice < 25)
+            else if (Model.OrderPrice < GlobalConstants.OrderPriceForBonus)
             {
-                <p>&#8270; Поръчка над 25 лева получава подарък!</p>
+                <p>&#8270; Поръчка над @(GlobalConstants.OrderPriceForBonus.ToString("F0")) лева получава подарък!</p>
             }
         </div>
-        <div class="col-md-4">
-            <h3 class="form-group">@Html.LabelFor(x => x.OrderPrice): @Html.DisplayFor(x => x.OrderPrice, new { @class = "form-control" })</h3>
+        <div class="row m-0">
+            <h3 style="width:70%;">@Html.Label("Общо за поръчката:")</h3><h3 style="width:30%;"> @Html.DisplayFor(x => x.OrderPrice) лева</h3>
         </div>
-    </div>
 
-    <div class="col-md-6">
-        <div class="row form-group">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
-        <div class="row"><a class="btn btn-primary" href="/Addreses/Create">Добави адрес</a></div>
-        <div class="row form-group ">@Html.TextAreaFor(x => x.AddInfo, 3, 30, new { @class = "form-control" })</div>
-        <div class="row"></div>
-        <div class="row"><button class="btn btn-primary" type="submit">Изпрати поръчка</button></div>
     </div>
+    <div class="col-md-6">
+        @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken();
+            @Html.ValidationSummary(true);
+
+            <div class="row m-0 form-group">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
+            <div class="row m-0"><a class="btn btn-primary" href="/Addreses/Create">Добави адрес</a></div>
+            <div class="row m-0 form-group ">@Html.TextAreaFor(x => x.AddInfo, 3, 30, new { @class = "form-control" })</div>
+            <div class="row m-0">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="@Model.DelayedDelivery" />
+                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-0"><button class="btn btn-primary" type="submit">Изпрати поръчка</button></div>
+
+        }
+    </div>
+</div>
+@section Style{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
 }
 
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+    <script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker2').datetimepicker({
+                icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                }
 
+            });
+        });
+    </script>
+
+}

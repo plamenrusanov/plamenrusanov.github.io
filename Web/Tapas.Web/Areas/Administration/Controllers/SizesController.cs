@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Web.Areas.Administration.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Tapas.Services.Data.Contracts;
 
@@ -14,6 +15,7 @@
             this.productsService = productsService;
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Add(string productId)
         {
             if (string.IsNullOrEmpty(productId))
@@ -35,9 +37,9 @@
             {
                 return this.BadRequest();
             }
-
         }
 
+        [AllowAnonymous]
         public IActionResult GetSizeModel(string sizeId)
         {
             if (string.IsNullOrEmpty(sizeId))
@@ -68,6 +70,7 @@
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult AddSizeModel(int index)
         {
             try
@@ -81,6 +84,7 @@
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Remove(int id)
         {
             try

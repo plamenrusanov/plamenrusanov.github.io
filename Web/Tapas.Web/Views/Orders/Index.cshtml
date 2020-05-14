@@ -11,7 +11,7 @@
         @await Html.PartialAsync("_ListOrdersPartial", Model)
     </ul>
     <div class="col-md-10 bg-white" id="detailSection">
-           
+
     </div>
 </div>
 <hr class="hr-tapas" />
@@ -19,6 +19,9 @@
 @section Scripts
 {
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
-    <script src="~/js/OrdersIndex.min.js" asp-append-version="true"></script>
+    <script src="~/js/OrdersIndex.js"></script>
+}
+@section Style{
+    <link rel="stylesheet" type="text/css" href="~/css/orderDetails.css">
 }
 

@@ -50,6 +50,11 @@
       "provider": "cdnjs",
       "library": "materialize@1.0.0",
       "destination": "wwwroot/lib/materialize/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-datetimepicker@4.17.47",
+      "destination": "wwwroot/lib/bootstrap-datetimepicker/"
     }
   ]
 }

@@ -77,7 +77,7 @@
 
             await this.addresesService.CreateAddressAsync(user, model);
 
-            return this.Redirect(GlobalConstants.IndexRoute);
+            return this.Redirect("/Orders/Create");
         }
 
         // GET: Addreses/Edit/5

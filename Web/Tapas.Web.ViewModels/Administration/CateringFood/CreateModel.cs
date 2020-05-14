@@ -12,6 +12,7 @@
     {
         public CreateModel()
         {
+            this.Allergens = new List<string>();
             this.Sizes = new List<InputProductSizeModel>();
             this.Seed();
         }

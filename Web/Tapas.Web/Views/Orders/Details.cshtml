@@ -5,34 +5,72 @@
 }
 
 <div class="row">
-    <div class="col-md-4">
-        <h4>Поръчка: <span id="order">@Model.OrderId</span></h4>
+    <div class="col-md-6">
+        <div class="row">
+            <h4 style="width:50%;">Поръчка:</h4><h4 id="order">@Model.OrderId</h4>
+        </div>
     </div>
-    <div class="col-md-4" i>
-        <h4>Поръчана: <span id="createdOn">@Model.CreatedOn</span></h4>
+    @if (Model.Status == OrderStatus.Unprocessed)
+    {
+        @if (true)
+        {
+            <div class="col-md-6" id="timer">
+                <a id="minus" class="btn" onclick="minus()">◀</a>
+                <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Минути" value="40" min="30" step="5">
+                <a id="plus" class="btn" onclick="plus()">▶</a>
+            </div>
+        }
+        else
+        {
+
+        }
+    }
+    <div class="col-md-6">
+        <div class="row">
+            <h4 style="width:50%;">Поръчана:</h4><h4 id="createdOn">@Model.CreatedOn</h4>
+        </div>
+
     </div>
-    <div class="col-md-3">
-        @Html.DropDownListFor(x => x.Status, Model.OrderStatus.Select(x => new SelectListItem() { Text = x.ToString(), Value = x.ToString(), Selected = x == Model.Status }), "Статус", new { @id = "statusValue", @class = "form-control", @onchange="changeStatus()" })
-    </div>
-</div>
-<hr/>
-<div class="row">
-    <div class="col-sm-6">
+
+    @if (Model.Status == OrderStatus.Unprocessed)
+    {
+        <div class="col-md-6">
+            <button type="button" class="btn btn-warning" onclick="changeStatus('@OrderStatus.Processed.ToString()')">Приеми поръчката</button>
+        </div>
+    }
+    else if (Model.Status == OrderStatus.Processed)
+    {
+        <div class="col-md-6">
+            <button type="button" class="btn btn-success" onclick="changeStatus('@OrderStatus.OnDelivery.ToString()')">Поръчката пътува</button>
+        </div>
+    }
+    else if (Model.Status == OrderStatus.OnDelivery)
+    {
+        <div class="col-md-6">
+            <button type="button" class="btn btn-info" onclick="changeStatus('@OrderStatus.Delivered.ToString()')">Поръчката доставена</button>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-6">
+            <h4>Поръчката е доставена.</h4>
+        </div>
+    }
+
+    <div class="col-md-6">
         <h4>Клиент: <span id="userName">@Model.UserUserName</span></h4>
     </div>
-    <div class="col-sm-6">
+    <div class="col-md-6">
         <h4>Телефон: <span id="phone">@Model.UserPhone</span></h4>
     </div>
-</div>
-<hr/>
-<div class="row">
-    <div class="col-md-8">
+
+    <div class="col-md-6">
         <h4>Адрес: <span id="address">@Model.DisplayAddress</span></h4>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <span>Допълнителна информация за адреса.</span>
         @Html.TextBoxFor(x => x.AddInfo)
     </div>
 </div>
-<hr/>
+<hr />
 @await Html.PartialAsync("_ShopingCartPartial", Model.CartItems) 

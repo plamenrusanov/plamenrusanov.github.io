@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Web.ViewModels.Orders
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
@@ -21,11 +22,16 @@
         [Required]
         public string AddressId { get; set; }
 
-        public decimal? OrderPrice => this.CartItems?.Sum(x => x.ProductPrice * x.Quantity);
+        public decimal PackegesPrice { get; set; }
+
+        public decimal DeliveryFee { get; set; }
+
+        public decimal OrderPrice { get; set; }
+
+        public DateTime DelayedDelivery { get; set; }
 
         public List<AddressViewModel> Addresses { get; set; }
 
-        [Required]
         public List<ShopingItemsViewModel> CartItems { get; set; }
     }
 }

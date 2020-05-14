@@ -22,10 +22,12 @@
 
         OrderDetailsViewModel GetUpdate();
 
-        Task<bool> ChangeStatusAsync(string status, string orderId);
+        Task<bool> ChangeStatusAsync(string status, string orderId, string setTime);
 
         ICollection<OrderCollectionViewModel> GetAll();
 
-        ICollection<OrderCollectionViewModel> GetOrdersByUserName(string userName);
+        ICollection<OrdersViewModel> GetOrdersByUserName(string userName);
+
+        UserOrderViewModel GetMyActiveOrder(ApplicationUser user);
     }
 }

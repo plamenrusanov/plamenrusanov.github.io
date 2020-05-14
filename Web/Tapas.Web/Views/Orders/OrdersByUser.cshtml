@@ -1,53 +1,35 @@
-﻿@model List<Tapas.Web.ViewModels.Orders.OrderCollectionViewModel>
+﻿@model Tapas.Web.ViewModels.Orders.UserOrderViewModel
 @{
-    ViewData["Title"] = "OrdersByUser";
-    var userName = Model.Select(x => x.UserName).FirstOrDefault();
+    ViewData["Title"] = "Моите поръчки";
+
 }
 
-<h1 class="text-center">Поръчки на @userName</h1>
-
+<h1 class="text-center">Поръчки</h1>
 <hr class="hr-tapas" />
-<div class="container bg-light">
-    <table class="table">
-        <thead>
-            <tr class="row">
-                <th class="col-sm-1">
-                    @Html.Label("Номер")
-                </th>
-                <th class="col-sm-3">
-                    @Html.Label("Клиент")
-                </th>
-                <th class="col-sm-3">
-                    @Html.Label("Поръчана")
-                </th>
-                <th class="col-sm-3">
-                    @Html.Label("Цена")
-                </th>
-                <th class="col-sm-2">
-                    @Html.Label("Опаковка")
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr class="row">
-                    <td class="col-sm-1">
-                        <a class="btn btn-lg btn-default" href"#">@Html.DisplayFor(x => item.Id)</a>
-                    </td>
-                    <td class="col-sm-3">
-                        <a class="btn btn-lg btn-default" href="/Orders/OrdersByUser?userName=@item.UserName">@Html.DisplayFor(x => item.UserName)</a>
-                    </td>
-                    <td class="col-sm-3">
-                        @Html.DisplayFor(x => item.DateTime)
-                    </td>
-                    <td class="col-sm-3">
-                    </td>
-                    <td class="col-sm-2">
-                        @Html.Label("Опаковка")
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div class="row">
+    <div class="bg-white" id="detailSection">
+        @if (Model != null)
+        {
+            <div class="row text-center">
+                <h1>Поръчка:  @Model.OrderId</h1>
+            </div>
+            <div class="row">
+                <h1>@Model.Status</h1>
+            </div>
+            <div class="row">
+                <h1>@Model.ArriveTime</h1>
+            </div>
+        }
+        else
+        {
+            <h5>Няма поръчки!</h5>
+        }
+    </div>
 </div>
+<hr class="hr-tapas" />
+<audio loop id="audio"> <source src="~/Audio/Tyga - Ayy Macarena (Official Video).mp3" type="audio/mpeg"></audio>
+@section Scripts
+{
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/js/OrdersByUser.js"></script>
+}

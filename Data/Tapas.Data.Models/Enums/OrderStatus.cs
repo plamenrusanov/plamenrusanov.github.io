@@ -7,13 +7,13 @@
         [Display(Name = "Необработена")]
         Unprocessed = 1,
 
-        [Display(Name = "Обработена")]
+        [Display(Name = "Обработва се")]
         Processed = 2,
 
-        [Display(Name = "Доставена")]
-        Delivered = 3,
+        [Display(Name = "Пътува")]
+        OnDelivery = 3,
 
-        [Display(Name = "Отменена")]
-        Cancelled = 4,
+        [Display(Name = "Доставена")]
+        Delivered = 4,
     }
 }

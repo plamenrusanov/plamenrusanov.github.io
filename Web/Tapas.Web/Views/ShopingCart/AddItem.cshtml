@@ -73,9 +73,11 @@
                     <div class="col-50 row form-group ">
                         <h4 style="width:50%;">@Html.Label("Количество")</h4>
                         <div>
-                            <a id="minus" class="btn" onclick="minus()">◀</a>
+                            <div id="minus1" onclick="minus()"><i class="btn material-icons" style="font-size:45px; padding:0; ">chevron_left</i></div>
+                            @*<a id="minus" class="btn" onclick="minus()">◀</a>*@
                             <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Количество" value="1" min="1" step="1">
-                            <a id="plus" class="btn" onclick="plus()">▶</a>
+                            @*<a id="plus" class="btn" onclick="plus()">▶</a>*@
+                            <div id="minus1" onclick="plus()"><i class="btn material-icons" style="font-size:45px; padding:0;">chevron_right</i></div>
                         </div>
                     </div>
                     <div class="col-50 row">
@@ -105,62 +107,14 @@
         </form>
     </div>
 </div>
-<!--ShopingCart-->
-@*<hr class="hr-tapas" />
-<h1 class="text-center">Твоята количка</h1>
-<hr class="hr-tapas" />
-<div class="bg-light">
-    <table class="table justify-content-center">
-        <thead>
-            <tr class="row">
-                <th class="col-sm-1">
-                    #
-                </th>
-                <th class="col-sm-3">
-                    @Html.DisplayName("Продукт")
-                </th>
-                <th class="col-sm-3">
-                    @Html.DisplayName("Количество")
-                </th>
-                <th class="col-sm-3">
-                    @Html.DisplayName("Цена")
-                </th>
-                <th class="col-sm-2">
-                    @Html.DisplayName("Actions")
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.ShopingCart.ShopingItems)
-            {
-                <tr class="row">
-                    <td class="col-sm-1">
-                        @(i++)
-                    </td>
-                    <td class="col-sm-3">
-                        @Html.DisplayFor(x => item.ProductName)
-                    </td>
-                    <td class="col-sm-3">
-                        @Html.DisplayFor(x => item.Quantity)
-                    </td>
-                    <td class="col-sm-3">
-                        @{price = item.ProductPrice * item.Quantity; }
-                        @Html.DisplayFor(x => price)
-                    </td>
-                    <td class="col-sm-2">
-                        <a class="btn btn-danger btn-sm" href="/ShopingCart/DeleteProductItem?itemId=@item.Id&shopingCartId=@Model.ShopingCart.Id">Изтрий</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<hr class="hr-tapas" />*@
 
+@section Style{
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/css/addItem.css">
+}
 
 @section Scripts
 {
-    <link rel="stylesheet" type="text/css" href="~/css/addItem.css">
     <script>
         function DisplaySizeName(sizeId) {
             var sizeName = document.getElementById(sizeId).innerHTML;

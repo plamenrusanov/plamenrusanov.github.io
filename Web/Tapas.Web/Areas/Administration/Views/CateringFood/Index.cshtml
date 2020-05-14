@@ -5,30 +5,41 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-3 bar">
             <h1 class="my-4 text-center">@GlobalConstants.SystemName</h1>
-            <div class="list-group">
+            <div class="list-group " style="bottom: 0; position: absolute; width: 90%;">
                 <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="CateringFood" asp-action="Index" class="btn btn-default list-group-item"><h3>Плата</h3></a>
                 <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="GetProductsByCategory" class="btn btn-default list-group-item"><h3>Оборудване</h3></a>
-                <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="GetProductsByCategory" class="btn btn-default list-group-item"><h3>Галерия</h3></a>
+                @*<a asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="GetProductsByCategory" class="btn btn-default list-group-item"><h3>Галерия</h3></a>*@
             </div>
         </div>
-        <div class="col-lg-9">
-            <img class="d-block img-fluid" src="~/Images/tapas-masa s hrana.jpg" height="350" width="900" alt="First slide">
-            <div class="row" id="cateringContent">
-                @foreach (var product in Model)
-                {
-                    <a class="carda btn col-lg-4 col-md-6 mb-4" href="~/ShopingCart/AddItem?productId=@product.Id">
-                        <div class="card h-100">
-                            <img class="card-img-top" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_140,w_200/v1587540778/@(product.ImageUrl)" alt="@product.Name">
-                            <div class="card-body">
-                                <h4 class="text-center"> @product.Name </h4>
-                                <h6>@product.Sizes[0].Weight гр.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@product.Sizes[0].Price лв.</h6>
-                            </div>
-                        </div>
-                    </a>
-                }
-            </div>
+        <div class="col-md-9">
+            <img class="d-block img-fluid" style="border-bottom-left-radius:5px; border-bottom-right-radius:5px;" src="~/Images/tapas-masa s hrana.jpg" height="350" width="900"/>
         </div>
     </div>
+    <div class="row mt-2">
+       @foreach (var item in Model)
+       {
+        <div class="col-md-6 mb-5">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img class="img-flip" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_300,w_500,f_auto/v1587540778/@(item.ImageUrl)" style="width:100%;" />
+                    </div>
+                    <div class="flip-card-back">
+                        <h3>@item.Name</h3>
+                        <div><h5>Описание: @item.Description</h5></div>
+                        <div><h5>Хапки: @item.NumberOfBits</h5></div>
+                        <div><h5>Цена: @item.Sizes.FirstOrDefault().Price</h5></div>
+                        <div><h5>Опаковка: @item.Sizes.FirstOrDefault().PackagePrice</h5></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       }
+    </div>
 </div>
+
+@section Style{ 
+    <link href="~/css/CateringFood.css" rel="stylesheet" />
+}

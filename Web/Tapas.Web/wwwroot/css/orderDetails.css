@@ -1,0 +1,15 @@
+﻿#theInput {
+    width: 55px;
+    display: inline;
+}
+
+#minus, #plus {
+    padding: 0;
+    border: none;
+    font-size: 2rem;
+    padding-bottom: 7px;
+}
+
+.row {
+    margin: 0;
+}

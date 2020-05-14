@@ -26,6 +26,11 @@
 
         public const decimal DeliveryFee = 2.00m;
 
-        public const decimal OrderPriceMin = 15m;
+        public const decimal OrderPriceMin = 10m;
+
+        // Max order price to charge delivery fee
+        public const decimal MOPTCDF = 15m;
+
+        public const decimal OrderPriceForBonus = 25m;
     }
 }

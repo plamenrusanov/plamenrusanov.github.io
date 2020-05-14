@@ -127,7 +127,7 @@ ul li a:hover {
 
 .btn.btn-default.list-group-item { /*Index*/
     background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/f_auto/v1587386469/bg-list-orders.jpg");
-    margin-bottom: 3px;
+    margin-top: 3px;
 }
 
 .hr-tapas {

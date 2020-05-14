@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SignalR;
+    using Tapas.Common;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.Hubs;
@@ -37,20 +38,31 @@
 
         public async Task<IActionResult> Create()
         {
-            var user = await this.userManager.GetUserAsync(this.User);
+            try
+            {
+                var user = await this.userManager.GetUserAsync(this.User);
 
-            var model = this.ordersService.GetOrderInputModel(user);
+                var model = this.ordersService.GetOrderInputModel(user);
+                if (model.OrderPrice < GlobalConstants.OrderPriceMin)
+                {
+                    return this.RedirectPermanent("/Administration/Products");
+                }
 
-            return this.View(model);
+                return this.View(model);
+            }
+            catch (System.Exception)
+            {
+                return this.BadRequest();
+            }
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create(OrderInpitModel model)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return this.View();
+                return this.RedirectToAction("Create");
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -85,11 +97,11 @@
             return this.View(model);
         }
 
-        public async Task<IActionResult> OrdersByUser(string userName)
+        public async Task<IActionResult> OrdersByUser(string userName = null)
         {
             if (string.IsNullOrEmpty(userName))
             {
-                return this.NotFound();
+                userName = this.User.Identity.Name;
             }
 
             var user = await this.userManager.FindByNameAsync(userName);
@@ -101,6 +113,20 @@
 
             var model = this.ordersService.GetOrdersByUserName(userName);
             return this.View(model);
+        }
+
+        public async Task<IActionResult> UserOrder()
+        {
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            if (user == null)
+            {
+                return this.Redirect(GlobalConstants.LoginPageRoute);
+            }
+
+            var model = this.ordersService.GetMyActiveOrder(user);
+            return this.View("OrdersByUser", model);
         }
     }
 }

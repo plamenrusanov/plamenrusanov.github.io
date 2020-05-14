@@ -81,6 +81,16 @@
                 {
                     this.logger.LogInformation("User created a new account with password.");
 
+                    var resultRole = await this.userManager.AddToRoleAsync(user, "User");
+                    if (resultRole.Succeeded)
+                    {
+                        this.logger.LogInformation($"{user.UserName} seed to role User.");
+                    }
+                    else
+                    {
+                        this.logger.LogInformation($"{user.UserName} can't seed to role User.");
+                    }
+
                     var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = this.Url.Page(

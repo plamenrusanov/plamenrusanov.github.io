@@ -117,6 +117,9 @@
     <Content Update="Views\Shared\_AllergenCheckBoxPartial.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Views\Shared\_EditProductSizePartial.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Views\Shared\_IndexLayout.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -33,7 +33,7 @@
             await this.Clients.Caller.SendAsync("Finished");
         }
 
-        public async Task ChangeStatus(string status, string order)
+        public async Task ChangeStatus(string status, string order, string setTime)
         {
             if (string.IsNullOrEmpty(status) || string.IsNullOrEmpty(order))
             {
@@ -43,8 +43,8 @@
 
             try
             {
-                var result = await this.ordersService.ChangeStatusAsync(status, order);
-                await this.Clients.Caller.SendAsync("StatusChanged", result, order);
+                var result = await this.ordersService.ChangeStatusAsync(status, order, setTime);
+                await this.Clients.Caller.SendAsync("StatusChanged", result, order, status);
             }
             catch (System.Exception e)
             {
