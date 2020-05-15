@@ -16,9 +16,11 @@
 <div class="col-50 row form-group ">
     <h4 style="width:50%;">@Html.Label("Количество")</h4>
     <div>
-        <a id="minus" class="btn" onclick="minus()">◀</a>
+        @*<a id="minus" class="btn" onclick="minus()">◀</a>*@
+        <div id="minus1" onclick="minus()"><i class="btn material-icons" style="font-size:45px; padding:0; ">chevron_left</i></div>
         <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Количество" value="1" min="1" step="1">
-        <a id="plus" class="btn" onclick="plus()">▶</a>
+        <div id="minus1" onclick="plus()"><i class="btn material-icons" style="font-size:45px; padding:0;">chevron_right</i></div>
+        @*<a id="plus" class="btn" onclick="plus()">▶</a>*@
     </div>
 </div>
 <div class="col-50 row">

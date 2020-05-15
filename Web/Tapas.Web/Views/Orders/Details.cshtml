@@ -15,9 +15,11 @@
         @if (true)
         {
             <div class="col-md-6" id="timer">
-                <a id="minus" class="btn" onclick="minus()">◀</a>
+                @*<a id="minus" class="btn" onclick="minus()">◀</a>*@
+                <div id="minus1" onclick="minus()"><i class="btn material-icons" style="font-size:45px; padding:0; ">chevron_left</i></div>
                 <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Минути" value="40" min="30" step="5">
-                <a id="plus" class="btn" onclick="plus()">▶</a>
+                <div id="minus1" onclick="plus()"><i class="btn material-icons" style="font-size:45px; padding:0;">chevron_right</i></div>
+                @*<a id="plus" class="btn" onclick="plus()">▶</a>*@
             </div>
         }
         else
@@ -73,4 +75,4 @@
     </div>
 </div>
 <hr />
-@await Html.PartialAsync("_ShopingCartPartial", Model.CartItems) 
+@await Html.PartialAsync("_ShopingCartPartial", Model.CartItems)

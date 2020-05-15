@@ -65,10 +65,17 @@
                 return this.RedirectToAction("Create");
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
-            var id = await this.ordersService.CreateAsync(user, model);
-            await this.hub.Clients.All.SendAsync("NewOrder", id);
-            return this.Redirect("/");
+            try
+            {
+                var user = await this.userManager.GetUserAsync(this.User);
+                var id = await this.ordersService.CreateAsync(user, model);
+                await this.hub.Clients.All.SendAsync("NewOrder", id);
+                return this.Redirect("/Orders/UserOrder");
+            }
+            catch (System.Exception)
+            {
+                return this.BadRequest();
+            }
         }
 
         public IActionResult Details(string orderId)
