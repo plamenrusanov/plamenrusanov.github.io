@@ -18,7 +18,7 @@
 
         public const string DefaultProductImage = "utvaxhqgzon5lczgkoak.jpg";
 
-        public const string LoginPageRoute = "/Account/Login";
+        public const string LoginPageRoute = "/Identity/Account/Login";
 
         public const string IndexRoute = "/";
 

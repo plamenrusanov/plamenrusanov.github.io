@@ -22,7 +22,5 @@
             this.categoriesRepository = categoriesRepository;
             this.menuRepository = menuRepository;
         }
-
-      
     }
 }

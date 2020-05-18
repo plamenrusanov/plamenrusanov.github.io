@@ -1,0 +1,97 @@
+﻿@model Tapas.Web.ViewModels.Orders.UserOrderDetailsViewModel
+
+@{
+    Layout = null;
+    var i = 1;
+}
+
+<div class="row m-0">
+    <div class="col-md-6">
+        <div class="row m-0">
+            <h5 style="width:50%;">Поръчана:</h5><h5 id="order">@Model.CreatedOn</h5>
+        </div>
+
+        <div class="row m-0">
+            <h5 style="width:50%;">Статус на поръчката:</h5><h5 id="status">@Html.DisplayFor(x => x.Status)</h5>
+        </div>
+        <div class="row m-0">
+            <h5 style="width:50%;">Доставка :</h5><h5>@Model.TimeForDelivery</h5>
+        </div>
+    </div>
+    <div class="col-md-6 text-center" id="statusImg">
+        @switch (Model.Status)
+        {
+            case OrderStatus.Unprocessed:
+                <img src="~/Images/paper.png" width="128" height="128" />
+                break;
+            case OrderStatus.Processed:
+                <img src="~/Images/cook.png"  width="128" height="128" />
+                break;
+            case OrderStatus.OnDelivery:
+                <img src="~/Images/deliveryTransport.png" width="128" height="128" />
+                break;
+            case OrderStatus.Delivered:
+                <img src="~/Images/plate1.png" width="128" height="128" />
+                break;
+            default:
+                break;
+        }
+    </div>
+</div>
+<hr />
+<div class="bg-light">
+    <table class="table">
+        <thead>
+            <tr class="row m-0">
+                <th class="col-md-1">
+                    #
+                </th>
+                <th class="col-md-3">
+                    @Html.Label("Продукт")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Количество")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Цена")
+                </th>
+                <th class="col-md-4">
+                    @Html.Label("Изисквания")
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartItems)
+            {
+                <tr class="row m-0">
+                    <td class="col-md-1">
+                        @(i++)
+                    </td>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(x => item.ProductName)
+                    </td>
+                    <td class="col-md-2">
+                        @Html.DisplayFor(x => item.Quantity)
+                    </td>
+                    <td class="col-md-2">
+                        @Html.DisplayFor(x => item.ItemPrice)
+                    </td>
+                    <td class="col-md-4">
+                        @Html.DisplayFor(x => item.Description)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr />
+    <div class="row m-0">
+        <p class="col-md-9 text-dark">Опаковки</p>
+        <p class="col-md-3 text-dark">@Model.PackagesPrice</p>
+    </div>
+    <hr />
+    <div class="row m-0">
+        <p class="col-md-9 text-dark">Доставка</p>
+        <p class="col-md-3 text-dark">@Model.DeliveryFee</p>
+    </div>
+</div>

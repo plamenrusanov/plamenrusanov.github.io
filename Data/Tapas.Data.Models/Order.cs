@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.ComponentModel.DataAnnotations.Schema;
     using Tapas.Data.Common.Models;
     using Tapas.Data.Models.Enums;
 
@@ -36,5 +36,8 @@
         public DateTime OnDeliveryTime { get; set; }
 
         public DateTime DeliveredTime { get; set; }
+
+        [Column(TypeName = "decimal(5, 2)")]
+        public decimal DeliveryFee { get; set; }
     }
 }

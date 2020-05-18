@@ -16,6 +16,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\lib\%40microsoft\signalr\dist\cjs\**" />
+    <Compile Remove="wwwroot\lib\%40microsoft\signalr\dist\esm\**" />
+    <Compile Remove="wwwroot\lib\%40microsoft\signalr\src\**" />
+    <Content Remove="wwwroot\lib\%40microsoft\signalr\dist\cjs\**" />
+    <Content Remove="wwwroot\lib\%40microsoft\signalr\dist\esm\**" />
+    <Content Remove="wwwroot\lib\%40microsoft\signalr\src\**" />
+    <EmbeddedResource Remove="wwwroot\lib\%40microsoft\signalr\dist\cjs\**" />
+    <EmbeddedResource Remove="wwwroot\lib\%40microsoft\signalr\dist\esm\**" />
+    <EmbeddedResource Remove="wwwroot\lib\%40microsoft\signalr\src\**" />
+    <None Remove="wwwroot\lib\%40microsoft\signalr\dist\cjs\**" />
+    <None Remove="wwwroot\lib\%40microsoft\signalr\dist\esm\**" />
+    <None Remove="wwwroot\lib\%40microsoft\signalr\src\**" />
+    <TypeScriptCompile Remove="wwwroot\lib\%40microsoft\signalr\dist\cjs\**" />
+    <TypeScriptCompile Remove="wwwroot\lib\%40microsoft\signalr\dist\esm\**" />
+    <TypeScriptCompile Remove="wwwroot\lib\%40microsoft\signalr\src\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Addreses\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -35,12 +53,17 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.SignalR.JS" Version="2.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.9.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -112,6 +135,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Orders\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Orders\UserOrderDetails.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Orders\UserOrders.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\Orders\OrdersByUser.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Shared\_AllergenCheckBoxPartial.cshtml">

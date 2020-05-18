@@ -1,5 +1,7 @@
 ﻿namespace Tapas.Web.Controllers
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -69,8 +71,8 @@
             {
                 var user = await this.userManager.GetUserAsync(this.User);
                 var id = await this.ordersService.CreateAsync(user, model);
-                await this.hub.Clients.All.SendAsync("NewOrder", id);
-                return this.Redirect("/Orders/UserOrder");
+                await this.hub.Clients.All.SendAsync("OperatorNewOrder", id);
+                return this.Redirect("/Orders/UserOrders");
             }
             catch (System.Exception)
             {
@@ -93,9 +95,15 @@
                 return this.NotFound();
             }
 
-            var model = this.ordersService.GetDetailsById(id);
-
-            return this.View(model);
+            try
+            {
+                var model = this.ordersService.GetDetailsById(id);
+                return this.View(model);
+            }
+            catch (System.Exception)
+            {
+                return this.NotFound();
+            }
         }
 
         public IActionResult All()
@@ -122,9 +130,8 @@
             return this.View(model);
         }
 
-        public async Task<IActionResult> UserOrder()
+        public async Task<IActionResult> UserOrders()
         {
-
             var user = await this.userManager.GetUserAsync(this.User);
 
             if (user == null)
@@ -132,8 +139,56 @@
                 return this.Redirect(GlobalConstants.LoginPageRoute);
             }
 
-            var model = this.ordersService.GetMyActiveOrder(user);
-            return this.View("OrdersByUser", model);
+            try
+            {
+                var model = this.ordersService.GetMyOrders(user);
+                return this.View(model);
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
+            }
+        }
+
+        public IActionResult UserOrderDetails(string orderId)
+        {
+            if (string.IsNullOrEmpty(orderId))
+            {
+                return this.NotFound();
+            }
+
+            int id = default;
+
+            bool result = int.TryParse(orderId, out id);
+            if (!result || !this.ordersService.IsExists(id))
+            {
+                return this.NotFound();
+            }
+
+            try
+            {
+                var model = this.ordersService.GetUserDetailsById(id);
+                return this.View(model);
+            }
+            catch (System.Exception)
+            {
+                return this.NotFound();
+            }
+        }
+
+        public async Task<bool> ChangeStatusAsync(string status, string orderId, string setTime)
+        {
+            try
+            {
+                await this.ordersService.ChangeStatusAsync(status, orderId, setTime);
+                var userId = this.ordersService.GetUserIdByOrderId(orderId);
+                await this.hub.Clients.User(userId).SendAsync("UserStatusChanged", true, orderId, status);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

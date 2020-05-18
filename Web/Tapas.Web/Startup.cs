@@ -64,6 +64,7 @@
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+            services.AddScoped<IAlarm, Alarm>();
 
             // Application services
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender(

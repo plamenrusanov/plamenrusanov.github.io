@@ -99,10 +99,11 @@
                 order.Bag.CartItems.Add(item);
             }
 
-            user.ShopingCart.CartItems.Clear();
-
             await this.ordersRepository.AddAsync(order);
             await this.ordersRepository.SaveChangesAsync();
+
+            user.ShopingCart.CartItems.Clear();
+
             return order.Id;
         }
 
@@ -110,7 +111,12 @@
         {
             var order = this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault();
 
-            return new OrderDetailsViewModel()
+            if (order is null)
+            {
+                throw new ArgumentException("Order not exists.");
+            }
+
+            var model = new OrderDetailsViewModel()
             {
                 CreatedOn = order.CreatedOn.ToLocalTime().ToString("HH:mm:ss"),
                 OrderId = order.Id,
@@ -118,7 +124,7 @@
                 AddressInfo = order.Address.AddInfo,
                 UserUserName = order.User.UserName,
                 UserPhone = order.User.PhoneNumber,
-                AddInfo = order.AddInfo,
+                AddInfo = order.Address.AddInfo,
                 CartItems = order.Bag.CartItems
                     .Select(x => new ShopingItemsViewModel()
                     {
@@ -126,10 +132,19 @@
                         ProductName = x.Product.Name,
                         ProductPrice = x.Size.Price,
                         Quantity = x.Quantity,
+                        Description = x.Description,
                     }).ToList(),
                 Status = order.Status,
-                OrderStatus = this.Statuses(),
+                PackagesPrice = order.Bag.CartItems.Sum(x => (decimal)Math.Ceiling((double)x.Size.MaxProductsInPackage / x.Quantity) * x.Size.Package.Price),
+                DeliveryFee = order.DeliveryFee,
             };
+
+            if (model.Status != OrderStatus.Unprocessed)
+            {
+                model.TimeForDelivery = order.ProcessingTime.ToLocalTime().AddMinutes((double)order.MinutesForDelivery).ToString("HH:mm:ss");
+            }
+
+            return model;
         }
 
         public ICollection<OrdersViewModel> GetDailyOrders()
@@ -239,27 +254,79 @@
                 }).OrderByDescending(x => x.Id).ToList();
         }
 
-        public UserOrderViewModel GetMyActiveOrder(ApplicationUser user)
+        public ICollection<UserOrderViewModel> GetMyOrders(ApplicationUser user)
         {
             if (user is null)
             {
                 throw new ArgumentNullException("User is null!");
             }
 
-            var order = this.ordersRepository.All()
-                .Where(x => x.UserId == user.Id && x.Status != OrderStatus.Delivered)
-                .FirstOrDefault();
-            if (order is null)
+            return this.ordersRepository.All()
+                .Where(x => x.UserId == user.Id)
+                .OrderByDescending(x => x.CreatedOn)
+                .Select(x => new UserOrderViewModel()
+                {
+                    OrderId = x.Id,
+                    Status = x.Status.ToString(),
+                    ArriveTime = x.ProcessingTime.ToLocalTime().AddMinutes((double)x.MinutesForDelivery).ToString("dd/MM/yyyy HH:mm"),
+                    CreatedOn = x.CreatedOn.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
+                }).Take(10).ToList();
+        }
+
+        public OrderStatus CheckStatus(int orderId)
+        {
+            if (!this.IsExists(orderId))
             {
-                return null;
+                throw new ArgumentException("Order not exist!");
             }
 
-            return new UserOrderViewModel()
+            return this.ordersRepository.All().Where(x => x.Id == orderId).FirstOrDefault().Status;
+       }
+
+        public UserOrderDetailsViewModel GetUserDetailsById(int id)
+        {
+            var order = this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault();
+
+            if (order is null)
             {
+                throw new ArgumentException("Order not exists.");
+            }
+
+            var model = new UserOrderDetailsViewModel()
+            {
+                CreatedOn = order.CreatedOn.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
                 OrderId = order.Id,
-                Status = order.Status.ToString(),
-                ArriveTime = order.CreatedOn.ToLocalTime().AddMinutes((double)order.MinutesForDelivery).ToString("HH:mm:ss"),
+                CartItems = order.Bag.CartItems
+                    .Select(x => new ShopingItemsViewModel()
+                    {
+                        ProductId = x.ProductId,
+                        ProductName = x.Product.Name,
+                        ProductPrice = x.Size.Price,
+                        Quantity = x.Quantity,
+                        Description = x.Description,
+                    }).ToList(),
+                Status = order.Status,
+                PackagesPrice = order.Bag.CartItems.Sum(x => (decimal)Math.Ceiling((double)x.Size.MaxProductsInPackage / x.Quantity) * x.Size.Package.Price),
+                DeliveryFee = order.DeliveryFee,
             };
+
+            if (model.Status != OrderStatus.Unprocessed)
+            {
+                model.TimeForDelivery = order.ProcessingTime.ToLocalTime().AddMinutes((double)order.MinutesForDelivery).ToString("dd/MM/yyyy HH:mm");
+            }
+
+            return model;
+        }
+
+        public string GetUserIdByOrderId(string orderId)
+        {
+            int id;
+            if (int.TryParse(orderId, out id))
+            {
+                return this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault().UserId;
+            }
+
+            throw new ArgumentException();
         }
 
         private List<OrderStatus> Statuses()

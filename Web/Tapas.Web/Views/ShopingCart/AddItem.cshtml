@@ -1,11 +1,7 @@
 ﻿@model Tapas.Web.ViewModels.ShopingCart.AddItemViewModel
 @{
-    ViewData["Title"] = "Index";
-    var i = 1;
-    decimal price = 0.0m;
+    ViewData["Title"] = "Продукт";
 }
-
-
 <div class="container">
     <!--AddedProduct-->
     <h1 class="text-center">Добави</h1>
@@ -74,9 +70,7 @@
                         <h4 style="width:50%;">@Html.Label("Количество")</h4>
                         <div>
                             <div id="minus1" onclick="minus()"><i class="btn material-icons" style="font-size:45px; padding:0; ">chevron_left</i></div>
-                            @*<a id="minus" class="btn" onclick="minus()">◀</a>*@
                             <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Количество" value="1" min="1" step="1">
-                            @*<a id="plus" class="btn" onclick="plus()">▶</a>*@
                             <div id="minus1" onclick="plus()"><i class="btn material-icons" style="font-size:45px; padding:0;">chevron_right</i></div>
                         </div>
                     </div>

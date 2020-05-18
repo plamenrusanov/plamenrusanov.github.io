@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using Tapas.Data.Models;
+    using Tapas.Data.Models.Enums;
     using Tapas.Web.ViewModels.Orders;
 
     public interface IOrdersService
@@ -28,6 +29,12 @@
 
         ICollection<OrdersViewModel> GetOrdersByUserName(string userName);
 
-        UserOrderViewModel GetMyActiveOrder(ApplicationUser user);
+        ICollection<UserOrderViewModel> GetMyOrders(ApplicationUser user);
+
+        OrderStatus CheckStatus(int orderId);
+
+        UserOrderDetailsViewModel GetUserDetailsById(int id);
+
+        string GetUserIdByOrderId(string orderId);
     }
 }

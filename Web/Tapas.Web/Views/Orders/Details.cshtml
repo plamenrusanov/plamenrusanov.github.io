@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    var i = 1;
 }
 
 <div class="row">
@@ -15,23 +16,28 @@
         @if (true)
         {
             <div class="col-md-6" id="timer">
-                @*<a id="minus" class="btn" onclick="minus()">◀</a>*@
                 <div id="minus1" onclick="minus()"><i class="btn material-icons" style="font-size:45px; padding:0; ">chevron_left</i></div>
                 <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Минути" value="40" min="30" step="5">
                 <div id="minus1" onclick="plus()"><i class="btn material-icons" style="font-size:45px; padding:0;">chevron_right</i></div>
-                @*<a id="plus" class="btn" onclick="plus()">▶</a>*@
             </div>
         }
         else
         {
-
+            @*delayed delivery time*@
         }
+    }
+    else
+    {
+        <div class="col-md-6">
+            <div class="row">
+                <h4 style="width:50%;">Доставка :</h4><h4>@Model.TimeForDelivery</h4>
+            </div>
+        </div>
     }
     <div class="col-md-6">
         <div class="row">
             <h4 style="width:50%;">Поръчана:</h4><h4 id="createdOn">@Model.CreatedOn</h4>
         </div>
-
     </div>
 
     @if (Model.Status == OrderStatus.Unprocessed)
@@ -75,4 +81,59 @@
     </div>
 </div>
 <hr />
-@await Html.PartialAsync("_ShopingCartPartial", Model.CartItems)
+<div class="bg-light">
+    <table class="table">
+        <thead>
+            <tr class="row">
+                <th class="col-md-1">
+                    #
+                </th>
+                <th class="col-md-3">
+                    @Html.Label("Продукт")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Количество")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Цена")
+                </th>
+                <th class="col-md-4">
+                    @Html.Label("Изисквания")
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartItems)
+            {
+                <tr class="row">
+                    <td class="col-md-1">
+                        @(i++)
+                    </td>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(x => item.ProductName)
+                    </td>
+                    <td class="col-md-2">
+                        @Html.DisplayFor(x => item.Quantity)
+                    </td>
+                    <td class="col-md-2">
+                        @Html.DisplayFor(x => item.ItemPrice)
+                    </td>
+                    <td class="col-md-4">
+                        @Html.DisplayFor(x => item.Description)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr/>
+    <div class="row">
+        <p class="col-md-9 text-dark">Опаковки</p>
+        <p class="col-md-3 text-dark">@Model.PackagesPrice</p>
+    </div>
+    <hr/>
+    <div class="row">
+        <p class="col-md-9 text-dark">Доставка</p>
+        <p class="col-md-3 text-dark">@Model.DeliveryFee</p>
+    </div>
+</div>

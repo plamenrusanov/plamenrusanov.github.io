@@ -34,7 +34,7 @@
           {
               Id = p.Id,
               Name = p.Name,
-          }) .ToList();
+          }).ToList();
 
         public bool ExistById(int sizeId)
         {

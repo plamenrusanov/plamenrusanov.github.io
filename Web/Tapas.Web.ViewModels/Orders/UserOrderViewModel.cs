@@ -6,6 +6,8 @@
 
         public string Status { get; set; }
 
+        public string CreatedOn { get; set; }
+
         public string ArriveTime { get; set; }
     }
 }

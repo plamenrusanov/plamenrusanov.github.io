@@ -1,33 +1,56 @@
-﻿@model Tapas.Web.ViewModels.Orders.UserOrderViewModel
+﻿@model List<Tapas.Web.ViewModels.Orders.UserOrderViewModel>
 @{
     ViewData["Title"] = "Моите поръчки";
-
 }
 
 <h1 class="text-center">Поръчки</h1>
 <hr class="hr-tapas" />
 <div class="row">
-    <div class="bg-white" id="detailSection">
-        @if (Model != null)
-        {
-            <div class="row text-center">
-                <h1>Поръчка:  @Model.OrderId</h1>
-            </div>
-            <div class="row">
-                <h1>@Model.Status</h1>
-            </div>
-            <div class="row">
-                <h1>@Model.ArriveTime</h1>
-            </div>
-        }
-        else
-        {
-            <h5>Няма поръчки!</h5>
-        }
-    </div>
-</div>
+    <div class="row">
+        <ul class="col-md-2" id="listOrders">
+            @foreach (var item in Model)
+            {
+                if (item.Status == "Unprocessed")
+                {
+                    <li class="btn btn-danger btn-lg order-li" onclick="orderDetails(@item.OrderId)" id="li@(item.OrderId)" style="width:100%;">
+                        <h5>
+                           <strong id="orderId">@item.CreatedOn</strong>
+                        </h5>
+                    </li>
+                }
+                else if (item.Status == "Processed")
+                {
+                    <li class="btn btn-warning btn-lg" onclick="orderDetails(@item.OrderId)" id="li@(item.OrderId)" style="width:100%;">
+                        <h5>
+                            <strong id="orderId">@item.CreatedOn</strong>
+                        </h5>
+                    </li>
+                }
+                else if (item.Status == "OnDelivery")
+                {
+                    <li class="btn btn-success btn-lg" onclick="orderDetails(@item.OrderId)" id="li@(item.OrderId)" style="width:100%;">
+                        <h5>
+                           <strong id="orderId">@item.CreatedOn</strong>
+                        </h5>
+                    </li>
+                }
+                else if (item.Status == "Delivered")
+                {
+                    <li class="btn btn-info btn-lg" onclick="orderDetails(@item.OrderId)" id="li@(item.OrderId)" style="width:100%;">
+                        <h5>
+                           <strong id="orderId">@item.CreatedOn</strong>
+                        </h5>
+                    </li>
+                }
+
+            }
+        </ul>
+        <div class="col-md-10 bg-white" id="detailSection">
+
+        </div>
+    </div></div>
 <hr class="hr-tapas" />
-<audio loop id="audio"> <source src="~/Audio/Tyga - Ayy Macarena (Official Video).mp3" type="audio/mpeg"></audio>
+<audio loop id="audio"><source src="~/Audio/Tyga - Ayy Macarena (Official Video).mp3" type="audio/mpeg"></audio>
 @section Scripts
 {
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>

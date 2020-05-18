@@ -91,7 +91,7 @@
                 this.cartService.AddItem(model);
                 return this.RedirectToAction("Index");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return this.View();
             }

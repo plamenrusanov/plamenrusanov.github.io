@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Tapas.Data.Migrations
+﻿namespace Tapas.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddTimePropertiesToOrder : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

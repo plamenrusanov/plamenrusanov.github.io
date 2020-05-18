@@ -1,59 +1,54 @@
 ﻿
-var audio = document.getElementById('audio');
-function playMusic() { audio.play(); };
-function stopMusic() { audio.currentTime = 0; audio.pause(); };
-
-function checkTime(i) {
-    if (i < 10) {
-        i = "0" + i;
+$(document).ready(function () {
+    var x = document.getElementsByTagName('li');
+    for (var i = 0; i < x.length; i++) {
+        if (x[i].className === "btn btn-danger btn-lg order-li") {
+            playMusic();
+        }
     }
-    return i;
-}
-
-function startTime() {
-    var today = new Date();
-    var h = today.getHours();
-    var m = today.getMinutes();
-    var s = today.getSeconds();
-    // add a zero in front of numbers<10
-    m = checkTime(m);
-    s = checkTime(s);
-    document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
-    t = setTimeout(function () {
-        startTime()
-    }, 500);
-}
-
+});
+function playMusic() { var audio = document.getElementById('audio'); audio.play(); };
+function stopMusic() { var audio = document.getElementById('audio'); audio.currentTime = 0; audio.pause(); };
 
 
 var connection = null;
 setupConnection = () => {
     connection = new signalR.HubConnectionBuilder().withUrl("/orderHub").build();
 
-    connection.on("NewOrder", function (id) { insertOrder(id); playMusic(); });
+    connection.on("OperatorNewOrder", function (id) {
+        insertOrder(id);
+        if (document.getElementById(`li${id}`)) {
+            document.getElementById(`li${id}`).click();
+            playMusic(); 
+        } });
 
-    connection.on("AlertMessage", function (message) { alert(message); });
+    connection.on("OperatorAlertMessage", function (message) { alert(message); });
 
-    connection.on("StatusChanged", function (result, order, status) {
+    connection.on("OperatorStatusChanged", function (result, order, status) {
         if (result) {
             stopMusic();
             var li = document.getElementById(`li${order}`);
             if (status === "Unprocessed") {
-                li.className = "btn btn-danger btn-lg";
+                li.className = "btn btn-danger btn-lg order-li";
             } else if (status === "Processed") {
                 li.className = "btn btn-warning btn-lg";
-                var timer = document.getElementById("#timer");
-                timer.innerText = startTime();
-                alert(startTime());
             } else if (status === "OnDelivery") {
                 li.className = "btn btn-success btn-lg";
             } else if (status === "Delivered") {
                 li.className = "btn btn-info btn-lg";
-            }          
+            }
+            orderDetails(order);
         }
     });
 
-    connection.on("Finished", function () { connection.stop(); });
+    connection.on("OperatorSetAlarm", function (order) {
+        if (document.getElementById(`li${order}`).className == "btn btn-warning btn-lg") {
+            document.getElementById(`li${order}`).click();
+            playMusic();
+        }     
+    });
+
+    connection.on("OperatorFinished", function () { connection.stop(); });
 
     connection.start().catch(err => console.error(err.toString()));
 };
@@ -62,12 +57,14 @@ setupConnection();
 
 function insertOrder(id) { var li = document.createElement("li"); li.className = "btn btn-danger btn-lg"; li.setAttribute("onclick", `orderDetails(${id})`); li.id = `li${id}`; li.style.width = "100%"; var h5 = document.createElement("h5"); h5.textContent = `Поръчка: ${id}`; li.appendChild(h5); var list = document.getElementById("listOrders"); list.insertBefore(li, list.childNodes[0]); };
 
-function cStatus(status, order, setTime) { connection.invoke("ChangeStatus", status, order, setTime); };
+function cStatus(status, order, setTime) { connection.invoke("OperatorChangeStatus", status, order, setTime); };
 
 function changeStatus(status) {
     var order = document.getElementById("order").innerHTML;
-    var setTime = document.getElementById('theInput').value;
-    alert(setTime);
+    var setTime;
+    if (document.getElementById('theInput')) {
+        setTime = document.getElementById('theInput').value;
+    }   
     cStatus(status, order, setTime);
 };
 
@@ -83,7 +80,7 @@ function orderDetails(orderId) {
 
 function minus() {
     var input = document.getElementById('theInput');
-    if (input.value > 30) {
+    if (input.value > 15) {
         input.value = parseInt(input.value, 10) - 5;
     }
 }
@@ -94,3 +91,5 @@ function plus() {
         input.value = parseInt(input.value, 10) + 5;
     }
 }
+
+

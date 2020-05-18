@@ -111,7 +111,6 @@
                 .FirstOrDefault();
         }
 
-
         private Category GetCategoryById(string categoryId)
             => this.categoriesRepository.All().FirstOrDefault(x => x.Id == categoryId);
     }

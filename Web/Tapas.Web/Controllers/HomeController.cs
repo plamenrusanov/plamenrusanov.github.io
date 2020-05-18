@@ -25,7 +25,6 @@
             return this.View();
         }
 
-
         public IActionResult Privacy()
         {
             return this.View();

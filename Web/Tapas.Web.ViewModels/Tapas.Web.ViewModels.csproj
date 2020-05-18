@@ -32,9 +32,6 @@
     <Compile Update="Administration\Products\ProductsIndexViewModel.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Update="Home\HomeIndexViewModel.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
     <Compile Update="Orders\OrderInpitModel.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

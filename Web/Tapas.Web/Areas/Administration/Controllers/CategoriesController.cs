@@ -51,7 +51,6 @@
             {
                 return this.BadRequest();
             }
-
         }
 
         public IActionResult Edit(string categoryId)
@@ -70,7 +69,6 @@
             {
                 return this.BadRequest();
             }
-
         }
 
         [HttpPost]
@@ -91,7 +89,6 @@
             {
                 return this.BadRequest();
             }
-
         }
 
         public IActionResult Details(string categoryId)
@@ -111,7 +108,6 @@
             {
                 return this.BadRequest();
             }
-
         }
 
         public IActionResult Delete(string categoryId)
@@ -131,7 +127,6 @@
             {
                 return this.BadRequest();
             }
-
         }
 
         public IActionResult OnDelete(string categoryId)
@@ -151,7 +146,6 @@
             {
                 return this.BadRequest();
             }
-
         }
     }
 }

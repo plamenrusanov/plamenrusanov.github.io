@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Tapas.Data.Migrations
+﻿namespace Tapas.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddPropToSize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

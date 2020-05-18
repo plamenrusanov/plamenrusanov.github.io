@@ -48,6 +48,5 @@
             this.Sizes[1] = new InputProductSizeModel();
             this.Sizes[2] = new InputProductSizeModel();
         }
-
     }
 }
