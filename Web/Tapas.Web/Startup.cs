@@ -130,6 +130,7 @@
                 endpoints =>
                     {
                         endpoints.MapHub<OrderHub>("/orderHub");
+                        endpoints.MapHub<UserOrdersHub>("/userOrdersHub");
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();

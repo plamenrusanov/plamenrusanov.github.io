@@ -1,9 +1,12 @@
 ﻿namespace Tapas.Web.Hubs
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.SignalR;
+    using Microsoft.Extensions.Logging;
     using Tapas.Data.Models.Enums;
     using Tapas.Services.Data.Contracts;
 
@@ -11,11 +14,15 @@
     {
         private readonly IOrdersService ordersService;
         private readonly IAlarm alarm;
+        private readonly ILogger<OrderHub> logger;
+        private readonly IHubContext<UserOrdersHub> hubUser;
 
-        public OrderHub(IOrdersService ordersService, IAlarm alarm)
+        public OrderHub(IOrdersService ordersService, IAlarm alarm, ILogger<OrderHub> logger, IHubContext<UserOrdersHub> hubUser)
         {
             this.ordersService = ordersService;
             this.alarm = alarm;
+            this.logger = logger;
+            this.hubUser = hubUser;
         }
 
         public async Task GetUpdateForOrder()
@@ -44,27 +51,25 @@
 
             try
             {
-                var result = await this.ordersService.ChangeStatusAsync(status, order, setTime);
-                if (result)
+                var userId = await this.ordersService.ChangeStatusAsync(status, order, setTime);
+                await this.Clients.Caller.SendAsync("OperatorStatusChanged", order, status);
+                await this.hubUser.Clients.User(userId).SendAsync("UserStatusChanged", order, status);
+                object statusResult = new object { };
+                if (Enum.TryParse(typeof(OrderStatus), status, out statusResult))
                 {
-                    await this.Clients.Caller.SendAsync("OperatorStatusChanged", result, order, status);
-                    object statusResult = new object { };
-                    if (Enum.TryParse(typeof(OrderStatus), status, out statusResult))
+                    Action action = null;
+                    switch ((OrderStatus)statusResult)
                     {
-                        Action action = null;
-                        switch ((OrderStatus)statusResult)
-                        {
-                            case OrderStatus.Processed: action = new Action(() => this.alarm.CreateAlarm(order, setTime)); break;
-                            case OrderStatus.OnDelivery: action = new Action(() => this.alarm.RemoveAlarm(order)); break;
-                            default:
-                                break;
-                        }
+                        case OrderStatus.Processed: action = new Action(() => this.alarm.CreateAlarm(order, setTime)); break;
+                        case OrderStatus.OnDelivery: action = new Action(() => this.alarm.RemoveAlarm(order)); break;
+                        default:
+                            break;
+                    }
 
-                        if (action != null)
-                        {
-                            var t = new Task(action);
-                            t.Start();
-                        }
+                    if (action != null)
+                    {
+                        var t = new Task(action);
+                        t.Start();
                     }
                 }
             }

@@ -8,6 +8,8 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SignalR;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Tapas.Common;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
@@ -19,16 +21,22 @@
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IOrdersService ordersService;
-        private readonly IHubContext<OrderHub> hub;
+        private readonly IHubContext<OrderHub> hubAdmin;
+        private readonly IHubContext<UserOrdersHub> hubUser;
+        private readonly ILogger<OrdersController> logger;
 
         public OrdersController(
             UserManager<ApplicationUser> userManager,
             IOrdersService ordersService,
-            IHubContext<OrderHub> hub)
+            IHubContext<OrderHub> hubAdmin,
+            IHubContext<UserOrdersHub> hubUser,
+            ILogger<OrdersController> logger)
         {
             this.userManager = userManager;
             this.ordersService = ordersService;
-            this.hub = hub;
+            this.hubAdmin = hubAdmin;
+            this.hubUser = hubUser;
+            this.logger = logger;
         }
 
         [Authorize(Roles = "Administrator, Operator")]
@@ -71,7 +79,7 @@
             {
                 var user = await this.userManager.GetUserAsync(this.User);
                 var id = await this.ordersService.CreateAsync(user, model);
-                await this.hub.Clients.All.SendAsync("OperatorNewOrder", id);
+                await this.hubAdmin.Clients.All.SendAsync("OperatorNewOrder", id);
                 return this.Redirect("/Orders/UserOrders");
             }
             catch (System.Exception)
@@ -173,21 +181,6 @@
             catch (System.Exception)
             {
                 return this.NotFound();
-            }
-        }
-
-        public async Task<bool> ChangeStatusAsync(string status, string orderId, string setTime)
-        {
-            try
-            {
-                await this.ordersService.ChangeStatusAsync(status, orderId, setTime);
-                var userId = this.ordersService.GetUserIdByOrderId(orderId);
-                await this.hub.Clients.User(userId).SendAsync("UserStatusChanged", true, orderId, status);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
             }
         }
     }

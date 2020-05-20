@@ -24,8 +24,7 @@ setupConnection = () => {
 
     connection.on("OperatorAlertMessage", function (message) { alert(message); });
 
-    connection.on("OperatorStatusChanged", function (result, order, status) {
-        if (result) {
+    connection.on("OperatorStatusChanged", function (order, status) {
             stopMusic();
             var li = document.getElementById(`li${order}`);
             if (status === "Unprocessed") {
@@ -38,7 +37,6 @@ setupConnection = () => {
                 li.className = "btn btn-info btn-lg";
             }
             orderDetails(order);
-        }
     });
 
     connection.on("OperatorSetAlarm", function (order) {

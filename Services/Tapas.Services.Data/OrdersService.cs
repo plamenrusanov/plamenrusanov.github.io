@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
 
     using Tapas.Data.Common.Repositories;
@@ -29,7 +30,7 @@
             this.itemsRepository = itemsRepository;
         }
 
-        public async Task<bool> ChangeStatusAsync(string status, string orderId, string setTime)
+        public async Task<string> ChangeStatusAsync(string status, string orderId, string setTime)
         {
             if (string.IsNullOrEmpty(orderId))
             {
@@ -67,7 +68,7 @@
                         }
 
                         await this.ordersRepository.SaveChangesAsync();
-                        return true;
+                        return order.UserId;
                     }
                     catch (Exception e)
                     {
@@ -333,6 +334,5 @@
         {
             return Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>().ToList();
         }
-
     }
 }

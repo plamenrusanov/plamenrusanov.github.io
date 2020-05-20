@@ -5,16 +5,16 @@
     var i = 1;
 }
 
-<div class="row m-0">
+<div class="row">
     <div class="col-md-6">
-        <div class="row m-0">
+        <div class="row">
             <h5 style="width:50%;">Поръчана:</h5><h5 id="order">@Model.CreatedOn</h5>
         </div>
 
-        <div class="row m-0">
+        <div class="row">
             <h5 style="width:50%;">Статус на поръчката:</h5><h5 id="status">@Html.DisplayFor(x => x.Status)</h5>
         </div>
-        <div class="row m-0">
+        <div class="row">
             <h5 style="width:50%;">Доставка :</h5><h5>@Model.TimeForDelivery</h5>
         </div>
     </div>
@@ -42,7 +42,7 @@
 <div class="bg-light">
     <table class="table">
         <thead>
-            <tr class="row m-0">
+            <tr class="row">
                 <th class="col-md-1">
                     #
                 </th>
@@ -64,7 +64,7 @@
         <tbody>
             @foreach (var item in Model.CartItems)
             {
-                <tr class="row m-0">
+                <tr class="row">
                     <td class="col-md-1">
                         @(i++)
                     </td>
@@ -85,12 +85,12 @@
         </tbody>
     </table>
     <hr />
-    <div class="row m-0">
+    <div class="row">
         <p class="col-md-9 text-dark">Опаковки</p>
         <p class="col-md-3 text-dark">@Model.PackagesPrice</p>
     </div>
     <hr />
-    <div class="row m-0">
+    <div class="row">
         <p class="col-md-9 text-dark">Доставка</p>
         <p class="col-md-3 text-dark">@Model.DeliveryFee</p>
     </div>

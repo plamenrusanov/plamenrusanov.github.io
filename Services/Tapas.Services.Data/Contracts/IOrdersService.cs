@@ -23,7 +23,7 @@
 
         OrderDetailsViewModel GetUpdate();
 
-        Task<bool> ChangeStatusAsync(string status, string orderId, string setTime);
+        Task<string> ChangeStatusAsync(string status, string orderId, string setTime);
 
         ICollection<OrderCollectionViewModel> GetAll();
 
