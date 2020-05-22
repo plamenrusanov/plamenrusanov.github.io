@@ -28,3 +28,8 @@ function GetDescription(itemId) {
         }
     });
 }
+
+function displayDeliveryTax() {
+    var el = document.getElementById(`btnDeliveryTax`);
+    el.click();
+}

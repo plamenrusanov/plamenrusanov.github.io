@@ -55,7 +55,7 @@ else
                         </td>
                         <td class="col-md-2">
                             <tda>
-                                <a class="btn btn-primary btn-sm" onclick="GetDescription(@item.Id)">Изискване</a>
+                                <a class="btn btn-primary btn-sm" onclick="GetDescription(@item.Id)" style="color:white">Изискване</a>
                                 <button hidden data-toggle="modal" data-target="#exampleModalCenter" id="button@(item.Id)"></button>
                             </tda>
                         </td>
@@ -71,31 +71,31 @@ else
         <h5 style="width:80%;">Опаковки</h5>
         <h5>@Model.PackegesPrice лв.</h5>
     </div>
-    @if (Model.DeliveryFee != 0)
+    @if (Model.TotalPrice < GlobalConstants.MOPTCDF)
     {
-        <div class="row">
-            <h5 style="width:80%;">Доставка</h5>
-            <h5>@Model.DeliveryFee лв.</h5>
-        </div>
+<div class="row">
+    <h5 style="width:80%;">Ще ви бъде начислена сума за доставка!</h5>
+    <a class="btn btn-secondary btn-sm" onclick="displayDeliveryTax()" style="color:white">Доставка</a>
+    <button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
+</div>
     }
     <hr class="hr-tapas" />
     <div class="row">
-        @if (Model.TotalPrice < 10)
+        @if (Model.TotalPrice < GlobalConstants.OrderPriceMin)
         {
-            <p>&#8270; Минимална сума на поръчка 10 лева.</p>
+        <p>&#8270; Минимална сума на поръчка @(GlobalConstants.OrderPriceMin.ToString("F0")) лева.</p>
         }
-        else if (Model.TotalPrice < 15)
+        else if (Model.TotalPrice < GlobalConstants.MOPTCDF)
         {
-            <p>&#8270; Поръчка под 15 лева заплаща доставка!</p>
+    <p>&#8270; Поръчка под @(GlobalConstants.MOPTCDF.ToString("F0")) лева заплаща доставка!</p>
         }
-        else if (Model.TotalPrice < 25)
+        else if (Model.TotalPrice < GlobalConstants.OrderPriceForBonus)
         {
-            <p>&#8270; Поръчка над 25 лева получава подарък!</p>
+    <p>&#8270; Поръчка над @(GlobalConstants.OrderPriceForBonus.ToString("F0")) лева получава подарък!</p>
         }
     </div>
     <div class="row">
         <h4 style="width:70%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.TotalPrice) лв.</h4>
-        <h1 id="resp"></h1>
     </div>
 }
 
@@ -134,6 +134,29 @@ else
             <div class="modal-footer">
                 <a class="btn btn-secondary justify-content-start" data-dismiss="modal" id="closeModal" hidden>Затвори</a>
                 <a class="btn btn-primary align-content-end" onclick="SetDescription()">Запази промените</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deliveryTax" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveryModalTitle" style="color:black">Цени за доставка</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+               - 1 лев : Чародейка-Юг<br />
+               - 2 лева : за града<br />
+               - 4 лева : Източна Промишлена Зона, Западна Промишлена Зона, Долапи, Средна Кула<br />
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" data-dismiss="modal" id="closeModal">Затвори</a>
             </div>
         </div>
     </div>

@@ -73,10 +73,13 @@
             @Html.AntiForgeryToken();
             @Html.ValidationSummary(true);
 
-            <div class="row m-0 form-group">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
-            <div class="row m-0"><a class="btn btn-primary" href="/Addreses/Create">Добави адрес</a></div>
+            <div class="row m-0 form-group">
+                <div class="col-md-9 pl-0 pr-0">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
+                <a class="btn btn-primary col-md-3 pl-0 pr-0" href="/Addreses/Create">Добави адрес</a>
+            </div>
+            <div class="row mt-3 ml-0 mr-0">Допълнителна информация</div>
             <div class="row m-0 form-group ">@Html.TextAreaFor(x => x.AddInfo, 3, 30, new { @class = "form-control" })</div>
-            <div class="row m-0">
+            @*<div class="row m-0">
                 <div class="col-sm-6">
                     <div class="form-group">
                         <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
@@ -87,8 +90,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row m-0"><button class="btn btn-primary" type="submit">Изпрати поръчка</button></div>
+            </div>*@
+            <div class="row mt-3 m-0"><button class="btn btn-primary" type="submit">Изпрати поръчка</button></div>
 
         }
     </div>

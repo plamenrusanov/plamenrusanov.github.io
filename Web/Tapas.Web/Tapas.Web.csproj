@@ -158,9 +158,6 @@
     <Content Update="Views\Shared\_Layout.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\Images\vegetables.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\js\OrdersIndex.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
