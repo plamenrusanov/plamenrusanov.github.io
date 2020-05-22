@@ -1,14 +1,12 @@
 ﻿namespace Tapas.Web.Controllers
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SignalR;
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Tapas.Common;
     using Tapas.Data.Models;
@@ -39,13 +37,15 @@
             this.logger = logger;
         }
 
-        [Authorize(Roles = "Administrator, Operator")]
+        // Orders/Index
+        [Authorize(Roles = "Operator")]
         public IActionResult Index()
         {
             var orders = this.ordersService.GetDailyOrders();
             return this.View(orders);
         }
 
+        // Orders/Create
         public async Task<IActionResult> Create()
         {
             try
@@ -66,6 +66,7 @@
             }
         }
 
+        // Post Orders/Create
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create(OrderInpitModel model)
@@ -88,6 +89,8 @@
             }
         }
 
+        // Ajax Orders/Details
+        [Authorize(Roles = "Operator")]
         public IActionResult Details(string orderId)
         {
             if (string.IsNullOrEmpty(orderId))
@@ -114,30 +117,36 @@
             }
         }
 
+        // Orders/All
+        [Authorize(Roles = "Administrator")]
         public IActionResult All()
         {
             var model = this.ordersService.GetAll();
             return this.View(model);
         }
 
-        public async Task<IActionResult> OrdersByUser(string userName = null)
+        // Orders/All => OrdersByUser
+        [Authorize(Roles = "Administrator")]
+        public IActionResult OrdersByUser(string userName)
         {
             if (string.IsNullOrEmpty(userName))
-            {
-                userName = this.User.Identity.Name;
-            }
-
-            var user = await this.userManager.FindByNameAsync(userName);
-
-            if (user == null)
             {
                 return this.NotFound();
             }
 
-            var model = this.ordersService.GetOrdersByUserName(userName);
-            return this.View(model);
+            try
+            {
+                this.ViewData["Title"] = userName;
+                var model = this.ordersService.GetOrdersByUserName(userName);
+                return this.View(model);
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
+            }
         }
 
+        // Orders/UserOrders
         public async Task<IActionResult> UserOrders()
         {
             var user = await this.userManager.GetUserAsync(this.User);
@@ -158,6 +167,7 @@
             }
         }
 
+        // Orders/UserOrders/UserOrderDetails
         public IActionResult UserOrderDetails(string orderId)
         {
             if (string.IsNullOrEmpty(orderId))
@@ -181,6 +191,22 @@
             catch (System.Exception)
             {
                 return this.NotFound();
+            }
+        }
+
+        // Ajax Orders/OrdersByUser
+        public async Task<IActionResult> ChangeStatus(string orderId, string status)
+        {
+            try
+            {
+                var userId = await this.ordersService.ChangeStatusAsync(status, orderId, string.Empty);
+                this.hubUser.Clients.User(userId)?.SendAsync("UserStatusChanged", orderId, status);
+                return this.Ok();
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(e.Message, e.StackTrace);
+                return this.BadRequest();
             }
         }
     }

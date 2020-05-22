@@ -21,7 +21,9 @@
             @if (this.SignInManager.IsSignedIn(this.User))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Здравей @(this.User.Identity.Name)!</a>
+                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" style="height: 64px; padding-top: 8px;">
+                    <img src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_48,q_100,w_48/v1590151208/sharp_person_black_48dp.png"/>
+                    </a>
                 </li>
                 if (this.User.IsInRole(GlobalConstants.AdministratorName))
                 {

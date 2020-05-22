@@ -20,9 +20,11 @@
         [Required]
         public string Name { get; set; }
 
+        [Required]
         [DataType(DataType.Upload)]
         public IFormFile Image { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
         [Required]

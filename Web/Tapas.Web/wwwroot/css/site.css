@@ -72,7 +72,7 @@ ul li a {
     cursor: pointer;
 }
 
-ul li a:hover {
+ul li:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -170,6 +170,14 @@ ul li a:hover {
     height: 40px;
     border-radius: 5px;
 }
+
+.user-icon {
+    background-image: url('../images/sharp_person_black_48dp.png');
+    width: 48px;
+    height: 48px;
+    margin: 8px 10px 8px 10px;
+}
+
 
 .bg-light-transperant {
     background: rgba(255, 255, 255, 1);

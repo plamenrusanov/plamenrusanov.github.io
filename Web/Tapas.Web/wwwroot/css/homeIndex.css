@@ -11,6 +11,12 @@ nav .brand-logo {
     color: #444;
 }
 
+.user-icon {
+    background-image: url(https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_48,q_100,w_48/v1590151208/sharp_person_black_48dp.png);
+    width:64px;
+    height:64px;
+}
+
 li a.nav-link.text-dark {
     font-size: 1.2rem;
 }

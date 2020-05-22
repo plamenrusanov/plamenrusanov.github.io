@@ -5,28 +5,7 @@
 .col-50{
     width:50%;
 }
-/* Zebra striping */
-/*tr:nth-of-type(odd) {
-    background: #eee;
-}
 
-th {
-    background: #333;
-    color: white;
-    font-weight: bold;
-}*/
-
-/*td, th {
-    padding: 6px;
-    border: 1px solid #ccc;
-    text-align: left;
-}*/
-
-/* 
-Max width before this PARTICULAR table gets nasty
-This query will take effect for any screen smaller than 760px
-and also iPads specifically.
-*/
 @media only screen and (max-width: 768px){
 
     .btn-lg{

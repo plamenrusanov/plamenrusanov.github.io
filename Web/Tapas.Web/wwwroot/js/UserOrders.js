@@ -28,6 +28,10 @@ function setupConnection(){
     connection.start().catch(err => console.error(err.toString()));
 };
 
+function playMusic() {
+    var audio = document.getElementById("audio");
+    audio.play();
+}
 
 function orderDetails(orderId) {
     $.ajax({

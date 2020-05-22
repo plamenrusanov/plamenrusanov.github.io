@@ -77,7 +77,7 @@
     </div>
     <div class="col-md-6">
         <span>Допълнителна информация за адреса.</span>
-        @Html.TextBoxFor(x => x.AddInfo)
+        @Html.DisplayFor(x => x.AddInfo)
     </div>
 </div>
 <hr />
@@ -126,14 +126,18 @@
             }
         </tbody>
     </table>
-    <hr/>
+    <hr class="hr-tapas" />
     <div class="row">
-        <p class="col-md-9 text-dark">Опаковки</p>
-        <p class="col-md-3 text-dark">@Model.PackagesPrice</p>
+        <h5 style="width:80%;">Опаковки</h5>
+        <h5>@Model.PackagesPrice</h5>
     </div>
-    <hr/>
     <div class="row">
-        <p class="col-md-9 text-dark">Доставка</p>
-        <p class="col-md-3 text-dark">@Model.DeliveryFee</p>
+        <h5 style="width:80%;">Доставка</h5>
+        <h5>@Model.DeliveryFee</h5>
+    </div>
+    <hr class="hr-tapas" />
+    <div class="row">
+        <h4 style="width:70%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.TotalPrice) лв.</h4>
+        @*<h1 id="resp"></h1>*@
     </div>
 </div>

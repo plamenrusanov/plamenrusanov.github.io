@@ -31,12 +31,14 @@
             this.cloudService = cloudService;
         }
 
+        // Post Administration/CateringFood/Create
         public async Task AddCateringFoodAsync(CreateModel model)
         {
             var cateringProduct = new CateringProduct()
             {
                 Name = model.Name,
                 Description = model.Description,
+                NumberOfBits = model.NumberOfBits,
             };
 
             foreach (var item in model.Allergens)
@@ -76,6 +78,7 @@
             await this.cateringRepository.SaveChangesAsync();
         }
 
+        // Administration/CateringFood/Create
         public CreateModel CreateInputModel()
         {
             return new CreateModel()
@@ -85,6 +88,7 @@
             };
         }
 
+        // Administration/CateringFood/Index
         public List<IndexCateringFoodViewModel> GetAll()
         {
             return this.cateringRepository.All()

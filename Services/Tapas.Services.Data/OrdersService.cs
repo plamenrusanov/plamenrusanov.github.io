@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Threading.Tasks;
 
     using Tapas.Data.Common.Repositories;
@@ -84,6 +83,7 @@
             }
         }
 
+        // Post Orders/Create
         public async Task<int> CreateAsync(ApplicationUser user, OrderInpitModel model)
         {
             var order = new Order()
@@ -108,6 +108,7 @@
             return order.Id;
         }
 
+        // Ajax Orders/Details
         public OrderDetailsViewModel GetDetailsById(int id)
         {
             var order = this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault();
@@ -119,7 +120,7 @@
 
             var model = new OrderDetailsViewModel()
             {
-                CreatedOn = order.CreatedOn.ToLocalTime().ToString("HH:mm:ss"),
+                CreatedOn = order.CreatedOn.ToLocalTime().ToString("dd/MM/yy HH:mm"),
                 OrderId = order.Id,
                 DisplayAddress = order.Address.DisplayName,
                 AddressInfo = order.Address.AddInfo,
@@ -139,15 +140,17 @@
                 PackagesPrice = order.Bag.CartItems.Sum(x => (decimal)Math.Ceiling((double)x.Size.MaxProductsInPackage / x.Quantity) * x.Size.Package.Price),
                 DeliveryFee = order.DeliveryFee,
             };
+            model.TotalPrice = model.CartItems.Sum(x => x.ItemPrice) + model.PackagesPrice + model.DeliveryFee;
 
             if (model.Status != OrderStatus.Unprocessed)
             {
-                model.TimeForDelivery = order.ProcessingTime.ToLocalTime().AddMinutes((double)order.MinutesForDelivery).ToString("HH:mm:ss");
+                model.TimeForDelivery = order.ProcessingTime.ToLocalTime().AddMinutes((double)order.MinutesForDelivery).ToString("dd/MM/yy HH:mm");
             }
 
             return model;
         }
 
+        // Orders/Index
         public ICollection<OrdersViewModel> GetDailyOrders()
         {
             return this.ordersRepository.All()
@@ -160,6 +163,7 @@
                 }).ToList();
         }
 
+        // Orders/Create
         public OrderInpitModel GetOrderInputModel(ApplicationUser user)
         {
             if (user is null)
@@ -203,6 +207,7 @@
             return model;
         }
 
+        // ???
         public OrderDetailsViewModel GetUpdate()
         {
             return this.ordersRepository.All()
@@ -222,7 +227,6 @@
                     Status = x.Status,
                     UserPhone = x.User.PhoneNumber,
                     UserUserName = x.User.UserName,
-                    OrderStatus = this.Statuses(),
                 }).FirstOrDefault();
         }
 
@@ -233,6 +237,7 @@
             return this.ordersRepository.All().Any(x => x.Status == OrderStatus.Unprocessed);
         }
 
+        // Orders/All
         public ICollection<OrderCollectionViewModel> GetAll()
         {
             return this.ordersRepository.All()
@@ -244,6 +249,7 @@
                 }).OrderByDescending(x => x.Id).ToList();
         }
 
+        // Orders/All => OrdersByUser
         public ICollection<OrdersViewModel> GetOrdersByUserName(string userName)
         {
             return this.ordersRepository.All()
@@ -255,6 +261,7 @@
                 }).OrderByDescending(x => x.Id).ToList();
         }
 
+        // Orders/UserOrders
         public ICollection<UserOrderViewModel> GetMyOrders(ApplicationUser user)
         {
             if (user is null)
@@ -274,6 +281,7 @@
                 }).Take(10).ToList();
         }
 
+        // ???
         public OrderStatus CheckStatus(int orderId)
         {
             if (!this.IsExists(orderId))
@@ -284,6 +292,7 @@
             return this.ordersRepository.All().Where(x => x.Id == orderId).FirstOrDefault().Status;
        }
 
+        // /Orders/UserOrders/UserOrderDetails
         public UserOrderDetailsViewModel GetUserDetailsById(int id)
         {
             var order = this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault();
@@ -311,6 +320,8 @@
                 DeliveryFee = order.DeliveryFee,
             };
 
+            model.TotalPrice = model.CartItems.Sum(x => x.ItemPrice) + model.DeliveryFee + model.PackagesPrice;
+
             if (model.Status != OrderStatus.Unprocessed)
             {
                 model.TimeForDelivery = order.ProcessingTime.ToLocalTime().AddMinutes((double)order.MinutesForDelivery).ToString("dd/MM/yyyy HH:mm");
@@ -319,20 +330,16 @@
             return model;
         }
 
-        public string GetUserIdByOrderId(string orderId)
-        {
-            int id;
-            if (int.TryParse(orderId, out id))
-            {
-                return this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault().UserId;
-            }
+        // ???
+        //public string GetUserIdByOrderId(string orderId)
+        //{
+        //    int id;
+        //    if (int.TryParse(orderId, out id))
+        //    {
+        //        return this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault()?.UserId;
+        //    }
 
-            throw new ArgumentException();
-        }
-
-        private List<OrderStatus> Statuses()
-        {
-            return Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>().ToList();
-        }
+        //    throw new ArgumentException();
+        //}
     }
 }

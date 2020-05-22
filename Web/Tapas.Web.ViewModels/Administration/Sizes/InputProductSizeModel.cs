@@ -1,15 +1,19 @@
 ﻿namespace Tapas.Web.ViewModels.Administration.Sizes
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class InputProductSizeModel
     {
+        [Required]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Името може да съдържа между 3 и 30 символа!")]
         public string SizeName { get; set; }
 
         [Required]
         public decimal Price { get; set; }
 
         [Required]
+        [Range(1, 500000)]
         public int Weight { get; set; }
 
         [Required]

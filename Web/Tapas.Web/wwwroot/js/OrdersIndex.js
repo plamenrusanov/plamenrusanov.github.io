@@ -10,7 +10,6 @@ $(document).ready(function () {
 function playMusic() { var audio = document.getElementById('audio'); audio.play(); };
 function stopMusic() { var audio = document.getElementById('audio'); audio.currentTime = 0; audio.pause(); };
 
-
 var connection = null;
 setupConnection = () => {
     connection = new signalR.HubConnectionBuilder().withUrl("/orderHub").build();
@@ -19,31 +18,33 @@ setupConnection = () => {
         insertOrder(id);
         if (document.getElementById(`li${id}`)) {
             document.getElementById(`li${id}`).click();
-            playMusic(); 
-        } });
+            playMusic();
+        }
+    });
 
     connection.on("OperatorAlertMessage", function (message) { alert(message); });
 
     connection.on("OperatorStatusChanged", function (order, status) {
-            stopMusic();
-            var li = document.getElementById(`li${order}`);
-            if (status === "Unprocessed") {
-                li.className = "btn btn-danger btn-lg order-li";
-            } else if (status === "Processed") {
-                li.className = "btn btn-warning btn-lg";
-            } else if (status === "OnDelivery") {
-                li.className = "btn btn-success btn-lg";
-            } else if (status === "Delivered") {
-                li.className = "btn btn-info btn-lg";
-            }
-            orderDetails(order);
+       
+        var li = document.getElementById(`li${order}`);
+        if (status === "Unprocessed") {
+            li.className = "btn btn-danger btn-lg order-li";
+        } else if (status === "Processed") {
+            li.className = "btn btn-warning btn-lg";
+        } else if (status === "OnDelivery") {
+            li.className = "btn btn-success btn-lg";
+        } else if (status === "Delivered") {
+            li.className = "btn btn-info btn-lg";
+        }
+        orderDetails(order);
+        stopMusic();
     });
 
     connection.on("OperatorSetAlarm", function (order) {
         if (document.getElementById(`li${order}`).className == "btn btn-warning btn-lg") {
             document.getElementById(`li${order}`).click();
             playMusic();
-        }     
+        }
     });
 
     connection.on("OperatorFinished", function () { connection.stop(); });
@@ -62,7 +63,7 @@ function changeStatus(status) {
     var setTime;
     if (document.getElementById('theInput')) {
         setTime = document.getElementById('theInput').value;
-    }   
+    }
     cStatus(status, order, setTime);
 };
 

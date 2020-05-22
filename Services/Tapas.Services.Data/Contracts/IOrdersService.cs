@@ -35,6 +35,6 @@
 
         UserOrderDetailsViewModel GetUserDetailsById(int id);
 
-        string GetUserIdByOrderId(string orderId);
+        // string GetUserIdByOrderId(string orderId);
     }
 }
