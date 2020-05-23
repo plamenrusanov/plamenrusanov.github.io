@@ -9,11 +9,11 @@
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
     using Tapas.Data.Models;
+    using Tapas.Services.Messaging;
 
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
@@ -42,7 +42,7 @@
             if (this.ModelState.IsValid)
             {
                 var user = await this.userManager.FindByEmailAsync(this.Input.Email);
-                if (user == null || !(await this.userManager.IsEmailConfirmedAsync(user)))
+                if (user == null /*|| !(await this.userManager.IsEmailConfirmedAsync(user))*/)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return this.RedirectToPage("./ForgotPasswordConfirmation");
@@ -59,9 +59,11 @@
                     protocol: this.Request.Scheme);
 
                 await this.emailSender.SendEmailAsync(
+                    "plamenrusanov76@gmail.com",
+                    "Тапас",
                     this.Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Смяна на парола",
+                    $"<h4>За да смените паролата си натиснете <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>тук</a>.</h4>");
 
                 return this.RedirectToPage("./ForgotPasswordConfirmation");
             }

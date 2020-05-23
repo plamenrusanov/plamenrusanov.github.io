@@ -27,7 +27,7 @@
         public async Task<IActionResult> OnGet()
         {
             await this.signInManager.SignOutAsync();
-            this.logger.LogInformation("User logged out.");
+            this.logger.LogInformation($"{this.User.Identity.Name} logged out.");
 
             return this.RedirectPermanent("./../../Home/Index");
         }
@@ -35,7 +35,7 @@
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await this.signInManager.SignOutAsync();
-            this.logger.LogInformation("User logged out.");
+            this.logger.LogInformation($"{this.User.Identity.Name} logged out.");
 
             return this.RedirectPermanent("./../../Home/Index");
         }
