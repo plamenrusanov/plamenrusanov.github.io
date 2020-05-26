@@ -10,12 +10,14 @@
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
+    using Tapas.Common;
     using Tapas.Data.Models;
+    using Tapas.Services.Messaging;
+    using Tapas.Web.ViewModels;
 
     [AllowAnonymous]
     public class RegisterModel : PageModel
@@ -60,7 +62,7 @@
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
                 if (result.Succeeded)
                 {
-                    this.logger.LogInformation("User created a new account with password.");
+                    this.logger.LogInformation($"{user.UserName} създаде нов акаунт с парола.");
 
                     var resultRole = await this.userManager.AddToRoleAsync(user, "User");
                     if (resultRole.Succeeded)
@@ -81,10 +83,11 @@
                         protocol: this.Request.Scheme);
 
                     await this.emailSender.SendEmailAsync(
+                        GlobalConstants.TapasEmail,
+                        GlobalConstants.TapasEmailSender,
                         this.Input.Email,
-                        "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+                        "Потвърдете имейла си",
+                        $"Моля, потвърдете акаунта си, като <a href = '{HtmlEncoder.Default.Encode(callbackUrl)}'> кликнете тук </a>.");
                     if (this.userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return this.RedirectToPage("RegisterConfirmation", new { email = this.Input.Email });
@@ -108,30 +111,30 @@
 
         public class InputModel
         {
-            [Required]
+            [RequiredBg]
             [StringLength(20, ErrorMessage = "Името трябва да дълго между 3 и 20 символа!", MinimumLength = 3)]
             [Display(Name = "Име")]
             public string UserName { get; set; }
 
-            [Required]
+            [RequiredBg]
             [Phone]
             [Display(Name = "Телефон")]
             public string Phone { get; set; }
 
-            [Required]
+            [RequiredBg]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "Имейл")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [RequiredBg]
+            [StringLength(100, ErrorMessage = "{0} трябва да бъде най-малко {2} и максимум {1} символа.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Парола")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Потвърди паролата")]
+            [Compare("Password", ErrorMessage = "Паролата и паролата за потвърждение не съвпадат.")]
             public string ConfirmPassword { get; set; }
         }
     }

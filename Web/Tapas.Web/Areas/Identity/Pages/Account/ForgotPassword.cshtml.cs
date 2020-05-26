@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
+    using Tapas.Common;
     using Tapas.Data.Models;
     using Tapas.Services.Messaging;
 
@@ -29,13 +30,6 @@
 
         [BindProperty]
         public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
-        }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -59,8 +53,8 @@
                     protocol: this.Request.Scheme);
 
                 await this.emailSender.SendEmailAsync(
-                    "plamenrusanov76@gmail.com",
-                    "Тапас",
+                    GlobalConstants.TapasEmail,
+                    GlobalConstants.TapasEmailSender,
                     this.Input.Email,
                     "Смяна на парола",
                     $"<h4>За да смените паролата си натиснете <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>тук</a>.</h4>");
@@ -69,6 +63,13 @@
             }
 
             return this.Page();
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [EmailAddress]
+            public string Email { get; set; }
         }
     }
 }

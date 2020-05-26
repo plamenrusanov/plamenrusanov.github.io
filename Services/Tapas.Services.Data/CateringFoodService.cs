@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -117,6 +118,49 @@
                             PackagePrice = s.Package.Price,
                         }).ToList(),
                 }).ToList();
+        }
+
+        // Administration/CateringFood/Details
+        public DetailsCateringFoodViewModel GetDetailsById(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException();
+            }
+
+            var product = this.cateringRepository
+                .All()
+                .Where(x => x.Id == id)
+                .Select(x => new DetailsCateringFoodViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    ImageUrl = x.ImageUrl,
+                    NumberOfBits = x.NumberOfBits,
+                    Size = x.Sizes.Select(s => new ProductSizeViewModel()
+                    {
+                        SizeId = s.Id,
+                        SizeName = s.SizeName,
+                        Price = s.Price,
+                        Weight = s.Weight,
+                        PackagePrice = s.Package.Price,
+                        MaxProductsInPackage = s.MaxProductsInPackage,
+                    }).FirstOrDefault(),
+                    Allergens = x.Allergens.Select(a => new DetailsAllergenViewModel()
+                    {
+                       Id = a.AllergenId,
+                       Name = a.Allergen.Name,
+                       ImageUrl = a.Allergen.ImageUrl,
+                    }).ToList(),
+                }).FirstOrDefault();
+
+            if (product is null)
+            {
+                throw new ArgumentException();
+            }
+
+            return product;
         }
     }
 }

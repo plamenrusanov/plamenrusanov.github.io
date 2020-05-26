@@ -13,7 +13,7 @@
             this.Sizes = new HashSet<ProductSize>();
         }
 
-        public int? NumberOfBits { get; set; }
+        public int NumberOfBits { get; set; }
 
         public virtual ICollection<AllergensProducts> Allergens { get; set; }
 

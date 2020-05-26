@@ -25,7 +25,7 @@
             this.hubUser = hubUser;
         }
 
-        public async Task GetUpdateForOrder()
+    /*  public async Task GetUpdateForOrder()
         {
             bool haveUpdate = false;
             do
@@ -39,7 +39,7 @@
             }
             while (haveUpdate);
             await this.Clients.Caller.SendAsync("OperatorFinished");
-        }
+        } */
 
         public async Task OperatorChangeStatus(string status, string order, string setTime)
         {
@@ -57,17 +57,9 @@
                 object statusResult = new object { };
                 if (Enum.TryParse(typeof(OrderStatus), status, out statusResult))
                 {
-                    Action action = null;
-                    switch ((OrderStatus)statusResult)
+                    if ((OrderStatus)statusResult == OrderStatus.Processed)
                     {
-                        case OrderStatus.Processed: action = new Action(() => this.alarm.CreateAlarm(order, setTime)); break;
-                        case OrderStatus.OnDelivery: action = new Action(() => this.alarm.RemoveAlarm(order)); break;
-                        default:
-                            break;
-                    }
-
-                    if (action != null)
-                    {
+                        Action action = new Action(() => this.alarm.CreateAlarm(order, setTime));
                         var t = new Task(action);
                         t.Start();
                     }
@@ -75,6 +67,7 @@
             }
             catch (System.Exception e)
             {
+                this.logger.LogInformation(e.Message);
                 await this.Clients.Caller.SendAsync("OperatorAlertMessage", e.Message);
             }
         }

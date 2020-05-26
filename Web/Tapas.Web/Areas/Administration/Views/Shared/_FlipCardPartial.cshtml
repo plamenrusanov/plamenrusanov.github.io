@@ -1,0 +1,25 @@
+﻿@model List<Tapas.Web.ViewModels.Administration.CateringFood.DetailsCateringFoodViewModel>
+
+@foreach (var item in Model)
+{
+    <div class="col-md-6 mb-5">
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <img class="img-flip" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_300,w_500,f_auto/v1587540778/@(item.ImageUrl)" style="width:100%;" />
+                </div>
+                <div class="flip-card-back">
+                    <h3>@item.Name</h3>
+                    <div><h5>Описание: @item.Description</h5></div>
+                    <div><h5>Хапки: @item.NumberOfBits</h5></div>
+                    <div><h5>Цена: @item.Size.Price</h5></div>
+                    <div><h5>Опаковка: @item.Size.PackagePrice</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Style{
+    <link href="~/css/FlipCard.css" rel="stylesheet" />
+}

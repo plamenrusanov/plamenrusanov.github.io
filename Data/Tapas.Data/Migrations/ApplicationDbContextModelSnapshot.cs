@@ -418,7 +418,7 @@ namespace Tapas.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("DeliveryFee")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.Property<int>("MinutesForDelivery")
                         .HasColumnType("int");
@@ -670,7 +670,7 @@ namespace Tapas.Data.Migrations
                 {
                     b.HasBaseType("Tapas.Data.Models.Product");
 
-                    b.Property<int?>("NumberOfBits")
+                    b.Property<int>("NumberOfBits")
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("CateringProduct");

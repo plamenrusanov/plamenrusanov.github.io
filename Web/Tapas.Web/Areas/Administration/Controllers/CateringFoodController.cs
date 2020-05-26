@@ -1,19 +1,26 @@
 ﻿namespace Tapas.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using Tapas.Common;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Administration.CateringFood;
 
     public class CateringFoodController : AdministrationController
     {
         private readonly ICateringFoodService cateringFoodService;
+        private readonly ILogger<CateringFoodController> logger;
 
-        public CateringFoodController(ICateringFoodService cateringFoodService)
+        public CateringFoodController(
+            ICateringFoodService cateringFoodService,
+            ILogger<CateringFoodController> logger)
         {
             this.cateringFoodService = cateringFoodService;
+            this.logger = logger;
         }
 
         [AllowAnonymous]
@@ -43,15 +50,39 @@
                 await this.cateringFoodService.AddCateringFoodAsync(model);
                 return this.RedirectToAction("Index");
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.BadRequest();
             }
         }
 
-        public IActionResult Edit()
+        [AllowAnonymous]
+        public IActionResult Details(string id)
         {
-            return this.View();
+            try
+            {
+                var model = this.cateringFoodService.GetDetailsById(id);
+                return this.View(model);
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return this.BadRequest();
+            }
+        }
+
+        public IActionResult Edit(string id)
+        {
+            try
+            {
+                return this.View();
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return this.BadRequest();
+            }
         }
 
         public IActionResult Delete()

@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using Tapas.Data.Models;
+    using Tapas.Web.ViewModels;
 
     [AllowAnonymous]
     public class LoginModel : PageModel
@@ -39,19 +40,6 @@
 
         [TempData]
         public string ErrorMessage { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            public string UserName { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-
-            [Display(Name = "Remember me?")]
-            public bool RememberMe { get; set; }
-        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -81,7 +69,7 @@
                 var result = await this.signInManager.PasswordSignInAsync(this.Input.UserName, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    this.logger.LogInformation($"{this.Input.UserName} logged in.");
+                    this.logger.LogInformation($"{this.Input.UserName} влезе.");
                     return this.LocalRedirect(returnUrl);
                 }
 
@@ -92,18 +80,31 @@
 
                 if (result.IsLockedOut)
                 {
-                    this.logger.LogWarning("User account locked out.");
+                    this.logger.LogWarning("Потребителският акаунт е заключен.");
                     return this.RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    this.ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    this.ModelState.AddModelError(string.Empty, "Невалиден опит за влизане.");
                     return this.Page();
                 }
             }
 
             // If we got this far, something failed, redisplay form
             return this.Page();
+        }
+
+        public class InputModel
+        {
+            [RequiredBg]
+            public string UserName { get; set; }
+
+            [RequiredBg]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
+
+            [Display(Name = "Запомни ме?")]
+            public bool RememberMe { get; set; }
         }
     }
 }

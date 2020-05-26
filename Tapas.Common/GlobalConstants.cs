@@ -32,5 +32,11 @@
         public const decimal MOPTCDF = 15m;
 
         public const decimal OrderPriceForBonus = 25m;
+
+        public const string TapasEmail = "plamenrusanov76@gmail.com";
+
+        public const string TapasEmailSender = "Тапас";
+
+        public const string DefaultLogPattern = "User: {0}\n\tMessage: {1}\n\tStackTrace: {2}";
     }
 }

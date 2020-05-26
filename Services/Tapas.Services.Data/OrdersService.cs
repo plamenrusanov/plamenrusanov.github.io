@@ -126,7 +126,7 @@
                 AddressInfo = order.Address.AddInfo,
                 UserUserName = order.User.UserName,
                 UserPhone = order.User.PhoneNumber,
-                AddInfo = order.Address.AddInfo,
+                AddInfo = order.AddInfo,
                 CartItems = order.Bag.CartItems
                     .Select(x => new ShopingItemsViewModel()
                     {
@@ -331,15 +331,16 @@
         }
 
         // ???
-        //public string GetUserIdByOrderId(string orderId)
-        //{
+        //
+        // public string GetUserIdByOrderId(string orderId)
+        // {
         //    int id;
         //    if (int.TryParse(orderId, out id))
         //    {
         //        return this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault()?.UserId;
         //    }
-
+        //
         //    throw new ArgumentException();
-        //}
+        // }
     }
 }

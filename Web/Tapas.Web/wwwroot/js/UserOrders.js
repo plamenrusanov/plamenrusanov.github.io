@@ -42,3 +42,8 @@ function orderDetails(orderId) {
         }
     });
 }
+
+function displayDeliveryTax() {
+    var el = document.getElementById(`btnDeliveryTax`);
+    el.click();
+}

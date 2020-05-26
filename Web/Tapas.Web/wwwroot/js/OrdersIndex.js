@@ -44,6 +44,10 @@ setupConnection = () => {
         if (document.getElementById(`li${order}`).className == "btn btn-warning btn-lg") {
             document.getElementById(`li${order}`).click();
             playMusic();
+            var al = document.getElementById('alertt');
+            al.hidden = false;
+            var alContent = document.getElementById('alert-content');
+            alContent.innerHTML = `Поръчка номер ${order} трябва да пътува!`;
         }
     });
 
@@ -89,6 +93,11 @@ function plus() {
     if (input.value < 100) {
         input.value = parseInt(input.value, 10) + 5;
     }
+}
+
+function displayDeliveryTax() {
+    var el = document.getElementById(`btnDeliveryTax`);
+    el.click();
 }
 
 

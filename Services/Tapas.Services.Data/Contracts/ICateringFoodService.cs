@@ -12,5 +12,7 @@
         Task AddCateringFoodAsync(CreateModel model);
 
         List<IndexCateringFoodViewModel> GetAll();
+
+        DetailsCateringFoodViewModel GetDetailsById(string id);
     }
 }

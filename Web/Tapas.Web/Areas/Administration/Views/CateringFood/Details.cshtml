@@ -1,0 +1,66 @@
+﻿@model Tapas.Web.ViewModels.Administration.CateringFood.DetailsCateringFoodViewModel
+
+@{
+    ViewData["Title"] = "Детайли";
+}
+
+
+<h1 class="text-center">Детайли</h1>
+<hr class="hr-tapas" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img class="responsive" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_200,w_300/v1587540009/@(Model.ImageUrl)" alt="@Model.Name">
+        </div>
+        <div class="col-md-4 text-center mt-3">
+            <h2>@Html.DisplayFor(x => x.Name)</h2>
+            <div>@Html.DisplayFor(x => x.Description)</div>
+        </div>
+        <div class="col-md-4">
+            <h5 class="text-center">Алергени</h5>
+
+            @if (Model.Allergens.Count == 0)
+            {
+                <p class="text-center">Липсват данни за наличие<br /> на алергени.</p>
+            }
+            @foreach (var item in Model.Allergens)
+            {
+
+                <div class="ml-5 pl-5">
+                    <img src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_35,w_35/v1587540009/@(item.ImageUrl)" alt="@item.Name">
+                    <span>@Html.Label(item.Name)</span>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row mt-2">
+
+        <input type="hidden" class="form-control" name="Product.Sizes[0].SizeId" value="@Model.Size.SizeId" />
+        <div class="col-50 row">
+            <h4 style="width:50%;">@Html.Label("Цена")</h4>
+            <h4 id="productPrice">@Model.Size.Price лв.</h4>
+        </div>
+        <div class="col-50 row">
+            <h4 style="width:50%;">@Html.Label("Тегло")</h4>
+            <h4>@Model.Size.Weight гр.</h4>
+        </div>
+        <div class="col-50 row">
+            <h4 style="width:50%;">@Html.Label("Опаковка")</h4>
+            <h4 id="packagePrice">@Model.Size.PackagePrice лв.</h4>
+        </div>
+        <div class="col-50 row">
+            <h4 style="width:50%;">@Html.Label("Хапки")</h4>
+            <h4>@Model.NumberOfBits бр.</h4>
+        </div>
+    </div>
+</div>
+<div class="button-holder">
+    @if (this.User.IsInRole(GlobalConstants.AdministratorName))
+    {
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Редактирай</a>
+    }
+    <a class="btn btn-primary" asp-action="Index">Назад</a>
+</div>
+@section Style{ 
+    <link href="~/css/CateringFood/details.css" rel="stylesheet" />
+}

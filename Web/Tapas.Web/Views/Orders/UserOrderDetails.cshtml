@@ -25,7 +25,7 @@
                 <img src="~/Images/paper.png" width="128" height="128" />
                 break;
             case OrderStatus.Processed:
-                <img src="~/Images/cook.png"  width="128" height="128" />
+                <img src="~/Images/cook.png" width="128" height="128" />
                 break;
             case OrderStatus.OnDelivery:
                 <img src="~/Images/deliveryTransport.png" width="128" height="128" />
@@ -90,12 +90,39 @@
         <h5>@Model.PackagesPrice</h5>
     </div>
     <hr />
+    @if (Model.TotalPrice >= GlobalConstants.OrderPriceMin && Model.TotalPrice < GlobalConstants.MOPTCDF)
+    {
+        <div class="row">
+            <h5 style="width:80%;">Ще ви бъде начислена сума за доставка!</h5>
+            <a class="btn btn-secondary btn-sm" onclick="displayDeliveryTax()" style="color:white">Доставка</a>
+            <button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
+        </div>
+        <hr />
+    }
+
     <div class="row">
-        <h5 style="width:80%;">Доставка</h5>
-        <h5>@Model.DeliveryFee</h5>
+        <h4 style="width:80%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.TotalPrice) лв.</h4>
     </div>
-    <hr class="hr-tapas" />
-    <div class="row">
-        <h4 style="width:70%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.TotalPrice) лв.</h4>
+</div>
+<div class="modal fade" id="deliveryTax" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveryModalTitle" style="color:black">Цени за доставка</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                - 1 лев : Чародейка-Юг<br />
+                - 2 лева : за града<br />
+                - 4 лева : Източна Промишлена Зона, Западна Промишлена Зона, Долапи, Средна Кула<br />
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" data-dismiss="modal" id="closeModal">Затвори</a>
+            </div>
+        </div>
     </div>
 </div>
