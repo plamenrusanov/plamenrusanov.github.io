@@ -14,5 +14,7 @@
         List<IndexCateringFoodViewModel> GetAll();
 
         DetailsCateringFoodViewModel GetDetailsById(string id);
+
+        EditCateringFoodModel GetEditModel(string id);
     }
 }

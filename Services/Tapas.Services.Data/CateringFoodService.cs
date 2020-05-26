@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Services.Contracts;
@@ -149,9 +150,9 @@
                     }).FirstOrDefault(),
                     Allergens = x.Allergens.Select(a => new DetailsAllergenViewModel()
                     {
-                       Id = a.AllergenId,
-                       Name = a.Allergen.Name,
-                       ImageUrl = a.Allergen.ImageUrl,
+                        Id = a.AllergenId,
+                        Name = a.Allergen.Name,
+                        ImageUrl = a.Allergen.ImageUrl,
                     }).ToList(),
                 }).FirstOrDefault();
 
@@ -161,6 +162,60 @@
             }
 
             return product;
+        }
+
+        public EditCateringFoodModel GetEditModel(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException();
+            }
+
+            try
+            {
+                var product = this.cateringRepository
+                    .All()
+                    .Where(x => x.Id == id)
+                    .FirstOrDefault();
+                if (product is null)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                var model = new EditCateringFoodModel()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    ImageUrl = product.ImageUrl,
+                    NumberOfBits = product.NumberOfBits,
+                    Description = product.Description,
+                    Size = product.Sizes.Select(s => new EditProductSizeModel()
+                    {
+                        SizeId = s.Id,
+                        SizeName = s.SizeName,
+                        Price = s.Price,
+                        Weight = s.Weight,
+                        PackageId = s.PackageId,
+                        MaxProductsInPackage = s.MaxProductsInPackage,
+                    }).FirstOrDefault(),
+                    AvailablePackages = this.packagesService.All().ToList(),
+                };
+
+                model.Allergens = this.allergensService
+                           .All()
+                           .Select(c => new SelectListItem()
+                           {
+                               Value = c.Id,
+                               Text = c.Name,
+                               Selected = product.Allergens.Any(a => a.AllergenId == c.Id) ? true : false,
+                           }).ToList();
+
+                return model;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
         }
     }
 }

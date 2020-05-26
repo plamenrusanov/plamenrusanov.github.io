@@ -76,7 +76,32 @@
         {
             try
             {
-                return this.View();
+                var model = this.cateringFoodService.GetEditModel(id);
+                return this.View(model);
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException != null)
+                {
+                    this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.InnerException.Message, e.InnerException.StackTrace);
+                }
+
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return this.BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditCateringFoodModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.RedirectToAction(actionName: "Edit", controllerName: "CateringFood", routeValues: model.Id);
+            }
+
+            try
+            {
+                return this.RedirectToAction("Index");
             }
             catch (Exception e)
             {
