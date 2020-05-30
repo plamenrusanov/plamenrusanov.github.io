@@ -10,7 +10,7 @@
 
 
 <form enctype="multipart/form-data" asp-area="Administration" asp-controller="Products" asp-action="Edit" method="post">
-
+    <div asp-validation-summary="All" class="text-danger"></div>
     @Html.ValidationSummary(true)
     @Html.HiddenFor(x => x.Id, new { @class = "form-control" })
     @Html.HiddenFor(x => x.ImageUrl, new { @class = "form-control" })
@@ -47,19 +47,14 @@
             <h3>@Html.LabelFor(x => x.Allergens, "Алергени")</h3>
         </div>
         <div class="col-sm-9 ">
-            <div class="row">
+            <div class="row form-group">
                 @for (var a = 0; a < Model.Allergens.Count; a++)
                 {
                     <div class="col-sm-1 m-2">
-                        <div class="row">
-                            @Html.LabelFor(x => x.Allergens[a], Model.Allergens[a].Text)
-                        </div>
-                        <div class="row">
-                            @Html.EditorFor(m => m.Allergens[a].Selected)
-                            @Html.HiddenFor(m => m.Allergens[a].Text)
-                            @Html.HiddenFor(m => m.Allergens[a].Value)
-                        </div>
-
+                        @Html.EditorFor(m => m.Allergens[a].Selected)
+                        @Html.HiddenFor(m => m.Allergens[a].Text)
+                        @Html.HiddenFor(m => m.Allergens[a].Value)
+                        @Html.LabelFor(x => x.Allergens[a], Model.Allergens[a].Text)
                     </div>
                 }
             </div>
@@ -88,7 +83,7 @@
         @for (int i = 0; i < Model.Sizes.Count; i++)
         {
             <li class="row form-row" style="border-bottom:1px, solid, black" id="li@(i)">
-                @Html.HiddenFor(x => Model.Sizes[i].SizeId, new { id=$"Sizes[{i}].SizeId" })
+                @Html.HiddenFor(x => Model.Sizes[i].SizeId, new { id = $"Sizes[{i}].SizeId" })
                 <div class="col-md-6">
                     <div class="row form-group row-group">
                         <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].SizeName, $"Име на размер {i + 1}", new { @class = "control-label" })</h4>
@@ -99,7 +94,7 @@
                 <div class="col-md-6">
                     <div class=" row form-group row-group">
                         <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Price, "Цена", new { @class = "control-label" })</h4>
-                        @Html.EditorFor(x => Model.Sizes[i].Price, ViewData["Title"].ToString(), $"Sizes[{i}].Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                        @Html.EditorFor(x => Model.Sizes[i].Price, "Edit", $"Sizes[{i}].Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
                         <span asp-validation-for="@Model.Sizes[i].Price" class="text-danger"></span>
                     </div>
                 </div>
@@ -138,18 +133,18 @@
         }
     </ul>
     <!--Buttons-->
-    <div class="col-md-6 form-group text-center">
-        <button type="submit" class="btn btn-primary btn-lg active">Радактирай</button>
+    <div class="row">
+        <div class="col-md-6 form-group text-center">
+            <button type="submit" class="btn btn-primary btn-lg active">Радактирай</button>
+        </div>
+        <div class="row-col-md-6 text-center">
+            <div class="btn btn-secondary btn-lg" onclick="GetIndex()">Добави размер</div>
+        </div>
     </div>
-
 </form>
-<div class="row-col-md-6 text-center">
-    <div class="btn btn-secondary btn-lg" onclick="GetIndex()">Добави размер</div>
-</div>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/EditProduct.js" asp-append-version="true"></script>
 }
 

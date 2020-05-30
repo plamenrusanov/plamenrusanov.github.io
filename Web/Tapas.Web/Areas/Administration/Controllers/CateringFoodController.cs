@@ -1,6 +1,7 @@
 ﻿namespace Tapas.Web.Areas.Administration.Controllers
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -12,14 +13,20 @@
 
     public class CateringFoodController : AdministrationController
     {
+        private readonly IAllergensService allergensService;
         private readonly ICateringFoodService cateringFoodService;
+        private readonly IPackagesService packagesService;
         private readonly ILogger<CateringFoodController> logger;
 
         public CateringFoodController(
+            IAllergensService allergensService,
             ICateringFoodService cateringFoodService,
+            IPackagesService packagesService,
             ILogger<CateringFoodController> logger)
         {
+            this.allergensService = allergensService;
             this.cateringFoodService = cateringFoodService;
+            this.packagesService = packagesService;
             this.logger = logger;
         }
 
@@ -42,6 +49,8 @@
         {
             if (!this.ModelState.IsValid)
             {
+                model.AvailablePackages = this.packagesService.All().ToList();
+                model.AvailableAllergens = this.allergensService.All().ToList();
                 return this.View(model);
             }
 
@@ -96,11 +105,13 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.RedirectToAction(actionName: "Edit", controllerName: "CateringFood", routeValues: model.Id);
+                model.AvailablePackages = this.packagesService.All().ToList();
+                return this.View(model);
             }
 
             try
             {
+                this.cateringFoodService.SetEditModel(model);
                 return this.RedirectToAction("Index");
             }
             catch (Exception e)
@@ -110,9 +121,46 @@
             }
         }
 
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete(string id)
         {
-            return this.View();
+            try
+            {
+                await this.cateringFoodService.Delete(id);
+                return this.RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return this.BadRequest();
+            }
+        }
+
+        public IActionResult GetDeletedProducts()
+        {
+            try
+            {
+                var model = this.cateringFoodService.GetDeletedProducts();
+                return this.View(model);
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return this.NotFound();
+            }
+        }
+
+        public async Task<IActionResult> Activate(string productId)
+        {
+            try
+            {
+                await this.cateringFoodService.ActivateAsync(productId);
+                return this.RedirectToAction(actionName: "Details", routeValues: new { id = productId });
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return this.NotFound();
+            }
         }
     }
 }

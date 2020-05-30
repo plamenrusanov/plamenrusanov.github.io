@@ -7,10 +7,10 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.Extensions.Logging;
+    using Tapas.Common;
     using Tapas.Services.Data.Contracts;
-    using Tapas.Web.ViewModels.Administration.Categories;
     using Tapas.Web.ViewModels.Administration.Products;
-    using Tapas.Web.ViewModels.Administration.Sizes;
 
     public class ProductsController : AdministrationController
     {
@@ -20,17 +20,20 @@
         private readonly ICategoriesService categoriesService;
         private readonly IAllergensService allergensService;
         private readonly IPackagesService packagesService;
+        private readonly ILogger logger;
 
         public ProductsController(
             IProductsService productsService,
             ICategoriesService categoriesService,
             IAllergensService allergensService,
-            IPackagesService packagesService)
+            IPackagesService packagesService,
+            ILogger<ProductsController> logger)
         {
             this.productsService = productsService;
             this.categoriesService = categoriesService;
             this.allergensService = allergensService;
             this.packagesService = packagesService;
+            this.logger = logger;
         }
 
         [AllowAnonymous]
@@ -60,8 +63,9 @@
                 var homeIndexViewModel = this.productsService.CategoryWhitProducts(categoryId);
                 return this.View("Index", homeIndexViewModel);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User?.Identity.Name, e.Message, e.StackTrace);
                 return this.BadRequest();
             }
         }
@@ -93,8 +97,9 @@
 
                 return this.Redirect("/");
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.BadRequest();
             }
         }
@@ -116,8 +121,9 @@
                 var viewModel = this.productsService.GetDetailsProductById(productId);
                 return this.View(viewModel);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.NotFound();
             }
         }
@@ -139,8 +145,9 @@
                 var viewModel = this.productsService.GetEditProductById(productId);
                 return this.View(viewModel);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.BadRequest();
             }
         }
@@ -149,45 +156,29 @@
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Edit(EditProductModel model)
         {
-            // todo
+            if (!this.ModelState.IsValid)
+            {
+                model.AvailableCategories = this.categoriesService
+                    .All()
+                    .Select(x => new SelectListItem()
+                    {
+                        Text = x.Name,
+                        Value = x.Id,
+                        Selected = x.Id == model.CategoryId ? true : false,
+                    })
+                    .ToList();
+                model.AvailablePackages = this.packagesService.All().ToList();
+                return this.View(model);
+            }
 
-            // if (!this.ModelState.IsValid)
-            // {
-            //    model.AvailableCategories = this.categoriesService
-            //        .All()
-            //        .Select(x => new SelectListItem()
-            //        {
-            //            Text = x.Name,
-            //            Value = x.Id,
-            //            Selected = x.Id == model.CategoryId ? true : false,
-            //        })
-            //        .ToList();
-            //    model.AvailablePackages = this.packagesService.All().ToList();
-            //    return this.View(model);
-            // }
             try
             {
                 await this.productsService.EditProductAsync(model);
                 return this.RedirectToAction("GetProducts", false);
             }
-            catch (ArgumentException ae)
+            catch (Exception e)
             {
-                return this.StatusCode(406, ae.Message);
-
-                // model.AvailableCategories = this.categoriesService
-                //    .All()
-                //    .Select(x => new SelectListItem()
-                //    {
-                //        Text = x.Name,
-                //        Value = x.Id,
-                //        Selected = x.Id == model.CategoryId ? true : false,
-                //    })
-                //    .ToList();
-                // model.AvailablePackages = this.packagesService.All().ToList();
-                // return this.View(model);
-            }
-            catch (Exception)
-            {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.NotFound();
             }
         }
@@ -209,8 +200,9 @@
                 var viewModel = this.productsService.GetDeleteProductById(productId);
                 return this.View(viewModel);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.BadRequest();
             }
         }
@@ -232,8 +224,9 @@
                 await this.productsService.DeleteProductAsync(productId);
                 return this.RedirectToAction("GetProducts", false);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.RedirectToAction("GetProducts", true);
             }
         }
@@ -247,8 +240,9 @@
                 var model = this.productsService.GetAllProducts(isDeleted);
                 return this.View(model);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.NotFound();
             }
         }
@@ -271,8 +265,9 @@
 
                 return this.RedirectToAction("GetProducts", false);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.NotFound();
             }
         }

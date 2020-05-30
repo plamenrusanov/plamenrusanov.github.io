@@ -25,6 +25,7 @@
         private readonly IRepository<Category> categoriesRepository;
         private readonly IDeletableEntityRepository<Package> packageRepository;
         private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
+        private readonly IDeletableEntityRepository<AllergensProducts> allergensProductsRepository;
         private string productZeroSizes = "Продукта не може да съществува без размер.";
 
         public ProductsService(
@@ -33,7 +34,8 @@
             IRepository<Allergen> allergensRepository,
             IRepository<Category> categoriesRepository,
             IDeletableEntityRepository<Package> packageRepository,
-            IDeletableEntityRepository<ProductSize> sizeRepository)
+            IDeletableEntityRepository<ProductSize> sizeRepository,
+            IDeletableEntityRepository<AllergensProducts> allergensProductsRepository)
         {
             this.productsRepo = productsRepo;
             this.cloudService = cloudService;
@@ -41,6 +43,7 @@
             this.categoriesRepository = categoriesRepository;
             this.packageRepository = packageRepository;
             this.sizeRepository = sizeRepository;
+            this.allergensProductsRepository = allergensProductsRepository;
         }
 
         private List<PackageViewModel> GetAvailablePackigesVM => this.packageRepository
@@ -197,9 +200,9 @@
                     product.Sizes.Add(new ProductSize()
                     {
                         SizeName = size.SizeName,
-                        Price = size.Price != 0 ? size.Price : throw new ArgumentException("Цената не може да е нула. Ползвай запетая!"),
+                        Price = size.Price,
                         Weight = size.Weight,
-                        MaxProductsInPackage = size.MaxProductsInPackage != 0 ? size.MaxProductsInPackage : throw new ArgumentException("Полето максимален брой в опаковка не може да е нула!"),
+                        MaxProductsInPackage = size.MaxProductsInPackage,
                         PackageId = size.PackageId,
                         MenuProductId = product.Id,
                     });
@@ -213,9 +216,9 @@
                     }
 
                     s.SizeName = size.SizeName;
-                    s.Price = size.Price != 0 ? size.Price : throw new ArgumentException("Цената не може да е нула. Ползвай запетая!");
+                    s.Price = size.Price;
                     s.Weight = size.Weight;
-                    s.MaxProductsInPackage = size.MaxProductsInPackage != 0 ? size.MaxProductsInPackage : throw new ArgumentException("Полето максимален брой в опаковка не може да е нула!");
+                    s.MaxProductsInPackage = size.MaxProductsInPackage;
                     s.MenuProductId = product.Id;
                     s.PackageId = size.PackageId;
                 }
@@ -240,7 +243,7 @@
                     if (product.Allergens.Any(x => x.AllergenId == item.Value))
                     {
                         var allergenProduct = product.Allergens.FirstOrDefault(x => x.AllergenId == item.Value);
-                        product.Allergens.Remove(allergenProduct);
+                        this.allergensProductsRepository.HardDelete(allergenProduct);
                     }
                 }
             }
@@ -250,6 +253,7 @@
                 throw new ArgumentException(this.productZeroSizes);
             }
 
+            await this.allergensProductsRepository.SaveChangesAsync();
             await this.productsRepo.SaveChangesAsync();
         }
 

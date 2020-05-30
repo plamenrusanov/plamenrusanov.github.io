@@ -10,7 +10,6 @@
         public IndexCateringFoodViewModel()
         {
             this.Allergens = new List<DetailsAllergenViewModel>();
-            this.Sizes = new List<ProductSizeViewModel>();
         }
 
         public string Id { get; set; }
@@ -25,6 +24,6 @@
 
         public List<DetailsAllergenViewModel> Allergens { get; set; }
 
-        public List<ProductSizeViewModel> Sizes { get; set; }
+        public ProductSizeViewModel Size { get; set; }
     }
 }

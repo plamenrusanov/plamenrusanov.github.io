@@ -1,0 +1,49 @@
+﻿@model List<Tapas.Web.ViewModels.Administration.CateringFood.DeletedCateringProducts>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Неактивни";
+}
+
+<h1 class="text-center">@ViewData["Title"] продукти</h1>
+
+<hr class="hr-tapas" />
+
+<div class="container bg-light">
+    <table class="table">
+        <thead>
+            <tr class="row">
+                <th class="col-sm-3">
+                    @Html.Label("Име")
+                </th>
+                <th class="col-sm-3">
+                    @Html.Label("Цена")
+                </th>
+                <th class="col-sm-3">
+                    @Html.Label("Тегло")
+                </th>
+                <th class="col-sm-3">
+                    @Html.Label("Активирай")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="row">
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.Name)
+                    </td>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.Price)
+                    </td>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(x => item.Weight)
+                    </td>
+                    <td class="col-sm-3">
+                        <a class="btn btn-danger btn-sm" href="/Administration/CateringFood/Activate?productId=@item.Id">Активирай</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tapas.Data;
 
 namespace Tapas.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200529211738_AddDelAllergenProducts")]
+    partial class AddDelAllergenProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -681,13 +683,6 @@ namespace Tapas.Data.Migrations
                     b.Property<int>("NumberOfBits")
                         .HasColumnType("int");
 
-                    b.Property<int>("SizeId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("SizeId")
-                        .IsUnique()
-                        .HasFilter("[SizeId] IS NOT NULL");
-
                     b.HasDiscriminator().HasValue("CateringProduct");
                 });
 
@@ -830,7 +825,7 @@ namespace Tapas.Data.Migrations
             modelBuilder.Entity("Tapas.Data.Models.ProductSize", b =>
                 {
                     b.HasOne("Tapas.Data.Models.CateringProduct", "CateringProduct")
-                        .WithMany()
+                        .WithMany("Sizes")
                         .HasForeignKey("CateringProductId");
 
                     b.HasOne("Tapas.Data.Models.MenuProduct", "MenuProduct")
@@ -855,15 +850,6 @@ namespace Tapas.Data.Migrations
                     b.HasOne("Tapas.Data.Models.ProductSize", "Size")
                         .WithMany()
                         .HasForeignKey("SizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Tapas.Data.Models.CateringProduct", b =>
-                {
-                    b.HasOne("Tapas.Data.Models.ProductSize", "Size")
-                        .WithOne()
-                        .HasForeignKey("Tapas.Data.Models.CateringProduct", "SizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

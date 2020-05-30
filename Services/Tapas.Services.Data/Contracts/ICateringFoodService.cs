@@ -16,5 +16,13 @@
         DetailsCateringFoodViewModel GetDetailsById(string id);
 
         EditCateringFoodModel GetEditModel(string id);
+
+        Task SetEditModel(EditCateringFoodModel model);
+
+        Task Delete(string id);
+
+        List<DeletedCateringProducts> GetDeletedProducts();
+
+        Task ActivateAsync(string productId);
     }
 }

@@ -12,6 +12,10 @@
                 .HasValue<MenuProduct>("MenuProduct")
                 .HasValue<CateringProduct>("CateringProduct")
                 .HasValue<EquipmentForRent>("EquipmentForRent");
+
+            builder.HasMany<AllergensProducts>()
+                .WithOne(x => x.Product)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

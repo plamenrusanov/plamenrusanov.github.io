@@ -34,11 +34,9 @@
         </div>
     </div>
     <div class="row mt-2">
-
-        <input type="hidden" class="form-control" name="Product.Sizes[0].SizeId" value="@Model.Size.SizeId" />
         <div class="col-50 row">
             <h4 style="width:50%;">@Html.Label("Цена")</h4>
-            <h4 id="productPrice">@Model.Size.Price лв.</h4>
+            <h4>@Model.Size.Price лв.</h4>
         </div>
         <div class="col-50 row">
             <h4 style="width:50%;">@Html.Label("Тегло")</h4>
@@ -46,7 +44,7 @@
         </div>
         <div class="col-50 row">
             <h4 style="width:50%;">@Html.Label("Опаковка")</h4>
-            <h4 id="packagePrice">@Model.Size.PackagePrice лв.</h4>
+            <h4>@Model.Size.PackagePrice лв.</h4>
         </div>
         <div class="col-50 row">
             <h4 style="width:50%;">@Html.Label("Хапки")</h4>
@@ -57,10 +55,15 @@
 <div class="button-holder">
     @if (this.User.IsInRole(GlobalConstants.AdministratorName))
     {
-        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Редактирай</a>
+        <label>
+            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Изтрий</a>&nbsp;|&nbsp;
+        </label>
+        <label>
+            <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.Id">Редактирай</a>&nbsp;|&nbsp;
+        </label>
     }
     <a class="btn btn-primary" asp-action="Index">Назад</a>
 </div>
-@section Style{ 
+@section Style{
     <link href="~/css/cateringFood/details.css" rel="stylesheet" />
 }

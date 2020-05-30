@@ -6,6 +6,8 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.EntityFrameworkCore;
+    using Tapas.Common;
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Services.Contracts;
@@ -17,17 +19,20 @@
     public class CateringFoodService : ICateringFoodService
     {
         private readonly IDeletableEntityRepository<CateringProduct> cateringRepository;
+        private readonly IDeletableEntityRepository<AllergensProducts> allergensProductsRepository;
         private readonly IAllergensService allergensService;
         private readonly IPackagesService packagesService;
         private readonly ICloudService cloudService;
 
         public CateringFoodService(
             IDeletableEntityRepository<CateringProduct> cateringRepository,
+            IDeletableEntityRepository<AllergensProducts> allergensProductsRepository,
             IAllergensService allergensService,
             IPackagesService packagesService,
             ICloudService cloudService)
         {
             this.cateringRepository = cateringRepository;
+            this.allergensProductsRepository = allergensProductsRepository;
             this.allergensService = allergensService;
             this.packagesService = packagesService;
             this.cloudService = cloudService;
@@ -41,6 +46,14 @@
                 Name = model.Name,
                 Description = model.Description,
                 NumberOfBits = model.NumberOfBits,
+                Size = new ProductSize()
+                {
+                    SizeName = model.Size.SizeName,
+                    PackageId = model.Size.PackageId,
+                    Price = model.Size.Price,
+                    Weight = model.Size.Weight,
+                    MaxProductsInPackage = model.Size.MaxProductsInPackage,
+                },
             };
 
             foreach (var item in model.Allergens)
@@ -50,25 +63,6 @@
                     ProductId = cateringProduct.Id,
                     AllergenId = item,
                 });
-            }
-
-            foreach (var size in model.Sizes)
-            {
-                if (string.IsNullOrEmpty(size.SizeName))
-                {
-                    continue;
-                }
-
-                cateringProduct.Sizes.Add(
-                  new ProductSize()
-                  {
-                      SizeName = size.SizeName,
-                      PackageId = size.PackageId,
-                      Price = size.Price,
-                      Weight = size.Weight,
-                      MaxProductsInPackage = size.MaxProductsInPackage,
-                      MenuProductId = cateringProduct.Id,
-                  });
             }
 
             if (model.Image != null)
@@ -87,6 +81,7 @@
             {
                 AvailableAllergens = this.allergensService.All().ToList(),
                 AvailablePackages = this.packagesService.All().ToList(),
+                Size = new InputProductSizeModel() { SizeName = "Default" },
             };
         }
 
@@ -108,16 +103,15 @@
                             Name = a.Allergen.Name,
                             ImageUrl = a.Allergen.ImageUrl,
                         }).ToList(),
-                    Sizes = x.Sizes
-                        .Select(s => new ProductSizeViewModel()
-                        {
-                            SizeId = s.Id,
-                            SizeName = s.SizeName,
-                            Price = s.Price,
-                            Weight = s.Weight,
-                            MaxProductsInPackage = s.MaxProductsInPackage,
-                            PackagePrice = s.Package.Price,
-                        }).ToList(),
+                    Size = new ProductSizeViewModel()
+                    {
+                        SizeId = x.Size.Id,
+                        SizeName = x.Size.SizeName,
+                        Price = x.Size.Price,
+                        Weight = x.Size.Weight,
+                        MaxProductsInPackage = x.Size.MaxProductsInPackage,
+                        PackagePrice = x.Size.Package.Price,
+                    },
                 }).ToList();
         }
 
@@ -139,15 +133,15 @@
                     Description = x.Description,
                     ImageUrl = x.ImageUrl,
                     NumberOfBits = x.NumberOfBits,
-                    Size = x.Sizes.Select(s => new ProductSizeViewModel()
+                    Size = new ProductSizeViewModel()
                     {
-                        SizeId = s.Id,
-                        SizeName = s.SizeName,
-                        Price = s.Price,
-                        Weight = s.Weight,
-                        PackagePrice = s.Package.Price,
-                        MaxProductsInPackage = s.MaxProductsInPackage,
-                    }).FirstOrDefault(),
+                        SizeId = x.Size.Id,
+                        SizeName = x.Size.SizeName,
+                        Price = x.Size.Price,
+                        Weight = x.Size.Weight,
+                        PackagePrice = x.Size.Package.Price,
+                        MaxProductsInPackage = x.Size.MaxProductsInPackage,
+                    },
                     Allergens = x.Allergens.Select(a => new DetailsAllergenViewModel()
                     {
                         Id = a.AllergenId,
@@ -164,6 +158,7 @@
             return product;
         }
 
+        // Administration/CateringFood/Edit
         public EditCateringFoodModel GetEditModel(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -173,31 +168,31 @@
 
             try
             {
-                var product = this.cateringRepository
+                var cateringProduct = this.cateringRepository
                     .All()
                     .Where(x => x.Id == id)
                     .FirstOrDefault();
-                if (product is null)
+                if (cateringProduct is null)
                 {
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException(string.Format(ExceptionMessages.NotExists, nameof(cateringProduct)));
                 }
 
                 var model = new EditCateringFoodModel()
                 {
-                    Id = product.Id,
-                    Name = product.Name,
-                    ImageUrl = product.ImageUrl,
-                    NumberOfBits = product.NumberOfBits,
-                    Description = product.Description,
-                    Size = product.Sizes.Select(s => new EditProductSizeModel()
+                    Id = cateringProduct.Id,
+                    Name = cateringProduct.Name,
+                    ImageUrl = cateringProduct.ImageUrl,
+                    NumberOfBits = cateringProduct.NumberOfBits,
+                    Description = cateringProduct.Description,
+                    Size = new EditProductSizeModel()
                     {
-                        SizeId = s.Id,
-                        SizeName = s.SizeName,
-                        Price = s.Price,
-                        Weight = s.Weight,
-                        PackageId = s.PackageId,
-                        MaxProductsInPackage = s.MaxProductsInPackage,
-                    }).FirstOrDefault(),
+                        SizeId = cateringProduct.Size.Id,
+                        SizeName = cateringProduct.Size.SizeName,
+                        Price = cateringProduct.Size.Price,
+                        Weight = cateringProduct.Size.Weight,
+                        PackageId = cateringProduct.Size.PackageId,
+                        MaxProductsInPackage = cateringProduct.Size.MaxProductsInPackage,
+                    },
                     AvailablePackages = this.packagesService.All().ToList(),
                 };
 
@@ -207,7 +202,7 @@
                            {
                                Value = c.Id,
                                Text = c.Name,
-                               Selected = product.Allergens.Any(a => a.AllergenId == c.Id) ? true : false,
+                               Selected = cateringProduct.Allergens.Any(a => a.AllergenId == c.Id) ? true : false,
                            }).ToList();
 
                 return model;
@@ -216,6 +211,126 @@
             {
                 throw new Exception(e.Message, e);
             }
+        }
+
+        // Administration/CateringFood/Edit
+        public async Task SetEditModel(EditCateringFoodModel model)
+        {
+            var cateringProduct = this.cateringRepository
+                .All()
+                .Where(x => x.Id == model.Id)
+                .Include(x => x.Size)
+                .Include(x => x.Allergens)
+                .FirstOrDefault();
+            if (cateringProduct is null)
+            {
+                throw new ArgumentException(string.Format(ExceptionMessages.NotExists, nameof(cateringProduct)));
+            }
+
+            if (model.Image != null)
+            {
+                model.ImageUrl = await this.cloudService.UploadImageFromForm(model.Image);
+            }
+
+            cateringProduct.Name = model.Name;
+            cateringProduct.NumberOfBits = model.NumberOfBits;
+            cateringProduct.Description = model.Description;
+            cateringProduct.ImageUrl = model.ImageUrl;
+            var size = cateringProduct.Size;
+
+            size.Id = model.Size.SizeId;
+            size.SizeName = model.Size.SizeName;
+            size.MaxProductsInPackage = model.Size.MaxProductsInPackage;
+            size.CareringProductId = cateringProduct.Id;
+            size.PackageId = model.Size.PackageId;
+            size.Price = model.Size.Price;
+            size.Weight = model.Size.Weight;
+
+            foreach (var item in model.Allergens)
+            {
+                if (item.Selected)
+                {
+                    if (!cateringProduct.Allergens.Any(x => x.AllergenId == item.Value))
+                    {
+                        cateringProduct.Allergens
+                            .Add(new AllergensProducts()
+                            {
+                                ProductId = cateringProduct.Id,
+                                AllergenId = item.Value,
+                            });
+                    }
+                }
+                else
+                {
+                    if (cateringProduct.Allergens.Any(x => x.AllergenId == item.Value))
+                    {
+                        var allergenProduct = cateringProduct.Allergens.FirstOrDefault(x => x.AllergenId == item.Value);
+                        this.allergensProductsRepository.HardDelete(allergenProduct);
+                    }
+                }
+            }
+
+            this.allergensProductsRepository.SaveChanges();
+            this.cateringRepository.SaveChanges();
+        }
+
+        // Administration/CateringFood/Delete
+        public async Task Delete(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException();
+            }
+
+            var cateringProduct = this.cateringRepository
+                .All()
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+            if (cateringProduct is null)
+            {
+                throw new ArgumentNullException(string.Format(ExceptionMessages.NotExists, nameof(cateringProduct)));
+            }
+
+            this.cateringRepository.Delete(cateringProduct);
+            await this.cateringRepository.SaveChangesAsync();
+        }
+
+        public List<DeletedCateringProducts> GetDeletedProducts()
+        {
+            var model = this.cateringRepository
+                .AllWithDeleted()
+                .Where(x => x.IsDeleted == true)
+                .Select(x => new DeletedCateringProducts()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Size.Price,
+                    Weight = x.Size.Weight,
+                })
+                .OrderBy(x => x.Name)
+                .ToList();
+            return model;
+        }
+
+        // Administration/CateringFood/Activate
+        public async Task ActivateAsync(string productId)
+        {
+            if (string.IsNullOrEmpty(productId))
+            {
+                throw new ArgumentNullException();
+            }
+
+            var cateringProduct = this.cateringRepository
+                .AllWithDeleted()
+                .Where(x => x.Id == productId)
+                .FirstOrDefault();
+            if (cateringProduct is null)
+            {
+                throw new ArgumentNullException(string.Format(ExceptionMessages.NotExists, nameof(cateringProduct)));
+            }
+
+            this.cateringRepository.Undelete(cateringProduct);
+            await this.cateringRepository.SaveChangesAsync();
         }
     }
 }

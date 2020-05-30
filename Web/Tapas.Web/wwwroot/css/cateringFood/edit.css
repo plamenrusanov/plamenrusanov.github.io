@@ -1,0 +1,13 @@
+﻿
+input#Image.form-control.text-box.single-line {
+    padding-left: initial;
+    background-color: transparent;
+    padding-top: inherit;
+    border: none;
+}
+input#file-upload-button{
+    background-color:red;
+}
+input[type=file]#file-upload-button{
+    background-color:green;
+}

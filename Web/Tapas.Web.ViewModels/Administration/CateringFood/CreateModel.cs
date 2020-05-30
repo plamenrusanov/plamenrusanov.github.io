@@ -13,8 +13,7 @@
         public CreateModel()
         {
             this.Allergens = new List<string>();
-            this.Sizes = new List<InputProductSizeModel>();
-            this.Seed();
+            this.Size = new InputProductSizeModel();
         }
 
         [Required]
@@ -36,11 +35,7 @@
 
         public List<PackageViewModel> AvailablePackages { get; set; }
 
-        public List<InputProductSizeModel> Sizes { get; set; }
-
-        protected void Seed()
-        {
-            this.Sizes.Add(new InputProductSizeModel());
-        }
+        [Required]
+        public InputProductSizeModel Size { get; set; }
     }
 }

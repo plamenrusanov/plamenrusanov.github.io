@@ -13,10 +13,11 @@
 
         [Required]
         [Column(TypeName = "decimal(5, 2)")]
+        [Range(typeof(decimal), minimum: "0,01", maximum: "10000", ErrorMessage = "Цената може да е между 0,01 и 10000. Ползвай запетая!")]
         public decimal Price { get; set; }
 
         [Required]
-        [Range(10, 5000)]
+        [Range(10, 5000, ErrorMessage = "Грамажа трябва да е между 10 и 5000!")]
         public int Weight { get; set; }
 
         [Required]

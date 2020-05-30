@@ -48,34 +48,33 @@
         </div>
     </div>
     <hr class="hr-tapas" />
-    @for (int i = 0; i < Model.Sizes.Count; i++)
-    {
         <div class="row form-row">
-            <div class="col-md-6">
+            @*<div class="col-md-6">
                 <div class="row form-group">
-                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].SizeName, "Име на размера", new { @class = "control-label" })</h4>
-                    @Html.EditorFor(x => Model.Sizes[i].SizeName, "", Model.Sizes[i].SizeName, new { htmlAttributes = new { @class = "col-md-6 form-control" } })
-                    <span asp-validation-for="@Model.Sizes[i].SizeName" class="text-danger"></span>
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Size.SizeName, "Име на размера", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Size.SizeName, "", Model.Size.SizeName, new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                    <span asp-validation-for="@Model.Size.SizeName" class="text-danger"></span>
+                </div>
+            </div>*@
+            @Html.HiddenFor(m => m.Size.SizeName)
+            <div class="col-md-6">
+                <div class=" row form-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Size.Price, "Цена", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Size.Price, "", $"Size.Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                   <span asp-validation-for="@Model.Size.Price" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class=" row form-group">
-                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Price, "Цена", new { @class = "control-label" })</h4>
-                    @Html.EditorFor(x => Model.Sizes[i].Price, "", $"Sizes[{i}].Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
-                   <span asp-validation-for="@Model.Sizes[i].Price" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class=" row form-group">
-                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Weight, "Грамаж", new { @class = "control-label" })</h4>
-                    @Html.EditorFor(x => Model.Sizes[i].Weight, "", $"Sizes[{i}].Weight", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
-                <span asp-validation-for="@Model.Sizes[i].Weight" class="text-danger"></span>
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Size.Weight, "Грамаж", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Size.Weight, "", $"Size.Weight", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                <span asp-validation-for="@Model.Size.Weight" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="row form-group">
-                    <h4 class="col-md-6"> @Html.LabelFor(x => Model.Sizes[i].PackageId, "Опаковка", new { @class = "control-label" })</h4>
-                    <select class="col-md-6 form-control" asp-for="Sizes[i].PackageId">
+                    <h4 class="col-md-6"> @Html.LabelFor(x => Model.Size.PackageId, "Опаковка", new { @class = "control-label" })</h4>
+                    <select class="col-md-6 form-control" asp-for="Size.PackageId">
                         @foreach (var package in Model.AvailablePackages)
                         {
                             <option value="@package.Id">@package.Name</option>
@@ -86,14 +85,13 @@
             </div>
             <div class="col-md-6">
                 <div class="row form-group">
-                    <h4 class="col-md-10"> @Html.LabelFor(x => Model.Sizes[i].MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
-                    @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, "", $"Sizes[{i}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value = 1 } })
-                    <span asp-validation-for="@Model.Sizes[i].MaxProductsInPackage" class="text-danger"></span>
+                    <h4 class="col-md-10"> @Html.LabelFor(x => Model.Size.MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Size.MaxProductsInPackage, "", $"Size.MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value = 1 } })
+                    <span asp-validation-for="@Model.Size.MaxProductsInPackage" class="text-danger"></span>
                 </div>
             </div>
         </div>
         <hr class="hr-tapas" />
-    }
 
 
 
@@ -107,7 +105,9 @@
     </div>
 </form>
 
-
+@section Style{
+    <link href="~/css/cateringFood/create.css" rel="stylesheet" />
+ }
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

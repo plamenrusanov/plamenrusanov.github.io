@@ -10,13 +10,14 @@
         {
             this.Id = Guid.NewGuid().ToString();
             this.Allergens = new HashSet<AllergensProducts>();
-            this.Sizes = new HashSet<ProductSize>();
         }
 
         public int NumberOfBits { get; set; }
 
         public virtual ICollection<AllergensProducts> Allergens { get; set; }
 
-        public virtual ICollection<ProductSize> Sizes { get; set; }
+        public int SizeId { get; set; }
+
+        public virtual ProductSize Size { get; set; }
     }
 }

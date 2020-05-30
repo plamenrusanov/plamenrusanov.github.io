@@ -2,9 +2,11 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Tapas.Web.ViewModels.Administration.Allergens;
     using Tapas.Web.ViewModels.Administration.Packages;
     using Tapas.Web.ViewModels.Administration.Sizes;
 
@@ -18,8 +20,10 @@
             this.AvailablePackages = new List<PackageViewModel>();
         }
 
+        [Required]
         public string Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public string ImageUrl { get; set; }
@@ -28,6 +32,7 @@
 
         public IFormFile Image { get; set; }
 
+        [Required]
         public string CategoryId { get; set; }
 
         public List<SelectListItem> Allergens { get; set; }
