@@ -9,21 +9,25 @@
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="~/lib/materialize/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
-    <link href="~/css/home/index.css" type="text/css" rel="stylesheet"/>
+    <link href="~/css/home/index.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     @this.RenderSection("Style", required: false)
 </head>
 <body>
+    <button onclick="topFunction()" id="topBtn" title="Go to top"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
     @this.RenderBody()
-  
+
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script type="text/javascript" src="~/lib/materialize/js/materialize.js"></script>
         <script src="~/lib/materialize/js/init.js"></script>
+        <script src="~/js/site.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script type="text/javascript" src="~/lib/materialize/js/materialize.js"></script>
         <script src="~/lib/materialize/js/init.js"></script>
+        <script src="~/js/site.js"></script>
     </environment>
 
     @this.RenderSection("Scripts", required: false)
