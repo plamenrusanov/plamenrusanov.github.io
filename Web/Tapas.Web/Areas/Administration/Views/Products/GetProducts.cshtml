@@ -7,6 +7,8 @@
 <h1 class="text-center">@ViewData["Title"] продукти</h1>
 
 <hr class="hr-tapas" />
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+<hr class="hr-tapas" />
 
 <div class="container bg-light">
     <table class="table">
@@ -18,51 +20,45 @@
                 <th class="col-sm-3">
                     @Html.Label("Категория")
                 </th>
-                <th class="col-sm-2">
-                    @Html.Label("Добави размер")
-                </th>
-                <th class="col-sm-2">
+                <th class="col-sm-3">
                     @Html.Label("Редактирай")
                 </th>
                 @if (isDeleted)
                 {
-                    <th class="col-sm-2">
+                    <th class="col-sm-3">
                         @Html.Label("Активирай")
                     </th>
                 }
                 else
                 {
-                    <th class="col-sm-2">
+                    <th class="col-sm-3">
                         @Html.Label("Изтрий")
                     </th>
                 }
             </tr>
         </thead>
-        <tbody>
+        <tbody id="myUL">
             @foreach (var item in Model)
             {
             <tr class="row">
                 <td class="col-sm-3">
-                    @Html.DisplayFor(x => item.Name)
+                    <h6>@Html.DisplayFor(x => item.Name)</h6>
                 </td>
                 <td class="col-sm-3">
                     @Html.DisplayFor(x => item.CategoryName)
                 </td>
-                <td class="col-sm-2">
-                    @*<a class="btn btn-info btn-sm" href="/Administration/Sizes/Add?productId=@item.Id">Добави размер</a>*@
-                </td>
-                <td class="col-sm-2">
+                <td class="col-sm-3">
                     <a class="btn btn-info btn-sm" href="/Administration/Products/Edit?productId=@item.Id">Редактирай</a>
                 </td>
                 @if (isDeleted)
                 {
-                    <td class="col-sm-2">
+                    <td class="col-sm-3">
                         <a class="btn btn-danger btn-sm" href="/Administration/Products/Activate?productId=@item.Id">Активирай</a>
                     </td>
                 }
                 else
                 {
-                    <td class="col-sm-2">
+                    <td class="col-sm-3">
                         <a class="btn btn-danger btn-sm" href="/Administration/Products/Delete?productId=@item.Id">Изтрий</a>
                     </td>
                 }
@@ -71,3 +67,10 @@
         </tbody>
     </table>
 </div>
+@section Scripts{
+    <script src="~/js/menuProducts/getProducts.js"></script>
+ }
+
+@section Style{ 
+    <link href="~/css/menuProducts/getProducts.css" rel="stylesheet" />
+}
