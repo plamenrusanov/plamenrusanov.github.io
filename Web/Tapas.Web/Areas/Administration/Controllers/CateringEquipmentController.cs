@@ -38,7 +38,7 @@
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Create(CreateModel model)
+        public async Task<IActionResult> Create(Create model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -53,7 +53,7 @@
             catch (Exception e)
             {
                 this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
-                return this.BadRequest();
+                return this.NotFound();
             }
         }
 
@@ -68,7 +68,7 @@
             catch (Exception e)
             {
                 this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
-                return this.BadRequest();
+                return this.NotFound();
             }
         }
 
@@ -87,12 +87,12 @@
                 }
 
                 this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
-                return this.BadRequest();
+                return this.NotFound();
             }
         }
 
         [HttpPost]
-        public IActionResult Edit(EditModel model)
+        public async Task<IActionResult> Edit(Edit model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -101,13 +101,13 @@
 
             try
             {
-                this.cateringEquipmentService.SetEditModel(model);
+                await this.cateringEquipmentService.SetEditModel(model);
                 return this.RedirectToAction("Index");
             }
             catch (Exception e)
             {
                 this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
-                return this.BadRequest();
+                return this.NotFound();
             }
         }
 
@@ -121,11 +121,11 @@
             catch (Exception e)
             {
                 this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
-                return this.BadRequest();
+                return this.NotFound();
             }
         }
 
-        public IActionResult GetDeletedProducts()
+        public IActionResult Deleted()
         {
             try
             {
@@ -139,12 +139,12 @@
             }
         }
 
-        public async Task<IActionResult> Activate(string productId)
+        public async Task<IActionResult> Activate(string id)
         {
             try
             {
-                await this.cateringEquipmentService.ActivateAsync(productId);
-                return this.RedirectToAction(actionName: "Details", routeValues: new { id = productId });
+                await this.cateringEquipmentService.ActivateAsync(id);
+                return this.RedirectToAction(actionName: "Details", routeValues: new { id = id });
             }
             catch (Exception e)
             {

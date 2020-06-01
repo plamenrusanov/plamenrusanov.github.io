@@ -49,13 +49,6 @@
     </div>
     <hr class="hr-tapas" />
         <div class="row form-row">
-            @*<div class="col-md-6">
-                <div class="row form-group">
-                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Size.SizeName, "Име на размера", new { @class = "control-label" })</h4>
-                    @Html.EditorFor(x => Model.Size.SizeName, "", Model.Size.SizeName, new { htmlAttributes = new { @class = "col-md-6 form-control" } })
-                    <span asp-validation-for="@Model.Size.SizeName" class="text-danger"></span>
-                </div>
-            </div>*@
             @Html.HiddenFor(m => m.Size.SizeName)
             <div class="col-md-6">
                 <div class=" row form-group">

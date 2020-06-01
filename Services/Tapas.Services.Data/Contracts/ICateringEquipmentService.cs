@@ -9,22 +9,22 @@
 
     public interface ICateringEquipmentService
     {
-        List<IndexEquipmentModel> GetAll();
+        ICollection<IndexEquipmentModel> GetAll();
 
         Task ActivateAsync(string productId);
 
-        object GetDeletedProducts();
+        ICollection<Deleted> GetDeletedProducts();
 
         Task Delete(string id);
 
-        void SetEditModel(EditModel model);
+        Task SetEditModel(Edit model);
 
-        object GetEditModel(string id);
+        Edit GetEditModel(string id);
 
         Details GetDetailsById(string id);
 
-        Task AddEquipmentAsync(CreateModel model);
+        Task AddEquipmentAsync(Create model);
 
-        CreateModel CreateInputModel();
+        Create CreateInputModel();
     }
 }

@@ -4,7 +4,7 @@ $(document).ready(function () {
     for (var i = 0; i < x.length; i++) {
         if (x[i].className === "btn btn-danger btn-lg order-li") {
             x[i].click();
-            setTimeout(playMusic(), 3000);
+            playMusic();
         }
     }
 });
@@ -19,7 +19,7 @@ setupConnection = () => {
         insertOrder(id);
         if (document.getElementById(`li${id}`)) {
             document.getElementById(`li${id}`).click();
-            setTimeout(playMusic(), 3000);
+            playMusic()
         }
     });
 
@@ -44,7 +44,7 @@ setupConnection = () => {
     connection.on("OperatorSetAlarm", function (order) {
         if (document.getElementById(`li${order}`).className == "btn btn-warning btn-lg") {
             document.getElementById(`li${order}`).click();
-            setTimeout(playMusic(), 3000);
+            playMusic();
             var al = document.getElementById('alertt');
             al.hidden = false;
             var alContent = document.getElementById('alert-content');

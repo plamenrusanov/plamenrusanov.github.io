@@ -3,14 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
+
     using Tapas.Common;
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Services.Contracts;
     using Tapas.Services.Data.Contracts;
-    using Tapas.Services.Mapping;
     using Tapas.Web.ViewModels.Administration.CateringEquipment;
 
     public class CateringEquipmentService : ICateringEquipmentService
@@ -26,12 +25,15 @@
             this.cloudService = cloudService;
         }
 
-        public Task ActivateAsync(string productId)
+        public async Task ActivateAsync(string id)
         {
-            throw new NotImplementedException();
+            var equipment = this.CheckNullExistsReturnEntity(id);
+
+            this.equipmentRepository.Undelete(equipment);
+            await this.equipmentRepository.SaveChangesAsync();
         }
 
-        public async Task AddEquipmentAsync(CreateModel model)
+        public async Task AddEquipmentAsync(Create model)
         {
             var equipment = new EquipmentForRent()
             {
@@ -49,17 +51,20 @@
             await this.equipmentRepository.SaveChangesAsync();
         }
 
-        public CreateModel CreateInputModel()
+        public Create CreateInputModel()
         {
-            return new CreateModel();
+            return new Create();
         }
 
-        public Task Delete(string id)
+        public async Task Delete(string id)
         {
-            throw new NotImplementedException();
+            var equipment = this.CheckNullExistsReturnEntity(id);
+
+            this.equipmentRepository.Delete(equipment);
+            await this.equipmentRepository.SaveChangesAsync();
         }
 
-        public List<IndexEquipmentModel> GetAll()
+        public ICollection<IndexEquipmentModel> GetAll()
         {
             var model = this.equipmentRepository
                  .All()
@@ -75,27 +80,24 @@
             return model;
         }
 
-        public object GetDeletedProducts()
+        public ICollection<Deleted> GetDeletedProducts()
         {
-            throw new NotImplementedException();
+            var model = this.equipmentRepository
+                .AllWithDeleted()
+                .Where(x => x.IsDeleted == true)
+                .Select(x => new Deleted()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price,
+                })
+                .ToList();
+            return model;
         }
 
         public Details GetDetailsById(string id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentNullException();
-            }
-
-            var equipment = this.equipmentRepository
-                .All()
-                .Where(x => x.Id == id)
-                .FirstOrDefault();
-
-            if (equipment is null)
-            {
-                throw new Exception(string.Format(ExceptionMessages.NotExists, nameof(equipment)));
-            }
+            var equipment = this.CheckNullExistsReturnEntity(id);
 
             return new Details()
             {
@@ -107,14 +109,57 @@
             };
         }
 
-        public object GetEditModel(string id)
+        public Edit GetEditModel(string id)
         {
-            throw new NotImplementedException();
+            var equipment = this.CheckNullExistsReturnEntity(id);
+
+            var model = new Edit()
+            {
+                Id = equipment.Id,
+                Name = equipment.Name,
+                Description = equipment.Description,
+                Price = equipment.Price,
+                ImageUrl = equipment.ImageUrl,
+            };
+
+            return model;
         }
 
-        public void SetEditModel(EditModel model)
+        public async Task SetEditModel(Edit model)
         {
-            throw new NotImplementedException();
+            var equipment = this.CheckNullExistsReturnEntity(model.Id);
+
+            equipment.Name = model.Name;
+            equipment.Price = model.Price;
+            equipment.Description = model.Description;
+
+            if (model.Image != null)
+            {
+                equipment.ImageUrl = await this.cloudService.UploadImageFromForm(model.Image);
+            }
+
+            this.equipmentRepository.Update(equipment);
+            await this.equipmentRepository.SaveChangesAsync();
+        }
+
+        private EquipmentForRent CheckNullExistsReturnEntity(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException();
+            }
+
+            var equipment = this.equipmentRepository
+                .AllWithDeleted()
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+
+            if (equipment is null)
+            {
+                throw new Exception(string.Format(ExceptionMessages.NotExists, nameof(equipment)));
+            }
+
+            return equipment;
         }
     }
 }

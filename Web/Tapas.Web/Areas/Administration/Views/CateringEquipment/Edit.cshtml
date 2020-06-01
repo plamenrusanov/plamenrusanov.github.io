@@ -1,0 +1,54 @@
+﻿@model Tapas.Web.ViewModels.Administration.CateringEquipment.Edit
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-center">Редактирай</h1>
+<hr  class="hr-tapas"/>
+<div class="row">
+    <form enctype="multipart/form-data"  asp-action="Edit">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        @Html.HiddenFor(x => x.ImageUrl)
+        @Html.HiddenFor(x => x.Id)
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <img class="responsive" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_235,w_350,f_auto/v1586767202/@Model.ImageUrl" width="350" height="235" alt="@Model.Name">
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <h6>@Html.LabelFor(model => model.Image, "Нова снимка")</h6>
+                    @Html.EditorFor(model => model.Image, "Edit", "Image", new { htmlAttributes = new { @type = "file", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Image)
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 form-group">
+                <h6>@Html.LabelFor(x => x.Description, "Описание", new { @class = "control-label" })</h6>
+                @Html.TextAreaFor(x => x.Description, 3, 50, new { @class ="form-control" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div style="width:50%; text-align:center;">
+                <a class="btn btn-primary" asp-action="Index">Back to List</a>
+            </div>
+            <div style="width:50%; text-align:center;">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+
+</div>
+@section Style{ 
+    <link href="~/css/cateringFood/edit.css" rel="stylesheet" />
+}
