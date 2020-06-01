@@ -51,9 +51,34 @@
             <li><a href="/Administration/CateringFood/">Кетъринг</a></li>
             <li><a href="/Administration/Products">Галерия</a></li>
             <li><a class="nav-link" asp-area="" asp-controller="ShopingCart" asp-action="Index" style="font-size:2rem;">🛒</a></li>
-
+            @if (this.SignInManager.IsSignedIn(this.User))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" style="height: 64px; padding-top: 8px;">
+                        <img src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_48,q_100,w_48/v1590151208/sharp_person_black_48dp.png" />
+                    </a>
+                </li>
+                if (this.User.IsInRole(GlobalConstants.AdministratorName))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a asp-area="Identity" asp-page="/Account/Logout" class="nav-link text-dark">Logout</a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                </li>
+            }
         </ul>
-        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
     </div>
 </nav>
 

@@ -11,7 +11,7 @@
                 {
                     <li class="btn btn-danger btn-lg order-li" onclick="orderDetails(@item.Id)" id="li@(item.Id)" style="width:100%;">
                         <h5>
-                           <strong id="orderId">Поръчка: @item.Id</strong>
+                           <strong>Поръчка: @item.Id</strong>
                         </h5>
                     </li>
                 }
@@ -19,7 +19,7 @@
                 {
                     <li class="btn btn-warning btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)" style="width:100%;">
                         <h5>
-                            <strong id="orderId">Поръчка: @item.Id</strong>
+                            <strong>Поръчка: @item.Id</strong>
                         </h5>
                     </li>
                 }
@@ -27,7 +27,7 @@
                 {
                     <li class="btn btn-success btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)" style="width:100%;">
                         <h5>
-                           <strong id="orderId">Поръчка: @item.Id</strong>
+                           <strong>Поръчка: @item.Id</strong>
                         </h5>
                     </li>
                 }
@@ -35,7 +35,7 @@
                 {
                     <li class="btn btn-info btn-lg" onclick="orderDetails(@item.Id)" id="li@(item.Id)" style="width:100%;">
                         <h5>
-                           <strong id="orderId">Поръчка: @item.Id</strong>
+                           <strong>Поръчка: @item.Id</strong>
                         </h5>
                     </li>
                 }
@@ -49,4 +49,7 @@
 @section Scripts
 {
     <script src="~/js/OrdersByUser.js"></script>
+}
+@section Style{ 
+    <link href="~/css/orders/userOrders.css" rel="stylesheet" />
 }

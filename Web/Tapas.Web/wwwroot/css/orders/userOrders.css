@@ -1,0 +1,22 @@
+﻿row {
+    margin:0;
+    padding:0;
+}
+
+.order-li {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+li h5 strong{
+    white-space:normal;
+}
+
+ul li {
+    width:100%;
+    margin-bottom:2px;
+}
+
+li.nav-item{
+    white-space:nowrap;
+}

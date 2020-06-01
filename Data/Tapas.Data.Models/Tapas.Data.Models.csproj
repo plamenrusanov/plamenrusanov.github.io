@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\Tapas.Services.Mapping\Tapas.Services.Mapping.csproj" />
     <ProjectReference Include="..\Tapas.Data.Common\Tapas.Data.Common.csproj" />
   </ItemGroup>
   

@@ -102,10 +102,6 @@
                     }).ToList(),
                     PackegesPrice = x.CartItems.Sum(c => Math.Ceiling((decimal)c.Quantity / c.Size.MaxProductsInPackage) * c.Size.Package.Price),
                 }).FirstOrDefault();
-            if (model.PackegesPrice + model.ShopingItems.Sum(x => x.ItemPrice) < GlobalConstants.OrderPriceMin)
-            {
-                model.DeliveryFee = GlobalConstants.DeliveryFee;
-            }
 
             return model;
         }

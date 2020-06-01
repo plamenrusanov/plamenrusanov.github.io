@@ -9,7 +9,7 @@
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="~/lib/materialize/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
-    <link href="~/css/homeIndex.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="~/css/home/index.css" type="text/css" rel="stylesheet"/>
     @this.RenderSection("Style", required: false)
 </head>
 <body>
@@ -21,10 +21,9 @@
         <script src="~/lib/materialize/js/init.js"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="~/lib/materialize/js/materialize.js"></script>
+        <script src="~/lib/materialize/js/init.js"></script>
     </environment>
 
     @this.RenderSection("Scripts", required: false)

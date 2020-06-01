@@ -9,6 +9,7 @@
 nav ul a,
 nav .brand-logo {
     color: #444;
+    font-size:18px;
 }
 
 .user-icon {
@@ -17,9 +18,9 @@ nav .brand-logo {
     height:64px;
 }
 
-li a.nav-link.text-dark {
+/*li a.nav-link.text-dark {
     font-size: 1.2rem;
-}
+}*/
 
 p {
     line-height: 2rem;

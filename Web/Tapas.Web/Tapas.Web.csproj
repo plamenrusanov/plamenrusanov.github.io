@@ -51,6 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="bootstrap" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNet.SignalR.JS" Version="2.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.4" />
@@ -81,7 +82,6 @@
     <ProjectReference Include="..\..\Data\Tapas.Data.Models\Tapas.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\Tapas.Data\Tapas.Data.csproj" />
     <ProjectReference Include="..\..\Services\Tapas.Services.Data\Tapas.Services.Data.csproj" />
-    <ProjectReference Include="..\..\Services\Tapas.Services.Mapping\Tapas.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\Tapas.Services.Messaging\Tapas.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\Tapas.Services\Tapas.Services.csproj" />
     <ProjectReference Include="..\Tapas.Web.Infrastructure\Tapas.Web.Infrastructure.csproj" />
@@ -90,6 +90,9 @@
 
   <ItemGroup>
     <Content Update="Areas\Administration\Views\Categories\Add.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\Administration\Views\CateringEquipment\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Areas\Administration\Views\CateringFood\Create.cshtml">
@@ -156,6 +159,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Shared\_Layout.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Images\sharp_person_black_48dp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\OrdersIndex.js">

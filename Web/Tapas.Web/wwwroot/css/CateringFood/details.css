@@ -10,3 +10,9 @@ div.col-50 {
     margin-left: 0;
     margin-right: 0;
 }
+
+@media only screen and (max-width: 768px) {
+    div.col-50 {
+        width: 100%;
+    }
+}

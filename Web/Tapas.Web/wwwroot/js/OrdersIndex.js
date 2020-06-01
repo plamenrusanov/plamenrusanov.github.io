@@ -3,7 +3,8 @@ $(document).ready(function () {
     var x = document.getElementsByTagName('li');
     for (var i = 0; i < x.length; i++) {
         if (x[i].className === "btn btn-danger btn-lg order-li") {
-            playMusic();
+            x[i].click();
+            setTimeout(playMusic(), 3000);
         }
     }
 });
@@ -18,7 +19,7 @@ setupConnection = () => {
         insertOrder(id);
         if (document.getElementById(`li${id}`)) {
             document.getElementById(`li${id}`).click();
-            playMusic();
+            setTimeout(playMusic(), 3000);
         }
     });
 
@@ -43,7 +44,7 @@ setupConnection = () => {
     connection.on("OperatorSetAlarm", function (order) {
         if (document.getElementById(`li${order}`).className == "btn btn-warning btn-lg") {
             document.getElementById(`li${order}`).click();
-            playMusic();
+            setTimeout(playMusic(), 3000);
             var al = document.getElementById('alertt');
             al.hidden = false;
             var alContent = document.getElementById('alert-content');

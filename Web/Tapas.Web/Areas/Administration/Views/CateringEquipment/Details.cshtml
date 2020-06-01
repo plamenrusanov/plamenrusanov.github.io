@@ -1,0 +1,55 @@
+﻿@model Tapas.Web.ViewModels.Administration.CateringEquipment.Details
+
+@{
+    ViewData["Title"] = "Детайли";
+}
+
+<h1 class="text-center">Детайли</h1>
+<hr class="hr-tapas" />
+<div class="row">
+
+    <div class="col-md-4">
+        <img class="responsive" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_200,w_300/v1587540009/@(Model.ImageUrl)" alt="@Model.Name">
+    </div>
+    <div class="col-md-8" style="align-content:center">
+        <div class="row mt-4">
+            <h3 style="width:50%;">
+                @Html.DisplayNameFor(model => model.Name)
+            </h3>
+            <h3>
+                @Html.DisplayFor(model => model.Name)
+            </h3>
+        </div>
+        <div class="row">
+            <h3 style="width:50%;">
+                @Html.DisplayNameFor(model => model.Price)
+            </h3>
+            <h3>
+                @Html.DisplayFor(model => model.Price)
+            </h3>
+        </div>
+        <div class="row">
+            <h3 style="width:50%;">
+                @Html.DisplayNameFor(model => model.Description)
+            </h3>
+            <h3 style="white-space:initial">
+                @Html.DisplayFor(model => model.Description)
+            </h3>
+        </div>
+    </div>
+</div>
+<div class="button-holder mt-4">
+    @if (this.User.IsInRole(GlobalConstants.AdministratorName))
+    {
+        <label>
+            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Изтрий</a>&nbsp;|&nbsp;
+        </label>
+        <label>
+            <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.Id">Редактирай</a>&nbsp;|&nbsp;
+        </label>
+    }
+    <a class="btn btn-primary" asp-action="Index">Назад</a>
+</div>
+@section Style{
+    <link href="~/css/cateringFood/details.css" rel="stylesheet" />
+}

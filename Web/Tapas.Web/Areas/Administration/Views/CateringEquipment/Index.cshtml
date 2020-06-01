@@ -1,0 +1,27 @@
+﻿@model List<Tapas.Web.ViewModels.Administration.CateringEquipment.IndexEquipmentModel>
+@{
+    ViewData["Title"] = "Оборудване";
+}
+
+<div class="container">
+    <partial name="_NavCateringFoodPartial" />
+    <div class="row mt-2">
+        @foreach (var product in Model)
+        {
+            <a class="carda btn col-lg-4 col-md-6 p-2" href="~/Administration/CateringEquipment/Details?id=@product.Id">
+                <div class="card h-100">
+                    <img class="card-img-top" src="https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_140,w_200/v1587540778/@(product.ImageUrl)" alt="@product.Name">
+                    <div class="card-body">
+                        <h4 class="text-center"> @product.Name </h4>
+                        <h6>@product.Price лв.</h6>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
+@section Style{
+    <link href="~/css/cateringFood/index.css" rel="stylesheet" />
+}
+

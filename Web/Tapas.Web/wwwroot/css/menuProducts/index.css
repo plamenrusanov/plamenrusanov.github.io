@@ -1,21 +1,9 @@
-﻿div.list-group {
-    bottom: 0;
-    position: absolute;
-    width: 90%
+﻿h4.name-holder.text-center{
+    white-space:normal;
 }
 
 div.card-body{
     color:black;
-}
-
-
-
-@media screen and (max-width: 776px) {
-    div.list-group {
-        position: inherit;
-        width: 100%;
-        margin-bottom: 5px;
-    }
 }
 
 .btn.btn-default.list-group-item {

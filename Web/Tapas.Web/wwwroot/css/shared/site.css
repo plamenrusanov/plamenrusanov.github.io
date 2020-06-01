@@ -48,9 +48,8 @@ html {
     padding:0;
 }
 #logout {
-    padding-top: 17px;
+    padding: 17px 14px 18px 14px;
     font-size: 18px;
-    padding-bottom: 18px;
     border-radius: 0;
 }
     #logout:hover {
@@ -59,7 +58,13 @@ html {
 
 a.nav-link.text-dark {
     height: 64px;
-    padding-top: 17px;
+    padding: 17px 14px 7px 14px;
+}
+
+ul.navbar-collapse {
+    list-style: none;
+    margin-bottom: auto;
+    padding-left: initial;
 }
 
 ul li a {
@@ -125,10 +130,6 @@ ul li:hover {
     line-height: 60px;
 }
 
-.btn.btn-default.list-group-item { /*Index*/
-    background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/f_auto/v1587386469/bg-list-orders.jpg");
-    margin-top: 3px;
-}
 
 .hr-tapas {
     border: 2px solid grey;
@@ -154,15 +155,6 @@ ul li:hover {
     background-color: white;
 }
 
-.order-li { /*Order/Index*/
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-.card-item {
-    color: whitesmoke;
-    border: solid 1px black;
-}
 
 .brand-logo {
     background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_40,w_40,f_auto/v1587384461/logo.jpg");
@@ -172,7 +164,7 @@ ul li:hover {
 }
 
 .user-icon {
-    background-image: url('../images/sharp_person_black_48dp.png');
+    background-image: url('/Images/sharp_person_black_48dp.png');
     width: 48px;
     height: 48px;
     margin: 8px 10px 8px 10px;
@@ -191,67 +183,3 @@ h1 {
     color: #007bff;
 }
 
-.card {
-    border: 1px solid black;
-}
-
-a.carda:hover {
-    animation: shake 0.5s;
-    animation-iteration-count: infinite;
-}
-
-@keyframes shake {
-    0% {
-        transform: translate(1px, 1px) rotate(0deg);
-    }
-
-    10% {
-        transform: translate(-1px, -2px) rotate(-1deg);
-    }
-
-    20% {
-        transform: translate(-3px, 0px) rotate(1deg);
-    }
-
-    30% {
-        transform: translate(3px, 2px) rotate(0deg);
-    }
-
-    40% {
-        transform: translate(1px, -1px) rotate(1deg);
-    }
-
-    50% {
-        transform: translate(-1px, 2px) rotate(-1deg);
-    }
-
-    60% {
-        transform: translate(-3px, 1px) rotate(0deg);
-    }
-
-    70% {
-        transform: translate(3px, 1px) rotate(-1deg);
-    }
-
-    80% {
-        transform: translate(-1px, -1px) rotate(1deg);
-    }
-
-    90% {
-        transform: translate(1px, 2px) rotate(0deg);
-    }
-
-    100% {
-        transform: translate(1px, -2px) rotate(-1deg);
-    }
-}
-
-.blink {
-    animation: blinker 1s linear infinite;
-}
-
-@keyframes blinker {
-    50% {
-        opacity: 0;
-    }
-}
