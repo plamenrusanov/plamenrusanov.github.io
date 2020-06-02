@@ -9,13 +9,13 @@
 nav ul a,
 nav .brand-logo {
     color: #444;
-    font-size:18px;
+    font-size: 18px;
 }
 
 .user-icon {
     background-image: url(https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_48,q_100,w_48/v1590151208/sharp_person_black_48dp.png);
-    width:64px;
-    height:64px;
+    width: 64px;
+    height: 64px;
 }
 
 /*li a.nav-link.text-dark {
@@ -69,13 +69,14 @@ p {
 footer.page-footer {
     margin: 0;
 }
+
 .b-l {
     background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/c_scale,h_40,w_40,f_auto/v1587384461/logo.jpg");
     width: 40px;
     height: 40px;
-    margin-top:10px;
-    margin-right:10px;
-    border-radius:5px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
 }
 
 #topBtn {
@@ -96,4 +97,42 @@ footer.page-footer {
 
     #topBtn:hover {
         background-color: rgba(240, 240, 240, 1); /* Add a dark-grey background on hover */
+    }
+
+/*Dropdown*/
+a.dropdown-btn {
+    display: none;
+}
+
+#menu-icon {
+    color: black;
+    padding: 0 22px;
+}
+
+@media only screen and (max-width : 992px) {
+    a.dropdown-btn {
+        display: block;
+    }
+
+    .b-l {
+        margin-top: 8px;
+    }
+}
+
+.dropdown-container {
+    display: none;
+    flex-wrap: wrap;
+    background-color: white;
+    width: 100%;
+    margin-top: auto;
+}
+
+div.dropdown-item {
+    height: 56px;
+    padding: 15px;
+}
+
+    div.dropdown-item a {
+        color: #343a40;
+        font-size: 18px;
     }
