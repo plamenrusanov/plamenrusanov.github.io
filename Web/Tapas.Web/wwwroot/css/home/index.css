@@ -102,17 +102,15 @@ footer.page-footer {
 div#closed {
     background-color: #F8D7DA;
     margin: 0 auto;
-    padding: 10px 0 14px 0;
+    padding: 10px 10px 14px 10px;
     font-size: 30px;
-    height: 64px;
 }
 
 div#lastOrder {
     background-color: #FFF3CD;
     margin: 0 auto;
-    padding: 10px 0 14px 0;
+    padding: 10px 10px 14px 10px;
     font-size: 30px;
-    height: 64px;
 }
 /*Dropdown*/
 a.dropdown-btn {

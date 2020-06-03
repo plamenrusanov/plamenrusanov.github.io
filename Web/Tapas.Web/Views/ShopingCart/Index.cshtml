@@ -71,7 +71,7 @@ else
         <h5 style="width:80%;">Опаковки</h5>
         <h5>@Model.PackegesPrice лв.</h5>
     </div>
-    @if (Model.TotalPrice < GlobalConstants.MOPTCDF)
+    @if (Model.TotalPrice < GlobalConstants.MOPTCDF && Model.TotalPrice >= GlobalConstants.OrderPriceMin)
     {
 <div class="row">
     <h5 style="width:80%;">Ще ви бъде начислена сума за доставка!</h5>
