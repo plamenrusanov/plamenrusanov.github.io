@@ -37,6 +37,12 @@ button.accept-policy {
     line-height: inherit;
 }
 
+#closed{
+    text-align: center;
+    font-size: 30px;
+    height: 65px;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

@@ -104,12 +104,22 @@ else
     <div class="col-50 text-center">
         <a class="btn btn-primary btn-lg" href="/Administration/Products/">Към менюто</a>
     </div>
-    @if (Model.ShopingItems.Count != 0 && Model.TotalPrice >= 10)
+    @if (DateTime.Now.TimeOfDay > GlobalConstants.CloseTime || DateTime.Now.TimeOfDay < GlobalConstants.OpenTime)
     {
         <div class="col-50 text-center">
-            <a class="btn btn-primary btn-lg" href="/Orders/Create">Поръчай</a>
+            <h3 style="color: #C82333">Затворено</h3>
         </div>
     }
+    else
+    {
+        @if (Model.ShopingItems.Count != 0 && Model.TotalPrice >= 10)
+        {
+            <div class="col-50 text-center">
+                <a class="btn btn-primary btn-lg" href="/Orders/Create">Поръчай</a>
+            </div>
+        }
+    }
+
 
 </div>
 

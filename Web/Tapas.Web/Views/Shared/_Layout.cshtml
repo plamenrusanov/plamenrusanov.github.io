@@ -47,6 +47,28 @@
             </div>
         </nav>
     </header>
+    @if (DateTime.Now.TimeOfDay > GlobalConstants.CloseTime || DateTime.Now.TimeOfDay < GlobalConstants.OpenTime)
+    {
+        if (DateTime.Now.TimeOfDay > GlobalConstants.CloseTime)
+        {
+            <div id="alert" class="alert alert-danger " role="alert">
+                <div id="closed">Затворено. Ще приемаме поръчки отново утре в @GlobalConstants.OpenTime.ToString("hh':'mm") часа.</div>
+            </div>
+        }
+        else
+        {
+            <div id="alert" class="alert alert-danger " role="alert">
+                <div id="closed">Затворено. Ще приемаме поръчки отново в @GlobalConstants.OpenTime.ToString("hh':'mm") часа.</div>
+            </div>
+        }
+
+    }
+    else if (DateTime.Now.TimeOfDay < GlobalConstants.CloseTime && DateTime.Now.TimeOfDay > GlobalConstants.LastOrderTime)
+    {
+        <div id="alert" class="alert alert-warning " role="alert">
+            <div id="closed">Последни поръчки. Затваряме в @GlobalConstants.CloseTime.ToString("hh':'mm") часа.</div>
+        </div>
+    }
     <button onclick="topFunction()" id="topBtn" title="Go to top"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
     <div class="container" id="main-transperant">
         <partial name="_CookieConsentPartial" />
