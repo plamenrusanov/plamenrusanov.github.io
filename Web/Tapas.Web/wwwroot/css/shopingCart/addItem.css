@@ -36,4 +36,12 @@
         background-color: rgba(0, 123, 255,0.5);
     }
 
+.blink {
+    animation: blinker 1s linear infinite;
+}
 
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}

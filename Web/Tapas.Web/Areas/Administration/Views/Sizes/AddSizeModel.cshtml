@@ -4,8 +4,8 @@
     Layout = null;
     var i = Model.Index;
 }
-
-@Html.Hidden($"Sizes[{Model.Index}].SizeId")
+@Html.Hidden($"Sizes[{i}].SizeId", Model.SizeId)
+@*@Html.HiddenFor(x => Model.SizeId, new { name = $"Sizes[{Model.Index}].SizeId" })*@
 <div class="col-md-6">
     <div class="row form-group row-group">
         <h4 class="col-md-6">@Html.Label($"Име на размер {Model.Index + 1}")</h4>

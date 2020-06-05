@@ -1,5 +1,7 @@
 ﻿namespace Tapas.Data.Models
 {
+    using System.Collections.Generic;
+
     using Tapas.Data.Common.Models;
 
     public class ShopingCartItem : BaseDeletableModel<int>
@@ -19,5 +21,7 @@
         public int SizeId { get; set; }
 
         public virtual ProductSize Size { get; set; }
+
+        public virtual ICollection<Extras> Extras { get; set; }
     }
 }

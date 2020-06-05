@@ -17,8 +17,6 @@
 
         Task EditProductAsync(EditProductModel model);
 
-        DeleteProductViewModel GetDeleteProductById(string productId);
-
         Task DeleteProductAsync(string productId);
 
         ICollection<DetailsProductViewModel> GetAllProducts(bool isDeleted);

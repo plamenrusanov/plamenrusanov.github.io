@@ -12,6 +12,8 @@
             this.Sizes = new List<ProductSize>();
         }
 
+        public bool HasExtras { get; set; }
+
         public string CategoryId { get; set; }
 
         public virtual Category Category { get; set; }

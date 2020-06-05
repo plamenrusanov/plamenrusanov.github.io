@@ -33,11 +33,11 @@
             this.itemRepository = itemRepository;
         }
 
-        public void AddItem(AddItemViewModel model)
+        public async Task AddItemAsync(AddItemViewModel model)
         {
             var cart = this.cartRepository
                 .All()
-                .Where(x => x.Id == model.ShopingCart.Id)
+                .Where(x => x.Id == model.ShopingCartId)
                 .FirstOrDefault();
 
             var product = this.productRepository
@@ -48,6 +48,10 @@
             var size = this.sizeRepository.All()
                 .Where(x => x.Id == model.Product.Sizes[0].SizeId)
                 .FirstOrDefault();
+            if (cart is null || product is null || size is null)
+            {
+
+            }
 
             cart.CartItems.Add(new ShopingCartItem()
             {
@@ -56,16 +60,10 @@
                 Quantity = model.Quantity,
                 Description = model.Description,
             });
-            this.cartRepository.SaveChanges();
-        }
-
-        public async Task CreateShopingCartAsync(string userId)
-        {
-            await this.cartRepository.AddAsync(new ShopingCart() { ApplicationUserId = userId });
             await this.cartRepository.SaveChangesAsync();
         }
 
-        public void DeleteItem(int itemId, string shopingCartId)
+        public async Task DeleteItemAsync(int itemId, string shopingCartId)
         {
             var cart = this.cartRepository.All()
                 .Where(x => x.Id == shopingCartId)
@@ -76,12 +74,7 @@
                 .FirstOrDefault();
 
             cart.CartItems.Remove(productCartItem);
-            this.cartRepository.SaveChanges();
-        }
-
-        public string GetDescription(int id)
-        {
-            return this.itemRepository.All().Where(x => x.Id == id).FirstOrDefault().Description;
+            await this.cartRepository.SaveChangesAsync();
         }
 
         public ShopingCartViewModel GetShopingCart(ApplicationUser user)
@@ -106,7 +99,7 @@
             return model;
         }
 
-        public AddItemViewModel GetShopingModel(ApplicationUser user, string productId)
+        public AddItemViewModel GetShopingModel(string productId)
         {
             return new AddItemViewModel()
             {
@@ -119,6 +112,7 @@
                         Name = x.Name,
                         Description = x.Description,
                         ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
+                        HasExtras = x.HasExtras,
                         Allergens = x.Allergens
                             .Select(c => new DetailsAllergenViewModel()
                             {
@@ -137,16 +131,32 @@
                                 PackagePrice = c.Package.Price,
                             }).ToList(),
                     }).FirstOrDefault(),
-                ShopingCart = this.GetShopingCart(user),
             };
         }
 
-        public void SetDescription(int id, string message)
+        public string GetDescription(int id)
         {
             var cartItem = this.itemRepository.All().Where(x => x.Id == id).FirstOrDefault();
-            cartItem.Description = message;
 
-            this.itemRepository.SaveChanges();
+            if (cartItem is null)
+            {
+                throw new ArgumentNullException(string.Format(ExceptionMessages.NotExists, nameof(cartItem)));
+            }
+
+            return cartItem.Description;
+        }
+
+        public async Task SetDescriptionAsync(int id, string message)
+        {
+            var cartItem = this.itemRepository.All().Where(x => x.Id == id).FirstOrDefault();
+
+            if (cartItem is null)
+            {
+                throw new ArgumentNullException(string.Format(ExceptionMessages.NotExists, nameof(cartItem)));
+            }
+
+            cartItem.Description = message;
+            await this.itemRepository.SaveChangesAsync();
         }
     }
 }

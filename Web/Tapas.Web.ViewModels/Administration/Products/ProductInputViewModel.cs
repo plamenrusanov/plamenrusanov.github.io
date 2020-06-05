@@ -22,10 +22,13 @@
         }
 
         [Required]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Името може да съдържа между 3 и 30 символа!")]
         public string Name { get; set; }
 
         [DataType(DataType.Upload)]
         public IFormFile Image { get; set; }
+
+        public bool HasExtras { get; set; }
 
         public string Description { get; set; }
 

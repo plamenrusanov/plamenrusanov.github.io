@@ -32,6 +32,8 @@
 
         public IFormFile Image { get; set; }
 
+        public bool HasExtras { get; set; }
+
         [Required]
         public string CategoryId { get; set; }
 

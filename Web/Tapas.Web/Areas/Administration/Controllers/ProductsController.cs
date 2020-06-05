@@ -61,7 +61,7 @@
             {
                 this.ViewData["Title"] = this.categoriesService.GetCategoryNameById(categoryId);
                 var homeIndexViewModel = this.productsService.CategoryWhitProducts(categoryId);
-                return this.View("Index", homeIndexViewModel);
+                return this.View(viewName: "Index", model: homeIndexViewModel);
             }
             catch (Exception e)
             {
@@ -88,7 +88,10 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                inputModel.AvailableCategories = this.categoriesService.All().ToList();
+                inputModel.AvailableAllergens = this.allergensService.All().ToList();
+                inputModel.AvailablePackages = this.packagesService.All().ToList();
+                return this.View(inputModel);
             }
 
             try
@@ -106,16 +109,6 @@
 
         public IActionResult Details(string productId)
         {
-            if (string.IsNullOrEmpty(productId))
-            {
-                return this.NotFound();
-            }
-
-            if (!this.productsService.ExistProductById(productId))
-            {
-                return this.NotFound();
-            }
-
             try
             {
                 var viewModel = this.productsService.GetDetailsProductById(productId);
@@ -130,16 +123,6 @@
 
         public IActionResult Edit(string productId)
         {
-            if (string.IsNullOrEmpty(productId))
-            {
-                return this.NotFound();
-            }
-
-            if (!this.productsService.ExistProductById(productId))
-            {
-                return this.NotFound();
-            }
-
             try
             {
                 var viewModel = this.productsService.GetEditProductById(productId);
@@ -180,30 +163,6 @@
             {
                 this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.NotFound();
-            }
-        }
-
-        public IActionResult Delete(string productId)
-        {
-            if (string.IsNullOrEmpty(productId))
-            {
-                return this.NotFound();
-            }
-
-            if (!this.productsService.ExistProductById(productId))
-            {
-                return this.NotFound();
-            }
-
-            try
-            {
-                var viewModel = this.productsService.GetDeleteProductById(productId);
-                return this.View(viewModel);
-            }
-            catch (Exception e)
-            {
-                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
-                return this.BadRequest();
             }
         }
 

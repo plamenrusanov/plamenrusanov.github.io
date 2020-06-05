@@ -70,6 +70,7 @@
             <h6>@Html.LabelFor(model => model.Image, "Нова снимка")</h6>
             @Html.EditorFor(model => model.Image, new { type = "file", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Image)
+            <div class="row form-group m-0 pt-5"><h4>@Html.Label("Добавки: ")</h4> <span style="width: 20px; margin-left:30px;"> @Html.CheckBoxFor(x => x.HasExtras, new { @class = "form-control", style = "height: 20px; margin-top: 6px;" })</span></div>
         </div>
         <div class="col-lg-4 col-md-6 form-group">
             <h6>@Html.LabelFor(x => x.Description, "Описание", new { @class = "control-label" })</h6>
@@ -135,7 +136,7 @@
     <!--Buttons-->
     <div class="row">
         <div class="col-md-6 form-group text-center">
-            <button type="submit" class="btn btn-primary btn-lg active">Радактирай</button>
+            <button type="submit" class="btn btn-primary btn-lg">Радактирай</button>
         </div>
         <div class="row-col-md-6 text-center">
             <div class="btn btn-secondary btn-lg" onclick="GetIndex()">Добави размер</div>

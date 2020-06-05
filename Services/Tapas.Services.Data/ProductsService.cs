@@ -1,6 +1,7 @@
 ﻿namespace Tapas.Services.Data
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -63,6 +64,7 @@
                 Name = model.Name,
                 CategoryId = model.CategoryId,
                 Description = model.Description,
+                HasExtras = model.HasExtras,
                 Sizes = new List<ProductSize>()
                 {
                 },
@@ -112,70 +114,72 @@
 
         public DetailsProductViewModel GetDetailsProductById(string productId)
         {
-            return this.productsRepo.All()
-                .Where(x => x.Id == productId)
-                .Select(x => new DetailsProductViewModel()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
-                    CategoryId = x.CategoryId,
-                    CategoryName = x.Category.Name,
-                    Allergens = x.Allergens
+            var product = this.CheckNullExistsReturnProduct(productId);
+
+            var model = new DetailsProductViewModel()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                ImageUrl = product.ImageUrl != null ? product.ImageUrl : GlobalConstants.DefaultProductImage,
+                CategoryId = product.CategoryId,
+                CategoryName = product.Category.Name,
+                Allergens = product.Allergens
                         .Select(c => new DetailsAllergenViewModel()
                         {
                             Id = c.AllergenId,
                             Name = c.Allergen.Name,
                             ImageUrl = c.Allergen.ImageUrl,
                         }).ToList(),
-                })
-                .FirstOrDefault();
+            };
+            return model;
         }
 
         public EditProductModel GetEditProductById(string productId)
         {
+            var product = this.CheckNullExistsReturnProduct(productId);
+
             var packages = this.GetAvailablePackigesVM;
 
-            return this.productsRepo.All()
-                .Where(x => x.Id == productId)
-                .Select(x => new EditProductModel()
+            var model = new EditProductModel()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                ImageUrl = product.ImageUrl,
+                CategoryId = product.CategoryId,
+                Description = product.Description,
+                HasExtras = product.HasExtras,
+                AvailablePackages = packages,
+            };
+            model.Allergens = this.allergensRepository
+                 .All()
+                 .ToList()
+                 .Select(c => new SelectListItem()
+                 {
+                     Value = c.Id,
+                     Text = c.Name,
+                     Selected = product.Allergens.Any(a => a.AllergenId == c.Id),
+                 }).ToList();
+            model.AvailableCategories = this.categoriesRepository
+                .All()
+                .Select(c => new SelectListItem()
                 {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ImageUrl = x.ImageUrl,
-                    CategoryId = x.CategoryId,
-                    Description = x.Description,
-                    AvailablePackages = packages,
-                    Allergens = this.allergensRepository
-                        .All()
-                        .Select(c => new SelectListItem()
-                        {
-                            Value = c.Id,
-                            Text = c.Name,
-                            Selected = x.Allergens.Any(a => a.AllergenId == c.Id) ? true : false,
-                        }).ToList(),
-                    AvailableCategories = this.categoriesRepository
-                        .All()
-                        .Select(c => new SelectListItem()
-                        {
-                            Value = c.Id,
-                            Text = c.Name,
-                            Selected = x.CategoryId == c.Id ? true : false,
-                        }).ToList(),
-                    Sizes = this.sizeRepository
-                        .All()
-                        .Where(c => c.MenuProductId == x.Id)
-                        .Select(c => new EditProductSizeModel()
-                        {
-                            SizeId = c.Id,
-                            SizeName = c.SizeName,
-                            Price = c.Price,
-                            Weight = c.Weight,
-                            PackageId = c.PackageId,
-                            MaxProductsInPackage = c.MaxProductsInPackage,
-                        }).ToList(),
-                })
-                .FirstOrDefault();
+                    Value = c.Id,
+                    Text = c.Name,
+                    Selected = product.CategoryId == c.Id,
+                }).ToList();
+            model.Sizes = this.sizeRepository
+                .All()
+                .Where(c => c.MenuProductId == product.Id)
+                .Select(c => new EditProductSizeModel()
+                {
+                    SizeId = c.Id,
+                    SizeName = c.SizeName,
+                    Price = c.Price,
+                    Weight = c.Weight,
+                    PackageId = c.PackageId,
+                    MaxProductsInPackage = c.MaxProductsInPackage,
+                }).ToList();
+            return model;
         }
 
         public async Task EditProductAsync(EditProductModel model)
@@ -185,13 +189,14 @@
                 model.ImageUrl = await this.cloudService.UploadImageFromForm(model.Image);
             }
 
-            var product = this.productsRepo.All()
+            var product = this.productsRepo.AllWithDeleted()
                 .Where(x => x.Id == model.Id)
                 .FirstOrDefault();
             product.Name = model.Name;
             product.ImageUrl = model.ImageUrl;
             product.CategoryId = model.CategoryId;
             product.Description = model.Description;
+            product.HasExtras = model.HasExtras;
 
             foreach (var size in model.Sizes)
             {
@@ -257,24 +262,9 @@
             await this.productsRepo.SaveChangesAsync();
         }
 
-        public DeleteProductViewModel GetDeleteProductById(string productId)
-        {
-            return this.productsRepo.All()
-                .Where(x => x.Id == productId)
-                .Select(x => new DeleteProductViewModel()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ImageUrl = x.ImageUrl,
-                    CategoryName = x.Category.Name,
-                }).FirstOrDefault();
-        }
-
         public async Task DeleteProductAsync(string productId)
         {
-            var product = this.productsRepo.All()
-                .Where(x => x.Id == productId)
-                .FirstOrDefault();
+            var product = this.CheckNullExistsReturnProduct(productId);
             this.productsRepo.Delete(product);
             await this.productsRepo.SaveChangesAsync();
         }
@@ -296,9 +286,7 @@
 
         public void Activate(string productId)
         {
-            var product = this.productsRepo.AllWithDeleted()
-                .Where(x => x.Id == productId)
-                .FirstOrDefault();
+            var product = this.CheckNullExistsReturnProduct(productId);
             product.IsDeleted = false;
             this.productsRepo.SaveChanges();
         }
@@ -355,6 +343,26 @@
                     Price = x.Sizes.Count == 1 ? x.Sizes.FirstOrDefault().Price : default,
                 }).ToList().Take(12);
             return model;
+        }
+
+        private MenuProduct CheckNullExistsReturnProduct(string productId)
+        {
+            if (string.IsNullOrEmpty(productId))
+            {
+                throw new ArgumentNullException(paramName: nameof(productId));
+            }
+
+            var menuProduct = this.productsRepo
+                .AllWithDeleted()
+                .Where(x => x.Id == productId)
+                .FirstOrDefault();
+
+            if (menuProduct is null)
+            {
+                throw new ArgumentException(string.Format(ExceptionMessages.NotExists, nameof(menuProduct)));
+            }
+
+            return menuProduct;
         }
     }
 }

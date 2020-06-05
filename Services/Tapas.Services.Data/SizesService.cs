@@ -93,7 +93,7 @@
                 throw new Exception();
             }
 
-            var product = this.menuRepository.All().FirstOrDefault(x => x.Id == productSize.MenuProductId);
+            var product = this.menuRepository.AllWithDeleted().FirstOrDefault(x => x.Id == productSize.MenuProductId);
             if (product is null)
             {
                 throw new Exception();

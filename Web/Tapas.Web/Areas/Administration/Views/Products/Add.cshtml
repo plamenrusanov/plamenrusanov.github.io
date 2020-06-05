@@ -40,6 +40,7 @@
                     }
                 </select>
             </div>
+            <div class="row form-group m-0"><h4>@Html.Label("Добавки: ")</h4> <span style="width: 20px; margin-left:30px;"> @Html.CheckBoxFor(x => x.HasExtras, new { @class = "form-control", style= "height: 20px; margin-top: 6px;"})</span></div>
             <div class="row form-group">
                 <h4 class="col-md-12"> @Html.LabelFor(x => x.Allergens, "Алергени", new { @class = "control-label" })</h4>
                 @foreach (var item in Model.AvailableAllergens)
@@ -95,7 +96,7 @@
             <div class="col-md-6">
                 <div class="row form-group">
                     <h4 class="col-md-10"> @Html.LabelFor(x => Model.Sizes[i].MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
-                    @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, ViewData["Title"].ToString(), $"Sizes[{i}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value = 1 } })
+                    @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, ViewData["Title"].ToString(), $"Sizes[{i}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", value = 1 } })
                     <span asp-validation-for="@Model.Sizes[i].MaxProductsInPackage" class="text-danger"></span>
                 </div>
             </div>

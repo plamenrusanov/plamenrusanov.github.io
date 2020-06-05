@@ -10,16 +10,14 @@
     {
         ShopingCartViewModel GetShopingCart(ApplicationUser user);
 
-        Task CreateShopingCartAsync(string userId);
+        AddItemViewModel GetShopingModel(string productId);
 
-        AddItemViewModel GetShopingModel(ApplicationUser user, string productId);
+        Task AddItemAsync(AddItemViewModel model);
 
-        void AddItem(AddItemViewModel model);
-
-        void DeleteItem(int itemId, string shopingCartId);
+        Task DeleteItemAsync(int itemId, string shopingCartId);
 
         string GetDescription(int id);
 
-        void SetDescription(int id, string message);
+        Task SetDescriptionAsync(int id, string message);
     }
 }

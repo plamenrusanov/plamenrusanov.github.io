@@ -20,6 +20,8 @@
 
         public bool IsOneSize { get; set; }
 
+        public bool HasExtras { get; set; }
+
         public int? Weight { get; set; }
 
         public decimal? Price { get; set; }

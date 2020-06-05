@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using Tapas.Common;
     using Tapas.Data.Models;
     using Tapas.Services.Data.Contracts;
@@ -18,81 +19,72 @@
         private readonly IShopingCartService cartService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IProductsService productsService;
+        private readonly ILogger<ShopingCartController> logger;
 
         public ShopingCartController(
             IShopingCartService cartService,
             UserManager<ApplicationUser> userManager,
-            IProductsService productsService)
+            IProductsService productsService,
+            ILogger<ShopingCartController> logger)
         {
             this.cartService = cartService;
             this.userManager = userManager;
             this.productsService = productsService;
+            this.logger = logger;
         }
 
         // GET
         public async Task<ActionResult> Index()
         {
-            if (this.User == null)
+            try
             {
-                return this.RedirectToPage(GlobalConstants.LoginPageRoute);
+                var user = await this.userManager.GetUserAsync(this.User);
+                var cart = this.cartService.GetShopingCart(user);
+                return this.View(cart);
             }
-
-            var user = await this.userManager.GetUserAsync(this.User);
-            if (user.ShopingCart == null)
+            catch (Exception e)
             {
-                await this.cartService.CreateShopingCartAsync(user.Id);
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return this.NotFound();
             }
-
-            var cart = this.cartService.GetShopingCart(user);
-            return this.View(cart);
         }
 
         // GET
         public async Task<ActionResult> AddItem(string productId)
         {
-            if (string.IsNullOrEmpty(productId))
+            try
             {
-                return this.NotFound();
+                var user = await this.userManager.GetUserAsync(this.User);
+                var model = this.cartService.GetShopingModel(productId);
+                return this.View(model);
             }
-
-            if (this.User == null)
+            catch (Exception e)
             {
-                return this.RedirectToPage(GlobalConstants.LoginPageRoute);
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return this.BadRequest();
             }
-
-            var user = await this.userManager.GetUserAsync(this.User);
-            if (user.ShopingCart == null)
-            {
-                await this.cartService.CreateShopingCartAsync(user.Id);
-            }
-
-            if (!this.productsService.ExistProductById(productId))
-            {
-                return this.NotFound(productId);
-            }
-
-            var model = this.cartService.GetShopingModel(user, productId);
-
-            return this.View(model);
         }
 
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddItem([FromForm]AddItemViewModel model)
+        public async Task<ActionResult> AddItem([FromForm] AddItemViewModel model)
         {
-            if (this.User == null)
+            if (!this.ModelState.IsValid)
             {
-                return this.RedirectToPage(GlobalConstants.LoginPageRoute);
+                return this.View(nameof(this.AddItem), model: model.Product.Id);
             }
 
             try
             {
-                this.cartService.AddItem(model);
+                var user = await this.userManager.GetUserAsync(this.User);
+                model.ShopingCartId = user.ShopingCartId;
+                await this.cartService.AddItemAsync(model);
                 return this.RedirectToAction("Index");
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
                 return this.View();
             }
         }
@@ -116,7 +108,16 @@
                 return this.NotFound();
             }
 
-            this.cartService.DeleteItem(itemId, shopingCartId);
+            try
+            {
+                await this.cartService.DeleteItemAsync(itemId, shopingCartId);
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return this.BadRequest();
+            }
+
             if (this.Request.Headers.ContainsKey(GlobalConstants.RefererHeader))
             {
                 var refererValue = default(Microsoft.Extensions.Primitives.StringValues);
@@ -133,19 +134,35 @@
 
         public string GetDescription(int id)
         {
-            var desc = this.cartService.GetDescription(id);
-            if (desc is null)
+            try
             {
-                desc = string.Empty;
-            }
+                var desc = this.cartService.GetDescription(id);
+                if (desc is null)
+                {
+                    desc = string.Empty;
+                }
 
-            return desc;
+                return desc;
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return string.Empty;
+            }
         }
 
-        public string SetDescription(int id, string message)
+        public async Task<string> SetDescription(int id, string message)
         {
-            this.cartService.SetDescription(id, message);
-            return "Ok";
+            try
+            {
+                await this.cartService.SetDescriptionAsync(id, message);
+                return "Ok";
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
+                return string.Empty;
+            }
         }
     }
 }
