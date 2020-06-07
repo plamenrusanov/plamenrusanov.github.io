@@ -7,7 +7,7 @@
 
     public interface IExtrasService
     {
-        ICollection<ExtraCartItemModel> All();
+        ICollection<ExtraCartItemModel> All(bool isDeleted);
 
         Create Create();
 

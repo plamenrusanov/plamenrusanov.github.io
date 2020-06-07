@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Tapas.Common;
@@ -14,9 +13,9 @@
 
     public class ExtrasService : IExtrasService
     {
-        private readonly IDeletableEntityRepository<Extras> extrasRepository;
+        private readonly IDeletableEntityRepository<Extra> extrasRepository;
 
-        public ExtrasService(IDeletableEntityRepository<Extras> extrasRepository)
+        public ExtrasService(IDeletableEntityRepository<Extra> extrasRepository)
         {
             this.extrasRepository = extrasRepository;
         }
@@ -28,9 +27,18 @@
             await this.extrasRepository.SaveChangesAsync();
         }
 
-        public ICollection<ExtraCartItemModel> All()
+        public ICollection<ExtraCartItemModel> All(bool isDeleted)
         {
-            throw new NotImplementedException();
+            return this.extrasRepository
+                .AllWithDeleted()
+                .Where(x => x.IsDeleted == isDeleted)
+                .Select(x => new ExtraCartItemModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price,
+                    Weight = x.Weight,
+                }).ToList();
         }
 
         public Create Create()
@@ -38,9 +46,17 @@
             return new Create();
         }
 
-        public Task Create(Create model)
+        public async Task Create(Create model)
         {
-            throw new NotImplementedException();
+            var extra = new Extra()
+            {
+                Name = model.Name,
+                Price = model.Price,
+                Weight = model.Weight,
+            };
+
+            await this.extrasRepository.AddAsync(extra);
+            await this.extrasRepository.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
@@ -63,12 +79,17 @@
             };
         }
 
-        public Task Edit(EditModel model)
+        public async Task Edit(EditModel model)
         {
-            throw new NotImplementedException();
+            var extra = this.CheckExistsReturnExtras(model.Id);
+            extra.Name = model.Name;
+            extra.Price = model.Price;
+            extra.Weight = model.Weight;
+            this.extrasRepository.Update(extra);
+            await this.extrasRepository.SaveChangesAsync();
         }
 
-        private Extras CheckExistsReturnExtras(int id)
+        private Extra CheckExistsReturnExtras(int id)
         {
             var extras = this.extrasRepository
                 .AllWithDeleted()

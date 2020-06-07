@@ -1,0 +1,96 @@
+﻿@model List<Tapas.Web.ViewModels.Extras.ExtraCartItemModel>
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_AdminLayout.cshtml";
+    this.ViewData["Title"] = "Добавки";
+    bool isDeleted = (bool)this.ViewData["isDeleted"];
+}
+
+<div class="row">
+    <div class="col-md-3 text-center mt-2">
+        @if (isDeleted)
+        {
+            <a class="btn btn-primary" href="/Extras/Index">Активни</a>
+        }
+        else
+        {
+            <a class="btn btn-primary" href="/Extras/Index?isDeleted=@true">Неактивни</a>
+        }
+    </div>
+    <div class="col-md-6 text-center">
+        <h1>@(isDeleted ? "Неактивни " : "Активни ") @this.ViewData["Title"].ToString().ToLower()</h1>
+    </div>
+    <div class="col-md-3 text-center mt-2">
+        <a class="btn btn-primary" href="/Extras/GetCreateModel">Създай добавка</a>
+    </div>
+</div>
+<div class="container bg-light">
+    <table class="table">
+        <thead>
+            <tr class="row">
+                <th class="col-md-4">
+                    @Html.Label("Име")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Цена")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Тегло")
+                </th>
+                @if (isDeleted)
+                {
+                    <th class="col-md-2">
+                    </th>
+                    <th class="col-md-2">
+                        @Html.Label("Активирай")
+                    </th>
+                }
+                else
+                {
+                    <th class="col-md-2">
+                        @Html.Label("Редактирай")
+                    </th>
+                    <th class="col-md-2">
+                        @Html.Label("Изтрий")
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="row">
+                    <td class="col-md-4">
+                        <h6>@item.Name</h6>
+                    </td>
+                    <td class="col-md-2">
+                        <h6>@item.Price лв.</h6>
+                    </td>
+                    <td class="col-md-2">
+                        <h6>@item.Weight гр.</h6>
+                    </td>
+                    @if (isDeleted)
+                    {
+                        <td class="col-md-2">
+                        </td>
+                        <td class="col-md-2">
+                            <a class="btn btn-success" asp-area="" asp-controller="Extras"
+                               asp-action="Activate" asp-route-id="@item.Id">Активирай</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="col-md-2">
+                            <a class="btn btn-primary" asp-area="" asp-controller="Extras"
+                               asp-action="GetEditModel" asp-route-id="@item.Id">Редактирай</a>
+                        </td>
+                        <td class="col-md-2">
+                            <a class="btn btn-danger" asp-area="" asp-controller="Extras"
+                               asp-action="Delete" asp-route-id="@item.Id">Изтрий</a>
+                        </td>
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

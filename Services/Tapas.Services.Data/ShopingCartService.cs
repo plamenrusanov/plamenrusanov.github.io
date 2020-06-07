@@ -20,17 +20,20 @@
         private readonly IDeletableEntityRepository<MenuProduct> productRepository;
         private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
         private readonly IDeletableEntityRepository<ShopingCartItem> itemRepository;
+        private readonly IExtrasService extrasService;
 
         public ShopingCartService(
             IDeletableEntityRepository<ShopingCart> cartRepository,
             IDeletableEntityRepository<MenuProduct> productRepository,
             IDeletableEntityRepository<ProductSize> sizeRepository,
-            IDeletableEntityRepository<ShopingCartItem> itemRepository)
+            IDeletableEntityRepository<ShopingCartItem> itemRepository,
+            IExtrasService extrasService)
         {
             this.cartRepository = cartRepository;
             this.productRepository = productRepository;
             this.sizeRepository = sizeRepository;
             this.itemRepository = itemRepository;
+            this.extrasService = extrasService;
         }
 
         public async Task AddItemAsync(AddItemViewModel model)
@@ -50,7 +53,7 @@
                 .FirstOrDefault();
             if (cart is null || product is null || size is null)
             {
-
+                throw new Exception();
             }
 
             cart.CartItems.Add(new ShopingCartItem()
@@ -72,6 +75,10 @@
             var productCartItem = cart.CartItems
                 .Where(x => x.Id == itemId)
                 .FirstOrDefault();
+            if (cart is null || productCartItem is null)
+            {
+                throw new Exception();
+            }
 
             cart.CartItems.Remove(productCartItem);
             await this.cartRepository.SaveChangesAsync();
@@ -96,31 +103,47 @@
                     PackegesPrice = x.CartItems.Sum(c => Math.Ceiling((decimal)c.Quantity / c.Size.MaxProductsInPackage) * c.Size.Package.Price),
                 }).FirstOrDefault();
 
+            if (model is null)
+            {
+                throw new Exception();
+            }
+
             return model;
         }
 
         public AddItemViewModel GetShopingModel(string productId)
         {
-            return new AddItemViewModel()
+            if (string.IsNullOrEmpty(productId))
             {
-                Product = this.productRepository
+                throw new ArgumentNullException();
+            }
+
+            var product = this.productRepository
                     .All()
                     .Where(x => x.Id == productId)
-                    .Select(x => new DetailsProductAddItemVM()
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Description = x.Description,
-                        ImageUrl = x.ImageUrl != null ? x.ImageUrl : GlobalConstants.DefaultProductImage,
-                        HasExtras = x.HasExtras,
-                        Allergens = x.Allergens
+                    .FirstOrDefault();
+            if (product is null)
+            {
+                throw new Exception();
+            }
+
+            var model = new AddItemViewModel()
+            {
+                Product = new DetailsProductAddItemVM()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Description = product.Description,
+                    ImageUrl = product.ImageUrl != null ? product.ImageUrl : GlobalConstants.DefaultProductImage,
+                    HasExtras = product.HasExtras,
+                    Allergens = product.Allergens
                             .Select(c => new DetailsAllergenViewModel()
                             {
                                 Id = c.AllergenId,
                                 Name = c.Allergen.Name,
                                 ImageUrl = c.Allergen.ImageUrl,
                             }).ToList(),
-                        Sizes = x.Sizes
+                    Sizes = product.Sizes
                             .Select(c => new ProductSizeViewModel()
                             {
                                 SizeId = c.Id,
@@ -130,8 +153,15 @@
                                 MaxProductsInPackage = c.MaxProductsInPackage,
                                 PackagePrice = c.Package.Price,
                             }).ToList(),
-                    }).FirstOrDefault(),
+                },
             };
+
+            if (model.Product.HasExtras)
+            {
+                model.Extras = this.extrasService.All(isDeleted: false).ToList();
+            }
+
+            return model;
         }
 
         public string GetDescription(int id)

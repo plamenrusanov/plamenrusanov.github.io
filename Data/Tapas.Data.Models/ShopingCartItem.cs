@@ -22,6 +22,6 @@
 
         public virtual ProductSize Size { get; set; }
 
-        public virtual ICollection<Extras> Extras { get; set; }
+        public virtual ICollection<ExtraItem> ExtraItems { get; set; }
     }
 }

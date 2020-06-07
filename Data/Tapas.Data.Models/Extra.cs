@@ -1,10 +1,12 @@
 ﻿namespace Tapas.Data.Models
 {
+    using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using Tapas.Data.Common.Models;
 
-    public class Extras : BaseDeletableModel<int>
+    public class Extra : BaseDeletableModel<int>
     {
         public string Name { get; set; }
 
@@ -13,6 +15,6 @@
 
         public int Weight { get; set; }
 
-        public int Quantity { get; set; }
+        public virtual ICollection<ExtraItem> ExtraItems { get; set; }
     }
 }
