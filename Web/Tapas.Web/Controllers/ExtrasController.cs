@@ -42,6 +42,7 @@
             }
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorName)]
         public IActionResult GetCreateModel()
         {
             try
@@ -56,6 +57,7 @@
             }
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorName)]
         public async Task<IActionResult> Create(Create model)
         {
             if (!this.ModelState.IsValid)
@@ -75,6 +77,7 @@
             }
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorName)]
         public IActionResult GetEditModel(int id)
         {
             try
@@ -89,6 +92,7 @@
             }
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorName)]
         public async Task<IActionResult> Edit(EditModel model)
         {
             if (!this.ModelState.IsValid)
@@ -108,6 +112,7 @@
             }
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorName)]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -122,6 +127,7 @@
             }
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorName)]
         public async Task<IActionResult> Activate(int id)
         {
             try

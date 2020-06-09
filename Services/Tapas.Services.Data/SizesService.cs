@@ -43,7 +43,7 @@
 
         public ProductSizeViewModel GetDetailModel(int sizeId)
         {
-            return this.sizeRepository.All()
+            var model = this.sizeRepository.All()
                 .Where(x => x.Id == sizeId)
                 .Select(x => new ProductSizeViewModel()
                 {
@@ -53,7 +53,15 @@
                     Weight = x.Weight,
                     MaxProductsInPackage = x.MaxProductsInPackage,
                     PackagePrice = x.Package.Price,
+                    HasExtras = x.MenuProduct.HasExtras,
                 }).FirstOrDefault();
+
+            if (model is null)
+            {
+                throw new Exception();
+            }
+
+            return model;
         }
 
         public ExtraSize GetExtraSize(int index)

@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
+    using Tapas.Web.ViewModels.Extras;
     using Tapas.Web.ViewModels.ShopingCartItems;
 
     public class ShopingCartViewModel
@@ -20,9 +21,8 @@
 
         public decimal PackegesPrice { get; set; }
 
-        public decimal TotalPrice => this.ShopingItems.Sum(x => x.ItemPrice) + this.PackegesPrice + this.DeliveryFee;
-
-        public decimal DeliveryFee { get; set; }
+        public decimal TotalPrice => this.ShopingItems.Sum(x => x.ItemPrice)
+                                   + this.PackegesPrice;
 
         public List<ShopingItemsViewModel> ShopingItems { get; set; }
     }

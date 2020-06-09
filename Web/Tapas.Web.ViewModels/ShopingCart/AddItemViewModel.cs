@@ -10,6 +10,7 @@
     {
         public DetailsProductAddItemVM Product { get; set; }
 
+        [RequiredBg]
         public string ShopingCartId { get; set; }
 
         [RequiredBg]

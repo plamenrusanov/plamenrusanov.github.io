@@ -5,43 +5,44 @@
 }
 <div id="maxProducts" style="opacity:0; width:0px; height:0px;">@Model.MaxProductsInPackage</div>
 <input type="hidden" class="form-control" name="Product.Sizes[0].SizeId" value="@Model.SizeId" />
-<div class="col-50 row">
-    <h4 style="width:50%;">@Html.Label("Цена")</h4>
-    <h4 id="productPrice">@Model.Price лв.</h4>
-</div>
-<div class="col-50 row">
-    <h4 style="width:50%;">@Html.Label("Тегло")</h4>
-    <h4>@Model.Weight гр.</h4>
-</div>
-<div class="col-50 row form-group ">
-    <h4 style="width:50%;">@Html.Label("Количество")</h4>
-    <div>
-        @*<a id="minus" class="btn" onclick="minus()">◀</a>*@
-        <div id="minus1" onclick="minus()"><i class="btn material-icons" style="font-size:45px; padding:0; ">chevron_left</i></div>
-        <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Количество" value="1" min="1" step="1">
-        <div id="minus1" onclick="plus()"><i class="btn material-icons" style="font-size:45px; padding:0;">chevron_right</i></div>
-        @*<a id="plus" class="btn" onclick="plus()">▶</a>*@
+
+<div class="col-md-6">
+    <div class="row">
+        <h4 style="width:50%;">@Html.Label("Тегло")</h4>
+        <h4>@Model.Weight гр.</h4>
+    </div>
+    <div class="row">
+        <h4 style="width:50%;">@Html.Label("Опаковка")</h4>
+        <h4 id="packagePrice">@Model.PackagePrice лв.</h4>
+    </div>
+    <div class="row">
+        <h4 style="width:50%;">@Html.Label("Цена")</h4>
+        <h4 id="productPrice">@Model.Price лв.</h4>
+    </div>
+    <div class="row form-group ">
+        <h4 style="width:50%;">@Html.Label("Количество")</h4>
+        <div class="flex">
+            <div id="minus" onclick="minus()"><i class="btn material-icons minus">chevron_left</i></div>
+            <div class="flex"><input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Количество" value="1" min="1" step="1"></div>
+            <div id="plus" onclick="plus()"><i class="btn material-icons plus">chevron_right</i></div>
+        </div>
+    </div>
+    <div class="row">
+        <h4 style="width:50%;">@Html.Label("Междинна сума")</h4>
+        <h4 id="subTotal">@Model.SubTotal лв.</h4>
     </div>
 </div>
-<div class="col-50 row">
-    <h4 style="width:50%;">@Html.Label("Опаковка")</h4>
-    <h4 id="packagePrice">@Model.PackagePrice лв.</h4>
+<div class="col-md-6">
+    <div class="row form-group">
+        <small>@Html.Label("Уточнения")</small>
+        @Html.TextArea("Description", "", 2, 20, new { @class = "form-control" })
+    </div>
 </div>
 
 
-<div class="col-50 row">
-    <h4 style="width:50%;">@Html.Label("Междинна сума")</h4>
-    <h4 id="subTotal">@Model.SubTotal лв.</h4>
-</div>
-<div class="col-50 form-group">
-    <small>@Html.Label("Уточнения")</small>
-    @Html.TextArea("Description", "", 2, 20, new { @class = "form-control" })
-</div>
-<div class="row" style="width:100%;">
-    <div class="text-center" style="width:50%;">
-        <a class="btn btn-primary btn-lg" href="/Administration/Products/">Меню</a>
-    </div>
-    <div class="form-group text-center" style="width:50%;">
-        <button type="submit" class="btn btn-primary btn-lg">Добави</button>
-    </div>
-</div>
+
+
+
+
+
+

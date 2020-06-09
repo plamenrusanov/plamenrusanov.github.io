@@ -56,6 +56,7 @@
             {
                 var user = await this.userManager.GetUserAsync(this.User);
                 var model = this.cartService.GetShopingModel(productId);
+                model.ShopingCartId = user.ShopingCart.Id;
                 return this.View(model);
             }
             catch (Exception e)
@@ -72,20 +73,20 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(nameof(this.AddItem), model: model.Product.Id);
+                return this.View(viewName: nameof(this.AddItem), model: model.Product.Id);
             }
 
             try
             {
-                var user = await this.userManager.GetUserAsync(this.User);
-                model.ShopingCartId = user.ShopingCartId;
+                //var user = await this.userManager.GetUserAsync(this.User);
+                //model.ShopingCartId = user.ShopingCartId;
                 await this.cartService.AddItemAsync(model);
                 return this.RedirectToAction("Index");
             }
             catch (Exception e)
             {
                 this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User.Identity.Name, e.Message, e.StackTrace);
-                return this.View();
+                return this.BadRequest();
             }
         }
 

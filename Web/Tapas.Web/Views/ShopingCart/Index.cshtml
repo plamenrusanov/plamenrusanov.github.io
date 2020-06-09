@@ -23,17 +23,20 @@ else
                     <th class="col-md-3">
                         @Html.DisplayName("Продукт")
                     </th>
-                    <th class="col-md-2">
-                        @Html.DisplayName("Количество")
+                    <th class="col-md-1">
+                        @Html.DisplayName("Кол")
                     </th>
                     <th class="col-md-2">
+                        @Html.DisplayName("Добавки")
+                    </th>
+                    <th class="col-md-1">
                         @Html.DisplayName("Цена")
                     </th>
                     <th class="col-md-2">
                         @Html.DisplayName("Изискване")
                     </th>
                     <th class="col-md-2">
-                        @Html.DisplayName("Actions")
+                        @Html.DisplayName("Изтрий")
                     </th>
                 </tr>
             </thead>
@@ -41,16 +44,30 @@ else
                 @foreach (var item in Model.ShopingItems)
                 {
                     <tr class="row">
-                        <td class="col-md-1">
+                        <td class="col-md-1" width="45">
                             <tda>@(i++)</tda>
                         </td>
                         <td class="col-md-3" id="name@(item.Id)">
-                            <tda>@Html.DisplayFor(x => item.ProductName)</tda>
+                            <h5><tda>@Html.DisplayFor(x => item.ProductName)</tda></h5>
+                            @if (item.Size.SizeName != null)
+                            {
+                                <tda>@item.Size.SizeName</tda>
+                            }
+
                         </td>
-                        <td class="col-md-2">
+                        <td class="col-md-1">
                             <tda>@Html.DisplayFor(x => item.Quantity)</tda>
                         </td>
                         <td class="col-md-2">
+                            @foreach (var extra in item.Extras)
+                            {
+                                <div class="row">
+                                    <div style="width: 60%;">@extra.Name</div>
+                                    <div>@extra.Quantity</div>
+                                </div>
+                            }
+                        </td>
+                        <td class="col-md-1">
                             <tda>@Html.DisplayFor(x => item.ItemPrice)</tda>
                         </td>
                         <td class="col-md-2">
@@ -68,30 +85,30 @@ else
         </table>
     </div>
     <div class="row">
-        <h5 style="width:80%;">Опаковки</h5>
+        <h5 style="width:70%;">Опаковки</h5>
         <h5>@Model.PackegesPrice лв.</h5>
     </div>
     @if (Model.TotalPrice < GlobalConstants.MOPTCDF && Model.TotalPrice >= GlobalConstants.OrderPriceMin)
     {
-<div class="row">
-    <h5 style="width:80%;">Ще ви бъде начислена сума за доставка!</h5>
-    <a class="btn btn-secondary btn-sm" onclick="displayDeliveryTax()" style="color:white">Доставка</a>
-    <button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
-</div>
+        <div class="row">
+            <h5 style="width:80%;">Ще ви бъде начислена сума за доставка!</h5>
+            <a class="btn btn-secondary btn-sm" onclick="displayDeliveryTax()" style="color:white">Доставка</a>
+            <button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
+        </div>
     }
     <hr class="hr-tapas" />
     <div class="row">
         @if (Model.TotalPrice < GlobalConstants.OrderPriceMin)
         {
-        <p>&#8270; Минимална сума на поръчка @(GlobalConstants.OrderPriceMin.ToString("F0")) лева.</p>
+            <p>&#8270; Минимална сума на поръчка @(GlobalConstants.OrderPriceMin.ToString("F0")) лева.</p>
         }
         else if (Model.TotalPrice < GlobalConstants.MOPTCDF)
         {
-    <p>&#8270; Поръчка под @(GlobalConstants.MOPTCDF.ToString("F0")) лева заплаща доставка!</p>
+            <p>&#8270; Поръчка под @(GlobalConstants.MOPTCDF.ToString("F0")) лева заплаща доставка!</p>
         }
         else if (Model.TotalPrice < GlobalConstants.OrderPriceForBonus)
         {
-    <p>&#8270; Поръчка над @(GlobalConstants.OrderPriceForBonus.ToString("F0")) лева получава подарък!</p>
+            <p>&#8270; Поръчка над @(GlobalConstants.OrderPriceForBonus.ToString("F0")) лева получава подарък!</p>
         }
     </div>
     <div class="row">
@@ -159,10 +176,10 @@ else
                 </button>
             </div>
             <div class="modal-body">
-                
-               - 1 лев : Чародейка-Юг<br />
-               - 2 лева : за града<br />
-               - 4 лева : Източна Промишлена Зона, Западна Промишлена Зона, Долапи, Средна Кула<br />
+
+                - 1 лев : Чародейка-Юг<br />
+                - 2 лева : за града<br />
+                - 4 лева : Източна Промишлена Зона, Западна Промишлена Зона, Долапи, Средна Кула<br />
 
             </div>
             <div class="modal-footer">

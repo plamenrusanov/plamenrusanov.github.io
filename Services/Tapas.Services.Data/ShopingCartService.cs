@@ -11,6 +11,7 @@
     using Tapas.Web.ViewModels.Administration.Allergens;
     using Tapas.Web.ViewModels.Administration.Products;
     using Tapas.Web.ViewModels.Administration.Sizes;
+    using Tapas.Web.ViewModels.Extras;
     using Tapas.Web.ViewModels.ShopingCart;
     using Tapas.Web.ViewModels.ShopingCartItems;
 
@@ -62,6 +63,14 @@
                 ProductId = product.Id,
                 Quantity = model.Quantity,
                 Description = model.Description,
+                ExtraItems = model
+                    .Extras
+                    ?.Where(x => x.Quantity != 0)
+                    .Select(x => new ExtraItem()
+                    {
+                        ExtraId = x.Id,
+                        Quantity = x.Quantity,
+                    }).ToList(),
             });
             await this.cartRepository.SaveChangesAsync();
         }
@@ -99,8 +108,26 @@
                         ProductName = c.Product.Name,
                         ProductPrice = c.Size.Price,
                         Quantity = c.Quantity,
+                        Extras = c.ExtraItems
+                                    .Select(e => new ExtraCartItemModel()
+                                    {
+                                        Id = e.Extra.Id,
+                                        Name = e.Extra.Name,
+                                        Price = e.Extra.Price,
+                                        Quantity = e.Quantity,
+                                        Weight = e.Extra.Weight,
+                                    }).ToList(),
+                        Size = new ProductSizeViewModel()
+                        {
+                            SizeName = this.sizeRepository
+                                           .All()
+                                           .Where(s => s.MenuProductId == c.ProductId)
+                                           .Count() > 1 ? c.Size.SizeName : null,
+                        },
                     }).ToList(),
-                    PackegesPrice = x.CartItems.Sum(c => Math.Ceiling((decimal)c.Quantity / c.Size.MaxProductsInPackage) * c.Size.Package.Price),
+                    PackegesPrice = x.CartItems
+                                     .Sum(c => Math.Ceiling((decimal)c.Quantity / c.Size.MaxProductsInPackage)
+                                     * c.Size.Package.Price),
                 }).FirstOrDefault();
 
             if (model is null)
