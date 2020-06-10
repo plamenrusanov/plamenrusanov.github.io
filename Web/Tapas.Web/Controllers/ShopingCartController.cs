@@ -78,8 +78,8 @@
 
             try
             {
-                //var user = await this.userManager.GetUserAsync(this.User);
-                //model.ShopingCartId = user.ShopingCartId;
+                // var user = await this.userManager.GetUserAsync(this.User);
+                // model.ShopingCartId = user.ShopingCartId;
                 await this.cartService.AddItemAsync(model);
                 return this.RedirectToAction("Index");
             }

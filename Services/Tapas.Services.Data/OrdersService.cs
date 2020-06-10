@@ -10,6 +10,8 @@
     using Tapas.Data.Models.Enums;
     using Tapas.Services.Data.Contracts;
     using Tapas.Web.ViewModels.Addreses;
+    using Tapas.Web.ViewModels.Administration.Sizes;
+    using Tapas.Web.ViewModels.Extras;
     using Tapas.Web.ViewModels.Orders;
     using Tapas.Web.ViewModels.ShopingCartItems;
 
@@ -18,15 +20,18 @@
         private readonly IRepository<Order> ordersRepository;
         private readonly IDeletableEntityRepository<ShopingCart> cartRepository;
         private readonly IDeletableEntityRepository<ShopingCartItem> itemsRepository;
+        private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
 
         public OrdersService(
             IRepository<Order> ordersRepository,
             IDeletableEntityRepository<ShopingCart> cartRepository,
-            IDeletableEntityRepository<ShopingCartItem> itemsRepository)
+            IDeletableEntityRepository<ShopingCartItem> itemsRepository,
+            IDeletableEntityRepository<ProductSize> sizeRepository)
         {
             this.ordersRepository = ordersRepository;
             this.cartRepository = cartRepository;
             this.itemsRepository = itemsRepository;
+            this.sizeRepository = sizeRepository;
         }
 
         public async Task<string> ChangeStatusAsync(string status, string orderId, string setTime)
@@ -188,13 +193,28 @@
                     .All()
                     .Where(x => x.Id == user.ShopingCart.Id)
                     .FirstOrDefault()
-                    .CartItems
+                    ?.CartItems
                     .Select(x => new ShopingItemsViewModel()
                     {
                         ProductId = x.ProductId,
                         ProductName = x.Product.Name,
                         ProductPrice = x.Size.Price,
                         Quantity = x.Quantity,
+                        Description = x.Description,
+                        Extras = x.ExtraItems
+                                  ?.Select(e => new ExtraCartItemModel()
+                                  {
+                                      Name = e.Extra.Name,
+                                      Price = e.Extra.Price,
+                                      Quantity = e.Quantity,
+                                  }).ToList(),
+                        Size = new ProductSizeViewModel()
+                        {
+                            SizeName = this.sizeRepository
+                                           .All()
+                                           .Where(s => s.MenuProductId == x.ProductId)
+                                           .Count() > 1 ? x.Size.SizeName : null,
+                        },
                     }).ToList(),
                 PackegesPrice = this.itemsRepository
                     .All()
@@ -207,35 +227,7 @@
             return model;
         }
 
-        // ???
-        public OrderDetailsViewModel GetUpdate()
-        {
-            return this.ordersRepository.All()
-                .Where(x => x.Status == OrderStatus.Unprocessed)
-                .Select(x => new OrderDetailsViewModel()
-                {
-                    AddInfo = x.AddInfo,
-                    AddressInfo = x.Address.AddInfo,
-                    CartItems = x.Bag.CartItems.Select(c => new ShopingItemsViewModel()
-                    {
-                        ProductName = c.Product.Name,
-                        Quantity = c.Quantity,
-                    }).ToList(),
-                    CreatedOn = x.CreatedOn.ToLocalTime().ToString("HH:mm:ss"),
-                    DisplayAddress = x.Address.DisplayName,
-                    OrderId = x.Id,
-                    Status = x.Status,
-                    UserPhone = x.User.PhoneNumber,
-                    UserUserName = x.User.UserName,
-                }).FirstOrDefault();
-        }
-
         public bool IsExists(int id) => this.ordersRepository.All().Any(x => x.Id == id);
-
-        public bool IsThereNew()
-        {
-            return this.ordersRepository.All().Any(x => x.Status == OrderStatus.Unprocessed);
-        }
 
         // Orders/All
         public ICollection<OrderCollectionViewModel> GetAll()
@@ -281,17 +273,6 @@
                 }).Take(10).ToList();
         }
 
-        // ???
-        public OrderStatus CheckStatus(int orderId)
-        {
-            if (!this.IsExists(orderId))
-            {
-                throw new ArgumentException("Order not exist!");
-            }
-
-            return this.ordersRepository.All().Where(x => x.Id == orderId).FirstOrDefault().Status;
-       }
-
         // /Orders/UserOrders/UserOrderDetails
         public UserOrderDetailsViewModel GetUserDetailsById(int id)
         {
@@ -329,18 +310,5 @@
 
             return model;
         }
-
-        // ???
-        //
-        // public string GetUserIdByOrderId(string orderId)
-        // {
-        //    int id;
-        //    if (int.TryParse(orderId, out id))
-        //    {
-        //        return this.ordersRepository.All().Where(x => x.Id == id).FirstOrDefault()?.UserId;
-        //    }
-        //
-        //    throw new ArgumentException();
-        // }
     }
 }

@@ -9,8 +9,6 @@
 
     public interface IOrdersService
     {
-        bool IsThereNew();
-
         OrderInpitModel GetOrderInputModel(ApplicationUser user);
 
         ICollection<OrdersViewModel> GetDailyOrders();
@@ -21,8 +19,6 @@
 
         bool IsExists(int id);
 
-        OrderDetailsViewModel GetUpdate();
-
         Task<string> ChangeStatusAsync(string status, string orderId, string setTime);
 
         ICollection<OrderCollectionViewModel> GetAll();
@@ -31,10 +27,6 @@
 
         ICollection<UserOrderViewModel> GetMyOrders(ApplicationUser user);
 
-        OrderStatus CheckStatus(int orderId);
-
         UserOrderDetailsViewModel GetUserDetailsById(int id);
-
-        // string GetUserIdByOrderId(string orderId);
     }
 }

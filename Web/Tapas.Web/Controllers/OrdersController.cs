@@ -60,9 +60,10 @@
 
                 return this.View(model);
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                return this.BadRequest();
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User?.Identity.Name, e.Message, e.StackTrace);
+                return this.NotFound();
             }
         }
 
@@ -73,7 +74,7 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.RedirectToAction("Create");
+                return this.View(viewName: nameof(this.Create));
             }
 
             try
@@ -83,8 +84,9 @@
                 await this.hubAdmin.Clients.All.SendAsync("OperatorNewOrder", id);
                 return this.Redirect("/Orders/UserOrders");
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User?.Identity.Name, e.Message, e.StackTrace);
                 return this.BadRequest();
             }
         }
@@ -111,8 +113,9 @@
                 var model = this.ordersService.GetDetailsById(id);
                 return this.View(model);
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User?.Identity.Name, e.Message, e.StackTrace);
                 return this.NotFound();
             }
         }
@@ -140,8 +143,9 @@
                 var model = this.ordersService.GetOrdersByUserName(userName);
                 return this.View(model);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User?.Identity.Name, e.Message, e.StackTrace);
                 return this.BadRequest();
             }
         }
@@ -161,8 +165,9 @@
                 var model = this.ordersService.GetMyOrders(user);
                 return this.View(model);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User?.Identity.Name, e.Message, e.StackTrace);
                 return this.NotFound();
             }
         }
@@ -188,13 +193,15 @@
                 var model = this.ordersService.GetUserDetailsById(id);
                 return this.View(model);
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User?.Identity.Name, e.Message, e.StackTrace);
                 return this.NotFound();
             }
         }
 
         // Ajax Orders/OrdersByUser
+        [Authorize(Roles =GlobalConstants.AdministratorName)]
         public async Task<IActionResult> ChangeStatus(string orderId, string status)
         {
             try
@@ -205,7 +212,7 @@
             }
             catch (Exception e)
             {
-                this.logger.LogInformation(e.Message, e.StackTrace);
+                this.logger.LogInformation(GlobalConstants.DefaultLogPattern, this.User?.Identity.Name, e.Message, e.StackTrace);
                 return this.BadRequest();
             }
         }

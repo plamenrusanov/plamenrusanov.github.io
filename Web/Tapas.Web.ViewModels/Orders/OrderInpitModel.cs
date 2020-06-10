@@ -19,7 +19,7 @@
 
         public string ApplicationUserId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Полето Адрес е задължително!")]
         public string AddressId { get; set; }
 
         public decimal PackegesPrice { get; set; }

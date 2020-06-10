@@ -7,116 +7,139 @@
 
 <h1 class="text-center">Оформи поръчка</h1>
 <hr class="hr-tapas" />
-<div class="row">
-    <div class="p-1 col-md-6">
-        <div class="bg-light" style=" border-radius:5px;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th style="width:10%;">
-                            #
-                        </th>
-                        <th style="width:50%">
-                            @Html.Label("Продукт")
-                        </th>
-                        <th style="width:20%">
-                            @Html.Label("Количество")
-                        </th>
-                        <th style="width:20%">
-                            @Html.Label("Цена")
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.CartItems)
-                    {
-                        <tr>
-                            <td style="width:10%;">
-                                @(i++)
-                            </td>
-                            <td style="width:50%;">
-                                @Html.DisplayFor(x => item.ProductName)
-                            </td>
-                            <td style="width:20%;">
-                                @Html.DisplayFor(x => item.Quantity)
-                            </td>
-                            <td style="width:20%;">
-                                @Html.DisplayFor(x => item.ItemPrice)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="row  m-0">
-            <p class="text-dark" style="width:70%;">Опаковки</p>
-            <p class="text-dark" style="width:30%;">@Model.PackegesPrice.ToString("F2") лева</p>
-        </div>
-        <div class="row m-0">
-            @if (Model.OrderPrice < GlobalConstants.MOPTCDF)
-            {
-                <p>&#8270; Поръчка под @(GlobalConstants.MOPTCDF.ToString("F0")) лева заплаща доставка!</p>
-            }
-            else if (Model.OrderPrice < GlobalConstants.OrderPriceForBonus)
-            {
-                <p>&#8270; Поръчка над @(GlobalConstants.OrderPriceForBonus.ToString("F0")) лева получава подарък!</p>
-            }
-        </div>
-        <div class="row m-0">
-            <h3 style="width:70%;">@Html.Label("Общо за поръчката:")</h3><h3 style="width:30%;"> @Html.DisplayFor(x => x.OrderPrice) лева</h3>
-        </div>
 
-    </div>
-    <div class="col-md-6">
-        @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
+<table class="table bg-light">
+    <thead>
+        <tr class="row">
+            <th class="col-md-1">
+                #
+            </th>
+            <th class="col-md-3">
+                @Html.DisplayName("Продукт")
+            </th>
+            <th class="col-md-1">
+                @Html.DisplayName("Кол")
+            </th>
+            <th class="col-md-3">
+                @Html.DisplayName("Добавки")
+            </th>
+            <th class="col-md-1">
+                @Html.DisplayName("Цена")
+            </th>
+            <th class="col-md-3">
+                @Html.DisplayName("Изискване")
+            </th>>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
         {
-            @Html.AntiForgeryToken();
-            @Html.ValidationSummary(true);
+            <tr class="row">
+                <td class="col-md-1">
+                    <tda>@(i++)</tda>
+                </td>
+                <td class="col-md-3" id="name@(item.Id)">
+                    <h5><tda>@Html.DisplayFor(x => item.ProductName)</tda></h5>
+                    @if (item.Size.SizeName != null)
+                    {
+                        <tda>@item.Size.SizeName</tda>
+                    }
 
-            <div class="row m-0 form-group">
-                <div class="col-md-9 pl-0 pr-0">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
-                <a class="btn btn-primary col-md-3 pl-0 pr-0" href="/Addreses/Create">Добави адрес</a>
-            </div>
-            <div class="row mt-3 ml-0 mr-0">Допълнителна информация</div>
-            <div class="row m-0 form-group ">@Html.TextAreaFor(x => x.AddInfo, 3, 30, new { @class = "form-control" })</div>
-            @*<div class="row m-0">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" name="@Model.DelayedDelivery" />
-                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-            <div class="row mt-3 m-0"><button class="btn btn-primary" type="submit">Изпрати поръчка</button></div>
-
+                </td>
+                <td class="col-md-1">
+                    <tda>@Html.DisplayFor(x => item.Quantity)</tda>
+                </td>
+                <td class="col-md-3">
+                    @foreach (var extra in item.Extras)
+                    {
+                        <tda class="row ml-0 ex-row">
+                            <div style="width: 60%">@extra.Name</div>
+                            <div>@extra.Quantity</div>
+                        </tda>
+                    }
+                </td>
+                <td class="col-md-1">
+                    <tda>@Html.DisplayFor(x => item.ItemPrice)</tda>
+                </td>
+                <td class="col-md-3">
+                    <tda>
+                        @Html.DisplayFor(x => item.Description)
+                    </tda>
+                </td>
+            </tr>
         }
+    </tbody>
+</table>
+<div class="row w-100">
+    <h5 style="width:70%;">Опаковки</h5>
+    <h5>@Model.PackegesPrice лв.</h5>
+</div>
+
+<div class="row w-100">
+    <h4 style="width:70%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.OrderPrice) лв.</h4>
+</div>
+<hr class="hr-tapas" />
+@if (Model.OrderPrice < GlobalConstants.MOPTCDF && Model.OrderPrice >= GlobalConstants.OrderPriceMin)
+{
+    <div class="row w-100">
+        <h5 style="width:70%;">Ще ви бъде начислена сума за доставка!</h5>
+        <a class="btn btn-secondary btn-sm" onclick="displayDeliveryTax()" style="color:white; height:fit-content;">Доставка</a>
+        <button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
+    </div>
+    <hr class="hr-tapas" />
+}
+<div id="form">
+    @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken();
+        @Html.ValidationSummary(true);
+
+    <div class="row m-0 form-group">
+        <span asp-validation-for="AddressId" class="text-danger"></span>
+        <div class="col-md-9 pl-0 pr-0 mt-2">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
+
+        <div class="col-md-3 pl-0 pr-0 mt-2"><a class="btn btn-primary w-100" href="/Addreses/Create">Добави адрес</a></div>
+    </div>
+        <div class="row mt-3 ml-0 mr-0">Допълнителна информация</div>
+        <div class="row m-0 form-group ">@Html.TextAreaFor(x => x.AddInfo, 3, 30, new { @class = "form-control" })</div>
+        <div class="row mt-3 m-0"><button class="btn btn-primary btn-lg w-100" type="submit" style="margin: 0 auto">Изпрати поръчка</button></div>
+
+    }
+</div>
+
+<div class="modal fade" id="deliveryTax" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveryModalTitle" style="color:black">Цени за доставка</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                - 1 лев : Чародейка-Юг<br />
+                - 2 лева : за града<br />
+                - 4 лева : Източна Промишлена Зона, Западна Промишлена Зона, Долапи, Средна Кула<br />
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" data-dismiss="modal" id="closeModal">Затвори</a>
+            </div>
+        </div>
     </div>
 </div>
-@*@section Style{
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+@section Style{
+    <link href="~/css/orders/orderTable.css" rel="stylesheet" />
 }
 
 @section Scripts{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
-    <script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker2').datetimepicker({
-                icons: {
-                    time: "fa fa-clock-o",
-                    date: "fa fa-calendar",
-                    up: "fa fa-arrow-up",
-                    down: "fa fa-arrow-down"
-                }
-
-            });
-        });
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+    <script>
+        function displayDeliveryTax() {
+            var el = document.getElementById(`btnDeliveryTax`);
+            el.click();
+        }
     </script>
 
-}*@
+}

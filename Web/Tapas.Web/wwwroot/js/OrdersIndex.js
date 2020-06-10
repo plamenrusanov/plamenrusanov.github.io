@@ -4,11 +4,18 @@ $(document).ready(function () {
     for (var i = 0; i < x.length; i++) {
         if (x[i].className === "btn btn-danger btn-lg order-li") {
             x[i].click();
+            var al = document.getElementById('alertt');
+            al.hidden = false;
+            var alContent = document.getElementById('alert-content');
+            alContent.innerHTML = `Има неприета поръчка!`;
             playMusic();
         }
     }
 });
-function playMusic() { var audio = document.getElementById('audio'); audio.play(); };
+function playMusic() {
+    var audio = document.getElementById('audio');
+        audio.play();
+};
 function stopMusic() { var audio = document.getElementById('audio'); audio.currentTime = 0; audio.pause(); };
 
 var connection = null;
@@ -19,6 +26,10 @@ setupConnection = () => {
         insertOrder(id);
         if (document.getElementById(`li${id}`)) {
             document.getElementById(`li${id}`).click();
+            var al = document.getElementById('alertt');
+            al.hidden = false;
+            var alContent = document.getElementById('alert-content');
+            alContent.innerHTML = `Има неприета поръчка!`;
             playMusic()
         }
     });

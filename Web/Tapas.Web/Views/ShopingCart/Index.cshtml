@@ -61,10 +61,10 @@ else
                         <td class="col-md-2">
                             @foreach (var extra in item.Extras)
                             {
-                                <div class="row">
+                                <tda class="row ml-0">
                                     <div style="width: 60%;">@extra.Name</div>
                                     <div>@extra.Quantity</div>
-                                </div>
+                                </tda>
                             }
                         </td>
                         <td class="col-md-1">
@@ -88,35 +88,38 @@ else
         <h5 style="width:70%;">Опаковки</h5>
         <h5>@Model.PackegesPrice лв.</h5>
     </div>
-    @if (Model.TotalPrice < GlobalConstants.MOPTCDF && Model.TotalPrice >= GlobalConstants.OrderPriceMin)
-    {
-        <div class="row">
-            <h5 style="width:80%;">Ще ви бъде начислена сума за доставка!</h5>
-            <a class="btn btn-secondary btn-sm" onclick="displayDeliveryTax()" style="color:white">Доставка</a>
-            <button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
-        </div>
-    }
-    <hr class="hr-tapas" />
-    <div class="row">
-        @if (Model.TotalPrice < GlobalConstants.OrderPriceMin)
-        {
-            <p>&#8270; Минимална сума на поръчка @(GlobalConstants.OrderPriceMin.ToString("F0")) лева.</p>
-        }
-        else if (Model.TotalPrice < GlobalConstants.MOPTCDF)
-        {
-            <p>&#8270; Поръчка под @(GlobalConstants.MOPTCDF.ToString("F0")) лева заплаща доставка!</p>
-        }
-        else if (Model.TotalPrice < GlobalConstants.OrderPriceForBonus)
-        {
-            <p>&#8270; Поръчка над @(GlobalConstants.OrderPriceForBonus.ToString("F0")) лева получава подарък!</p>
-        }
-    </div>
+
+
+    @*<div class="row">
+            @if (Model.TotalPrice < GlobalConstants.OrderPriceMin)
+            {
+                <p>&#8270; Минимална сума на поръчка @(GlobalConstants.OrderPriceMin.ToString("F0")) лева.</p>
+            }
+            else if (Model.TotalPrice < GlobalConstants.MOPTCDF)
+            {
+                <p>&#8270; Поръчка под @(GlobalConstants.MOPTCDF.ToString("F0")) лева заплаща доставка!</p>
+            }
+            else if (Model.TotalPrice < GlobalConstants.OrderPriceForBonus)
+            {
+                <p>&#8270; Поръчка над @(GlobalConstants.OrderPriceForBonus.ToString("F0")) лева получава подарък!</p>
+            }
+        </div>*@
     <div class="row">
         <h4 style="width:70%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.TotalPrice) лв.</h4>
     </div>
+    <hr class="hr-tapas" />
+    @if (Model.TotalPrice < GlobalConstants.MOPTCDF && Model.TotalPrice >= GlobalConstants.OrderPriceMin)
+    {
+        <div class="row mt-2">
+            <h5 style="width:70%;">Ще ви бъде начислена сума за доставка!</h5>
+            <a class="btn btn-secondary btn-sm" onclick="displayDeliveryTax()" style="color:white; height: fit-content;">Доставка</a>
+            <button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
+        </div>
+        <hr class="hr-tapas" />
+    }
 }
 
-<hr class="hr-tapas" />
+
 <div class="row">
     <div class="col-50 text-center">
         <a class="btn btn-primary btn-lg" href="/Administration/Products/">Към менюто</a>
