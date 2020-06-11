@@ -26,8 +26,6 @@
 
         public decimal PackagesPrice { get; set; }
 
-        public decimal DeliveryFee { get; set; }
-
         public decimal TotalPrice { get; set; }
 
         public List<ShopingItemsViewModel> CartItems { get; set; }

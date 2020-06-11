@@ -17,12 +17,6 @@
     margin: 0;
 }
 
-@media only screen and (max-width: 768px) {
-    .col-50 {
-        width: 100%;
-    }
-}
-
 #minus, #plus {
     display: inline-block;
     cursor: pointer;
@@ -34,6 +28,8 @@
     font-size: 2rem;
     padding-bottom: 7px;
 }
+
+
 
     #minus:hover, #plus:hover, .up:hover, .down:hover {
         background-color: rgba(0, 123, 255,0.5);
@@ -54,7 +50,8 @@
     background-color: #eee;
     color: #444;
     cursor: pointer;
-    padding: 18px;
+    padding: 8px 20px;
+    height: 50px;
     width: 100%;
     border: none;
     text-align: left;
@@ -97,4 +94,26 @@
 .ePadding {
     padding: 5px;
     border-top: 1px solid grey;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .col-50 {
+        width: 100%;
+    }
+
+    .plus, .minus {
+        margin-top: -14px;
+        font-size: 35px;
+    }
+
+    #theInput {
+        height: 35px;
+        width: 35px;
+        padding: 0px 8px;
+    }
+
+    #plus, #minus {
+        width: 35px;
+    }
 }

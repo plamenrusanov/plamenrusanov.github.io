@@ -6,21 +6,21 @@
 <div id="maxProducts" style="opacity:0; width:0px; height:0px;">@Model.MaxProductsInPackage</div>
 <input type="hidden" class="form-control" name="Product.Sizes[0].SizeId" value="@Model.SizeId" />
 
-<div class="col-md-6">
+<div class="col-md-6 pl-0 pr-0" style="max-width:100%">
     <div class="row">
-        <h4 style="width:50%;">@Html.Label("Тегло")</h4>
+        <h4 style="width:65%;">@Html.Label("Тегло")</h4>
         <h4>@Model.Weight гр.</h4>
     </div>
     <div class="row">
-        <h4 style="width:50%;">@Html.Label("Опаковка")</h4>
+        <h4 style="width:65%;">@Html.Label("Опаковка")</h4>
         <h4 id="packagePrice">@Model.PackagePrice лв.</h4>
     </div>
     <div class="row">
-        <h4 style="width:50%;">@Html.Label("Цена")</h4>
+        <h4 style="width:65%;">@Html.Label("Цена")</h4>
         <h4 id="productPrice">@Model.Price лв.</h4>
     </div>
     <div class="row form-group ">
-        <h4 style="width:50%;">@Html.Label("Количество")</h4>
+        <h4 style="width:60%;">@Html.Label("Количество")</h4>
         <div class="flex">
             <div id="minus" onclick="minus()"><i class="btn material-icons minus">chevron_left</i></div>
             <div class="flex"><input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Количество" value="1" min="1" step="1"></div>
@@ -28,14 +28,8 @@
         </div>
     </div>
     <div class="row">
-        <h4 style="width:50%;">@Html.Label("Междинна сума")</h4>
+        <h4 style="width:65%;">@Html.Label("Междинна сума")</h4>
         <h4 id="subTotal">@Model.SubTotal лв.</h4>
-    </div>
-</div>
-<div class="col-md-6">
-    <div class="row form-group">
-        <small>@Html.Label("Уточнения")</small>
-        @Html.TextArea("Description", "", 2, 20, new { @class = "form-control" })
     </div>
 </div>
 

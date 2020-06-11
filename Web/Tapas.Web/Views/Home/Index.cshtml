@@ -9,16 +9,16 @@
 <nav class="white" role="navigation">
 
     <div class="nav-wrapper">
-        <div class=" container">
+        <div class=" container-custom">
             <ul class="left"><li><a href="/" class="b-l"></a></li></ul>
-            <ul class="left hide-on-med-and-down">
+            <ul class="left hide-on-small-and-down">
                 <li><a href="/Administration/Products">Меню</a></li>
                 <li><a href="/Administration/CateringFood/">Кетъринг</a></li>
                 <li><a href="/Orders/UserOrders">Моите поръчки</a></li>
                 <li><a asp-area="" asp-controller="ShopingCart" asp-action="Index" style="font-size:2rem;">🛒</a></li>
             </ul>
 
-            <ul class="right hide-on-med-and-down">
+            <ul class="right hide-on-small-and-down">
                 @if (this.SignInManager.IsSignedIn(this.User))
                 {
                     <li class="nav-item">
@@ -31,6 +31,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
                         </li>
+                    }
+                    else if (this.User.IsInRole(GlobalConstants.OperatorName))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index" title="Orders">Поръчки</a>
+                        </li>
+
                     }
                     <li class="nav-item">
                         <a asp-area="Identity" asp-page="/Account/Logout" class="nav-link text-dark">Logout</a>
@@ -46,9 +53,8 @@
                     </li>
                 }
             </ul>
+            <a href="#" data-target="nav-mobile" class="dropdown-btn right"><i id="menu-icon" class="material-icons">menu</i></a>
         </div>
-        <a href="#" data-target="nav-mobile" class="dropdown-btn right"><i id="menu-icon" class="material-icons">menu</i></a>
-
     </div>
 </nav>
 <div class="dropdown-container">
@@ -75,6 +81,12 @@
             <div class="dropdown-item"> <a asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a></div>
 
         }
+        else if (this.User.IsInRole(GlobalConstants.OperatorName))
+        {
+            <div class="dropdown-item">
+                <a asp-area="" asp-controller="Orders" asp-action="Index">Поръчки</a>
+            </div> 
+         }
         <div class="dropdown-item"><a asp-area="Identity" asp-page="/Account/Logout">Logout</a></div>
 
     }
@@ -133,7 +145,7 @@ else if (DateTime.Now.TimeOfDay < GlobalConstants.CloseTime && DateTime.Now.Time
         <!--   Icon Section   -->
         <div class="row">
 
-            <div class="col s12 m4">
+            <div class="col s12 m6">
                 <a href="/Administration/CateringFood/">
                     <div class="icon-block">
 
@@ -147,7 +159,7 @@ else if (DateTime.Now.TimeOfDay < GlobalConstants.CloseTime && DateTime.Now.Time
                 </a>
             </div>
 
-            <div class="col s12 m4">
+            <div class="col s12 m6">
                 <a href="/Administration/CateringEquipment/">
                     <div class="icon-block">
                         <h2 class="center brown-text"><i class="material-icons">group</i></h2>
@@ -158,14 +170,14 @@ else if (DateTime.Now.TimeOfDay < GlobalConstants.CloseTime && DateTime.Now.Time
                 </a>
             </div>
 
-            <div class="col s12 m4">
+            @*<div class="col s12 m4">
                 <div class="icon-block">
                     <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
                     <h5 class="center">Easy to work with</h5>
 
                     <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
                 </div>
-            </div>
+            </div>*@
         </div>
 
     </div>

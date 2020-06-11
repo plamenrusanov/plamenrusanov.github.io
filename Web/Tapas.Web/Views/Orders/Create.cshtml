@@ -28,7 +28,7 @@
             </th>
             <th class="col-md-3">
                 @Html.DisplayName("Изискване")
-            </th>>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -53,8 +53,7 @@
                     @foreach (var extra in item.Extras)
                     {
                         <tda class="row ml-0 ex-row">
-                            <div style="width: 60%">@extra.Name</div>
-                            <div>@extra.Quantity</div>
+                            <div>@extra.Quantity бр. @extra.Name</div>
                         </tda>
                     }
                 </td>
@@ -62,7 +61,7 @@
                     <tda>@Html.DisplayFor(x => item.ItemPrice)</tda>
                 </td>
                 <td class="col-md-3">
-                    <tda>
+                    <tda style="word-wrap: break-word">
                         @Html.DisplayFor(x => item.Description)
                     </tda>
                 </td>
@@ -94,12 +93,12 @@
         @Html.AntiForgeryToken();
         @Html.ValidationSummary(true);
 
-    <div class="row m-0 form-group">
-        <span asp-validation-for="AddressId" class="text-danger"></span>
-        <div class="col-md-9 pl-0 pr-0 mt-2">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
+        <div class="row m-0 form-group">
+            <span asp-validation-for="AddressId" class="text-danger"></span>
+            <div class="col-md-9 pl-0 pr-0 mt-2">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
 
-        <div class="col-md-3 pl-0 pr-0 mt-2"><a class="btn btn-primary w-100" href="/Addreses/Create">Добави адрес</a></div>
-    </div>
+            <div class="col-md-3 pl-0 pr-0 mt-2"><a class="btn btn-primary w-100" href="/Addreses/Create">Добави адрес</a></div>
+        </div>
         <div class="row mt-3 ml-0 mr-0">Допълнителна информация</div>
         <div class="row m-0 form-group ">@Html.TextAreaFor(x => x.AddInfo, 3, 30, new { @class = "form-control" })</div>
         <div class="row mt-3 m-0"><button class="btn btn-primary btn-lg w-100" type="submit" style="margin: 0 auto">Изпрати поръчка</button></div>

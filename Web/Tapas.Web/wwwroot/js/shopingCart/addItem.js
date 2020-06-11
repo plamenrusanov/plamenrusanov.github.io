@@ -9,7 +9,13 @@ function GetModel(sizeId) {
     $.ajax({
         url: `/Administration/Sizes/GetSizeModel?sizeId=${sizeId}`,
         success: function (response) {
-            document.getElementById("detailSection").innerHTML = response;
+            var e = document.getElementById("chooseSize");
+            e.style.display = "none";
+            var d = document.getElementById("detailSection");
+            d.innerHTML = response;
+            d.className = "col-md-6 p-0";
+            var c = document.getElementById("desc");
+            c.style.display = "block";
             var b = document.getElementById("submitSection");
             b.style.display = "flex";
             var a = document.getElementById("sectionExtras");

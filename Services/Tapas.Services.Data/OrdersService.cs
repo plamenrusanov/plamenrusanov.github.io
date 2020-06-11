@@ -140,12 +140,25 @@
                         ProductPrice = x.Size.Price,
                         Quantity = x.Quantity,
                         Description = x.Description,
+                        Extras = x.ExtraItems
+                                  ?.Select(e => new ExtraCartItemModel()
+                                  {
+                                      Name = e.Extra.Name,
+                                      Price = e.Extra.Price,
+                                      Quantity = e.Quantity,
+                                  }).ToList(),
+                        Size = new ProductSizeViewModel()
+                        {
+                            SizeName = this.sizeRepository
+                                           .All()
+                                           .Where(s => s.MenuProductId == x.ProductId)
+                                           .Count() > 1 ? x.Size.SizeName : null,
+                        },
                     }).ToList(),
                 Status = order.Status,
                 PackagesPrice = order.Bag.CartItems.Sum(x => (decimal)Math.Ceiling((double)x.Size.MaxProductsInPackage / x.Quantity) * x.Size.Package.Price),
-                DeliveryFee = order.DeliveryFee,
             };
-            model.TotalPrice = model.CartItems.Sum(x => x.ItemPrice) + model.PackagesPrice + model.DeliveryFee;
+            model.TotalPrice = model.CartItems.Sum(x => x.ItemPrice) + model.PackagesPrice;
 
             if (model.Status != OrderStatus.Unprocessed)
             {
@@ -158,8 +171,8 @@
         // Orders/Index
         public ICollection<OrdersViewModel> GetDailyOrders()
         {
-            return this.ordersRepository.All()
-                .Where(x => x.CreatedOn.Date == DateTime.UtcNow.Date)
+            return this.ordersRepository.All().AsEnumerable()
+                .Where(x => x.CreatedOn.ToLocalTime().Date == DateTime.Now.Date)
                 .OrderByDescending(x => x.Id)
                 .Select(x => new OrdersViewModel()
                 {
@@ -295,10 +308,23 @@
                         ProductPrice = x.Size.Price,
                         Quantity = x.Quantity,
                         Description = x.Description,
+                        Size = new ProductSizeViewModel()
+                        {
+                            SizeName = this.sizeRepository
+                                           .All()
+                                           .Where(s => s.MenuProductId == x.ProductId)
+                                           .Count() > 1 ? x.Size.SizeName : null,
+                        },
+                        Extras = x.ExtraItems
+                                  ?.Select(e => new ExtraCartItemModel()
+                                  {
+                                      Name = e.Extra.Name,
+                                      Price = e.Extra.Price,
+                                      Quantity = e.Quantity,
+                                  }).ToList(),
                     }).ToList(),
                 Status = order.Status,
                 PackagesPrice = order.Bag.CartItems.Sum(x => (decimal)Math.Ceiling((double)x.Size.MaxProductsInPackage / x.Quantity) * x.Size.Package.Price),
-                DeliveryFee = order.DeliveryFee,
             };
 
             model.TotalPrice = model.CartItems.Sum(x => x.ItemPrice) + model.DeliveryFee + model.PackagesPrice;

@@ -72,6 +72,11 @@
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create(OrderInpitModel model)
         {
+            if (DateTime.Now.TimeOfDay > GlobalConstants.CloseTime || DateTime.Now.TimeOfDay < GlobalConstants.OpenTime)
+            {
+                return this.Redirect("/");
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(viewName: nameof(this.Create));

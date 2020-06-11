@@ -5,7 +5,7 @@ $(document).ready(function () {
         if (x[i].className === "btn btn-danger btn-lg order-li") {
             x[i].click();
             var al = document.getElementById('alertt');
-            al.hidden = false;
+            al.style.display = "block";
             var alContent = document.getElementById('alert-content');
             alContent.innerHTML = `Има неприета поръчка!`;
             playMusic();
@@ -27,10 +27,10 @@ setupConnection = () => {
         if (document.getElementById(`li${id}`)) {
             document.getElementById(`li${id}`).click();
             var al = document.getElementById('alertt');
-            al.hidden = false;
+            al.style.display = "block";
             var alContent = document.getElementById('alert-content');
             alContent.innerHTML = `Има неприета поръчка!`;
-            playMusic()
+            playMusic();
         }
     });
 
@@ -49,17 +49,18 @@ setupConnection = () => {
             li.className = "btn btn-info btn-lg";
         }
         orderDetails(order);
-        stopMusic();
+        closeAlert();
+       
     });
 
     connection.on("OperatorSetAlarm", function (order) {
         if (document.getElementById(`li${order}`).className == "btn btn-warning btn-lg") {
-            document.getElementById(`li${order}`).click();
-            playMusic();
+            document.getElementById(`li${order}`).click();         
             var al = document.getElementById('alertt');
-            al.hidden = false;
+            al.style.display = "block";
             var alContent = document.getElementById('alert-content');
             alContent.innerHTML = `Поръчка номер ${order} трябва да пътува!`;
+            playMusic();
         }
     });
 
@@ -70,7 +71,20 @@ setupConnection = () => {
 
 setupConnection();
 
-function insertOrder(id) { var li = document.createElement("li"); li.className = "btn btn-danger btn-lg"; li.setAttribute("onclick", `orderDetails(${id})`); li.id = `li${id}`; li.style.width = "100%"; var h5 = document.createElement("h5"); h5.textContent = `Поръчка: ${id}`; li.appendChild(h5); var list = document.getElementById("listOrders"); list.insertBefore(li, list.childNodes[0]); };
+function con () {
+    if (connection.connectionState === "Disconnected") {
+        var al = document.getElementById('alertt');
+        al.style.display = "block";
+        var alContent = document.getElementById('alert-content');
+        alContent.innerHTML = `Няма връзка със сървъра!`;
+        playMusic();
+        setupConnection();
+    }
+}  
+
+setInterval(con, 10000);
+
+function insertOrder(id) { var li = document.createElement("li"); li.className = "btn btn-danger btn-lg"; li.setAttribute("onclick", `orderDetails(${id})`); li.id = `li${id}`; li.style.width = "100%"; li.style.marginBottom = "2px"; var h5 = document.createElement("h5"); h5.textContent = `Поръчка: ${id}`; li.appendChild(h5); var list = document.getElementById("listOrders"); list.insertBefore(li, list.childNodes[0]); };
 
 function cStatus(status, order, setTime) { connection.invoke("OperatorChangeStatus", status, order, setTime); };
 
@@ -110,6 +124,12 @@ function plus() {
 function displayDeliveryTax() {
     var el = document.getElementById(`btnDeliveryTax`);
     el.click();
+}
+
+function closeAlert() {
+    var al = document.getElementById('alertt');
+    al.style.display = "none";
+    stopMusic();
 }
 
 

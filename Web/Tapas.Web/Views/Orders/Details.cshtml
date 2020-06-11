@@ -77,79 +77,86 @@
     </div>
     <div class="col-md-6">
         <div>
-            <span>Допълнителна информация за адреса.</span><br/>
+            <span>Допълнителна информация за адреса.</span><br />
             <h6>@Html.DisplayFor(x => x.AddressInfo)</h6>
         </div>
         <div>
-            <span>Допълнителна информация за поръчката.</span><br/>
-           <h6>@Html.DisplayFor(x => x.AddInfo)</h6>
+            <span>Допълнителна информация за поръчката.</span><br />
+            <h6>@Html.DisplayFor(x => x.AddInfo)</h6>
         </div>
     </div>
 </div>
 <hr />
-<div class="bg-light">
-    <table class="table">
-        <thead>
-            <tr class="row">
-                <th class="col-md-1">
-                    #
-                </th>
-                <th class="col-md-3">
-                    @Html.Label("Продукт")
-                </th>
-                <th class="col-md-2">
-                    @Html.Label("Количество")
-                </th>
-                <th class="col-md-2">
-                    @Html.Label("Цена")
-                </th>
-                <th class="col-md-4">
-                    @Html.Label("Изисквания")
-                </th>
 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.CartItems)
-            {
-                <tr class="row">
-                    <td class="col-md-1">
-                        @(i++)
-                    </td>
-                    <td class="col-md-3">
-                        @Html.DisplayFor(x => item.ProductName)
-                    </td>
-                    <td class="col-md-2">
-                        @Html.DisplayFor(x => item.Quantity)
-                    </td>
-                    <td class="col-md-2">
-                        @Html.DisplayFor(x => item.ItemPrice)
-                    </td>
-                    <td class="col-md-4">
+<table class="table bg-light">
+    <thead>
+        <tr class="row">
+            <th class="col-md-1">
+                №
+            </th>
+            <th class="col-md-3">
+                @Html.DisplayName("Продукт")
+            </th>
+            <th class="col-md-1">
+                @Html.DisplayName("Кол")
+            </th>
+            <th class="col-md-3">
+                @Html.DisplayName("Добавки")
+            </th>
+            <th class="col-md-1">
+                @Html.DisplayName("Цена")
+            </th>
+            <th class="col-md-3">
+                @Html.DisplayName("Изискване")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr class="row">
+                <td class="col-md-1">
+                    <tda>@(i++)</tda>
+                </td>
+                <td class="col-md-3" id="name@(item.Id)">
+                    <h5><tda>@Html.DisplayFor(x => item.ProductName)</tda></h5>
+                    @if (item.Size.SizeName != null)
+                    {
+                        <tda>@item.Size.SizeName</tda>
+                    }
+
+                </td>
+                <td class="col-md-1">
+                    <tda>@Html.DisplayFor(x => item.Quantity)</tda>
+                </td>
+                <td class="col-md-3">
+                    @foreach (var extra in item.Extras)
+                    {
+                        <tda class="row ml-0 ex-row">
+                            <div>@extra.Quantity бр. @extra.Name</div>
+                        </tda>
+                    }
+                </td>
+                <td class="col-md-1">
+                    <tda>@Html.DisplayFor(x => item.ItemPrice)</tda>
+                </td>
+                <td class="col-md-3">
+                    <tda style="word-wrap: break-word">
                         @Html.DisplayFor(x => item.Description)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <hr class="hr-tapas" />
-    <div class="row">
-        <h5 style="width:80%;">Опаковки</h5>
-        <h5>@Model.PackagesPrice</h5>
-    </div>
-    <hr/>
-    @if (Model.TotalPrice >= GlobalConstants.OrderPriceMin && Model.TotalPrice < GlobalConstants.MOPTCDF)
-    {
-        <div class="row">
-            <h5 style="width:80%;">Ще ви бъде начислена сума за доставка!</h5>
-            <a class="btn btn-secondary btn-sm" onclick="displayDeliveryTax()" style="color:white">Доставка</a>
-            <button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
-        </div>
-        <hr />
-    }
-    <div class="row">
-        <h4 style="width:80%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.TotalPrice) лв.</h4>
-    </div>
+                    </tda>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr class="hr-tapas" />
+<div class="row w-100">
+    <h5 style="width:70%;">Опаковки</h5>
+    <h5>@Model.PackagesPrice лв.</h5>
+</div>
+
+<div class="row w-100">
+    <h4 style="width:70%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.TotalPrice) лв.</h4>
 </div>
 <div class="modal fade" id="deliveryTax" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

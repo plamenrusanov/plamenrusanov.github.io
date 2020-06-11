@@ -26,7 +26,7 @@ namespace Tapas.Common
 
         public const string RefererHeader = "Referer";
 
-        public const decimal DeliveryFee = 2.00m;
+        public const int DescriptionMaxLength = 150;
 
         public const decimal OrderPriceMin = 10m;
 

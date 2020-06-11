@@ -73,7 +73,7 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(viewName: nameof(this.AddItem), model: model.Product.Id);
+                return this.View(viewName: nameof(this.AddItem), model: model);
             }
 
             try
@@ -154,6 +154,11 @@
 
         public async Task<string> SetDescription(int id, string message)
         {
+            if (message != null && message.Length > GlobalConstants.DescriptionMaxLength)
+            {
+                return string.Empty;
+            }
+
             try
             {
                 await this.cartService.SetDescriptionAsync(id, message);

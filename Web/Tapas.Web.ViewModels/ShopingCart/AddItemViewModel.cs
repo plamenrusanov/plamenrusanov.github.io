@@ -17,7 +17,7 @@
         [Range(1, 10)]
         public int Quantity { get; set; }
 
-        [StringLength(maximumLength: 150)]
+        [MaxLength(150, ErrorMessage = "Максимум 150 символа!")]
         public string Description { get; set; }
 
         public List<ExtraCartItemModel> Extras { get; set; }

@@ -18,7 +18,7 @@ else
             <thead>
                 <tr class="row">
                     <th class="col-md-1">
-                        #
+                        №
                     </th>
                     <th class="col-md-3">
                         @Html.DisplayName("Продукт")
@@ -62,8 +62,7 @@ else
                             @foreach (var extra in item.Extras)
                             {
                                 <tda class="row ml-0">
-                                    <div style="width: 60%;">@extra.Name</div>
-                                    <div>@extra.Quantity</div>
+                                    <div>@extra.Quantity бр. @extra.Name</div>
                                 </tda>
                             }
                         </td>
@@ -157,7 +156,8 @@ else
                     <div class="form-group">
                         <span>Добави описание</span>
                         <div id="sciId" hidden></div>
-                        <textarea class="form-control" id="message-text"></textarea>
+                        <textarea class="form-control" id="message-text" maxlength="150"></textarea>
+                        <p id="message"></p>
                     </div>
                 </form>
             </div>
