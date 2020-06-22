@@ -18,8 +18,11 @@ function GetModel(sizeId) {
             c.style.display = "block";
             var b = document.getElementById("submitSection");
             b.style.display = "flex";
-            var a = document.getElementById("sectionExtras");
-            a.style.display = "block";
+            if (document.getElementById("sectionExtras")) {
+                var a = document.getElementById("sectionExtras");
+                a.style.display = "block";
+            }
+          
         }
     });
 }

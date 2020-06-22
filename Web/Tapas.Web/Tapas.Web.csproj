@@ -35,6 +35,8 @@
 
   <ItemGroup>
     <Content Remove="Views\Addreses\Add.cshtml" />
+    <Content Remove="wwwroot\js\Parallax.js" />
+    <Content Remove="wwwroot\js\Waves.js" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
@@ -131,6 +133,9 @@
     <Content Update="Areas\Administration\Views\Sizes\Add.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="C:\Users\user\.nuget\packages\bootstrap\4.5.0\contentFiles\any\any\wwwroot\js\bootstrap.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Views\Orders\Details.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -164,10 +169,10 @@
     <Content Update="wwwroot\Images\sharp_person_black_48dp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\OrdersIndex.js">
+    <Content Update="wwwroot\js\orders\ordersIndex.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\UserOrders.js">
+    <Content Update="wwwroot\js\orders\userOrders.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

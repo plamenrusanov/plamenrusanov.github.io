@@ -10,6 +10,9 @@ div.card-body{
     background-image: url("https://res.cloudinary.com/duxtyuzpy/image/upload/f_auto/v1587386469/bg-list-orders.jpg");
     margin-top: 3px;
 }
+    .btn.btn-default.list-group-item:active {
+        color: #007BFF;
+    }
 
 .card-item {
     color: whitesmoke;

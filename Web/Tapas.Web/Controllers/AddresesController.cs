@@ -14,7 +14,7 @@
     using Tapas.Web.ViewModels.Addreses;
 
     [Authorize]
-    public class AddresesController : Controller
+    public class AddresesController : BaseController
     {
         private readonly IAddresesService addresesService;
         private readonly UserManager<ApplicationUser> userManager;
@@ -78,50 +78,6 @@
             await this.addresesService.CreateAddressAsync(user, model);
 
             return this.Redirect("/Orders/Create");
-        }
-
-        // GET: Addreses/Edit/5
-        public ActionResult AddCopy()
-        {
-            return this.View();
-        }
-
-        // POST: Addreses/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-                return this.RedirectToAction(nameof(this.Index));
-            }
-            catch
-            {
-                return this.View();
-            }
-        }
-
-        // GET: Addreses/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return this.View();
-        }
-
-        // POST: Addreses/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-                return this.RedirectToAction(nameof(this.Index));
-            }
-            catch
-            {
-                return this.View();
-            }
         }
     }
 }

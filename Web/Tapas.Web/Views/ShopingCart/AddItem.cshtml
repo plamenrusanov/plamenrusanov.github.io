@@ -143,10 +143,10 @@
                                     {
                                         <div class="flex ePadding">
                                             <input type="hidden" class="form-control" name="Extras[@i].Id" value="@Model.Extras[i].Id" />
-                                            <span>@Model.Extras[i].Name</span>
-                                            <span id="price@(Model.Extras[i].Id)">@Model.Extras[i].Price лв.</span>
-                                            <span> @Model.Extras[i].Weight гр.</span>
-                                            <div class="flex">
+                                            <span style="width:40%">@Model.Extras[i].Name</span>
+                                            <span id="price@(Model.Extras[i].Id)" style="width:20%">@Model.Extras[i].Price лв.</span>
+                                            <span style="width:20%"> @Model.Extras[i].Weight гр.</span>
+                                            <div class="flex" style="width:20%; min-width:90px">
                                                 <div onclick="down(@Model.Extras[i].Id)"><i class="btn material-icons down" style="font-size:30px; padding:0; ">chevron_left</i></div>
                                                 <input name="Extras[@i].Quantity" id="quantity@(Model.Extras[i].Id)" type="text" size="3" class="form-control qtyExtra" title="Количество" value="0" min="0" max="5" step="1">
                                                 <div onclick="up(@Model.Extras[i].Id)"><i class="btn material-icons up" style="font-size:30px; padding:0;">chevron_right</i></div>
