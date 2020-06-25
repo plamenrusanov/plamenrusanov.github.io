@@ -2,11 +2,11 @@
     white-space: normal;
     text-align: center;
     word-break: break-all;
-    margin-left:10px;
+    margin-left: 10px;
 }
 
-.navbar-toggler-icon{
-    margin:8px 10px;
+.navbar-toggler-icon {
+    margin: 8px 10px;
 }
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -37,7 +37,7 @@ button.accept-policy {
     line-height: inherit;
 }
 
-#closed{
+#closed {
     text-align: center;
     font-size: 30px;
     height: 65px;
@@ -50,14 +50,16 @@ html {
     min-height: 100%;
 }
 
-.navbar{
-    padding:0;
+.navbar {
+    padding: 0;
 }
+
 #logout {
     padding: 17px 14px 18px 14px;
     font-size: 18px;
     border-radius: 0;
 }
+
     #logout:hover {
         background-color: rgba(0, 0, 0, 0.1);
     }
@@ -213,6 +215,6 @@ h1 {
     margin: 0;
 }
 
-    footer {
-        background-color: white;
-    }
+footer {
+    background-color: white;
+}

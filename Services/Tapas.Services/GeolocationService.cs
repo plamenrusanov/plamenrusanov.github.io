@@ -8,7 +8,7 @@
 
     using Newtonsoft.Json;
     using Tapas.Services.Contracts;
-    using Tapas.Services.Dto;
+    using Tapas.Services.Dto.Geolocation;
 
     public class GeolocationService : IGeolocationService
     {

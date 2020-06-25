@@ -53,14 +53,14 @@
 
             return new AddressInputModel()
             {
-                DisplayName = positionDto.display_name,
-                Latitude = positionDto.lat,
-                Longitude = positionDto.lon,
-                City = positionDto.Address.city,
-                Borough = positionDto.Address.suburb,
-                Street = positionDto.Address.road,
-                StreetNumber = positionDto.Address.house_number,
-                Block = positionDto.Address.address29,
+                DisplayName = positionDto.DisplayName,
+                Latitude = positionDto.Latitude,
+                Longitude = positionDto.Longitude,
+                City = positionDto.Address.City,
+                Borough = positionDto.Address.Suburb,
+                Street = positionDto.Address.Road,
+                StreetNumber = positionDto.Address.HouseNumber,
+                Block = positionDto.Address.Address29,
             };
         }
 

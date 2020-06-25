@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    using Tapas.Services.Dto;
+    using Tapas.Services.Dto.Geolocation;
 
     public interface IGeolocationService
     {

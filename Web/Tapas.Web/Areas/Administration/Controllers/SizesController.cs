@@ -1,8 +1,9 @@
 ﻿namespace Tapas.Web.Areas.Administration.Controllers
 {
+    using System.Linq;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
     using Tapas.Services.Data.Contracts;
 
     public class SizesController : AdministrationController
@@ -48,9 +49,7 @@
                 return this.NotFound();
             }
 
-            int id = default;
-
-            if (!int.TryParse(sizeId, out id))
+            if (!int.TryParse(sizeId, out int id))
             {
                 return this.NotFound();
             }
