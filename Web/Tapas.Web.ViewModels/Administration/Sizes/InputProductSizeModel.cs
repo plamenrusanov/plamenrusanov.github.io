@@ -23,5 +23,11 @@
         [Required]
         [Range(1, 100)]
         public int MaxProductsInPackage { get; set; }
+
+        [Required]
+        public string MistralName { get; set; }
+
+        [Required]
+        public int MistralCode { get; set; }
     }
 }

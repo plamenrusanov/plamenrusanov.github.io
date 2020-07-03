@@ -83,53 +83,60 @@
     <ul id="list">
         @for (int i = 0; i < Model.Sizes.Count; i++)
         {
-            <li class="row form-row" style="border-bottom:1px, solid, black" id="li@(i)">
-                @Html.HiddenFor(x => Model.Sizes[i].SizeId, new { id = $"Sizes[{i}].SizeId" })
-                <div class="col-md-6">
-                    <div class="row form-group row-group">
-                        <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].SizeName, $"Име на размер {i + 1}", new { @class = "control-label" })</h4>
-                        @Html.EditorFor(x => Model.Sizes[i].SizeName, ViewData["Title"].ToString(), $"Sizes[{i}].SizeName", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
-                        <span asp-validation-for="@Model.Sizes[i].SizeName" class="text-danger"></span>
-                    </div>
+        <li class="row form-row" style="border-bottom:1px, solid, black" id="li@(i)">
+            @Html.EditorFor(x => Model.Sizes[i].MistralCode, $"Sizes[{i}].MistralCode", $"Sizes[{i}].MistralCode", new { htmlAttributes = new { @hidden = true } })
+            @Html.EditorFor(x => Model.Sizes[i].MistralName, $"Sizes[{i}].MistralName", $"Sizes[{i}].MistralName", new { htmlAttributes = new { @hidden = true } })
+            @Html.EditorFor(x => Model.Sizes[i].Price, $"Sizes[{i}].Price", $"Sizes[{i}].Price", new { htmlAttributes = new { @hidden = true } })
+            <div><span asp-validation-for="@Model.Sizes[i].MistralCode" class="text-danger"></span></div>
+            <div><span asp-validation-for="@Model.Sizes[i].MistralName" class="text-danger"></span></div>
+            @Html.HiddenFor(x => Model.Sizes[i].SizeId, new { id = $"Sizes[{i}].SizeId" })
+            <div class="col-md-6">
+                <div class="row form-group row-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].SizeName, $"Име на размер {i + 1}", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].SizeName, ViewData["Title"].ToString(), $"Sizes[{i}].SizeName", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                    <span asp-validation-for="@Model.Sizes[i].SizeName" class="text-danger"></span>
                 </div>
-                <div class="col-md-6">
-                    <div class=" row form-group row-group">
-                        <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Price, "Цена", new { @class = "control-label" })</h4>
-                        @Html.EditorFor(x => Model.Sizes[i].Price, "Edit", $"Sizes[{i}].Price", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
-                        <span asp-validation-for="@Model.Sizes[i].Price" class="text-danger"></span>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class=" row form-group row-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Price, "Цена", new { @class = "control-label" })</h4>
+                    <div class = "col-md-6 form-control" id="Price2@(i)">@Model.Sizes[i].Price</div>
+                    <span asp-validation-for="@Model.Sizes[i].Price" class="text-danger"></span>
                 </div>
-                <div class="col-md-6">
-                    <div class=" row form-group row-group">
-                        <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Weight, "Грамаж", new { @class = "control-label" })</h4>
-                        @Html.EditorFor(x => Model.Sizes[i].Weight, ViewData["Title"].ToString(), $"Sizes[{i}].Weight", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
-                        <span asp-validation-for="@Model.Sizes[i].Weight" class="text-danger"></span>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class=" row form-group row-group">
+                    <h4 class="col-md-6">@Html.LabelFor(x => Model.Sizes[i].Weight, "Грамаж", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].Weight, ViewData["Title"].ToString(), $"Sizes[{i}].Weight", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
+                    <span asp-validation-for="@Model.Sizes[i].Weight" class="text-danger"></span>
                 </div>
-                <div class="col-md-6">
-                    <div class="row form-group row-group">
-                        <h4 class="col-md-6"> @Html.LabelFor(x => Model.Sizes[i].PackageId, "Опаковка", new { @class = "control-label" })</h4>
-                        <select class="col-md-6 form-control" asp-for="Sizes[i].PackageId">
-                            @foreach (var package in Model.AvailablePackages)
-                            {
-                                <option value="@package.Id">@package.Name</option>
-                            }
-                        </select>
+            </div>
+            <div class="col-md-6">
+                <div class="row form-group row-group">
+                    <h4 class="col-md-6"> @Html.LabelFor(x => Model.Sizes[i].PackageId, "Опаковка", new { @class = "control-label" })</h4>
+                    <select class="col-md-6 form-control" asp-for="Sizes[i].PackageId">
+                        @foreach (var package in Model.AvailablePackages)
+                        {
+                            <option value="@package.Id">@package.Name</option>
+                        }
+                    </select>
 
-                    </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="row form-group row-group">
-                        <h4 class="col-md-10"> @Html.LabelFor(x => Model.Sizes[i].MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
-                        @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, ViewData["Title"].ToString(), $"Sizes[{i}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value = 1 } })
-                        <span asp-validation-for="@Model.Sizes[i].MaxProductsInPackage" class="text-danger"></span>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row form-group row-group">
+                    <h4 class="col-md-10"> @Html.LabelFor(x => Model.Sizes[i].MaxProductsInPackage, "Максимален брой продукти в опаковка", new { @class = "control-label" })</h4>
+                    @Html.EditorFor(x => Model.Sizes[i].MaxProductsInPackage, ViewData["Title"].ToString(), $"Sizes[{i}].MaxProductsInPackage", new { htmlAttributes = new { @class = "col-md-2 form-control", @value = 1 } })
+                    <span asp-validation-for="@Model.Sizes[i].MaxProductsInPackage" class="text-danger"></span>
                 </div>
-                <div class="col-md-6 justify-content-center">
-                    <div onclick="Remove(@Model.Sizes[i].SizeId, @i)" class="remove-button">Премахни</div>
-                </div>
-                <hr class="hr-tapas" />
-            </li>
+            </div>
+            <div class="col-md-6 justify-content-center">
+                <input class="mt-2" id="getMProduct@(i)" />
+                <div class="btn" onclick="getProduct(@i)" style="background-image: url('../../Images/search.png'); width:33px; height:33px;"></div>
+                <div onclick="Remove(@Model.Sizes[i].SizeId, @i)" class="remove-button">Премахни</div>
+            </div>
+            <hr class="hr-tapas" />
+        </li>
 
         }
     </ul>
@@ -143,10 +150,30 @@
         </div>
     </div>
 </form>
-
+<button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
+<div class="modal fade" id="deliveryTax" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveryModalTitle" style="color:black">Избери мистрал продукт</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="listProducts">
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" data-dismiss="modal" id="closeModal">Затвори</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/js/menuProducts/editProduct.js" asp-append-version="true"></script>
+    <script src="~/js/menuProducts/add.js"></script>
 }
 
 

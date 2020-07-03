@@ -4,11 +4,14 @@
     Layout = null;
     var i = Model.Index;
 }
+@Html.EditorFor(x => Model.MistralCode, $"Sizes[{i}].MistralCode", $"Sizes[{i}].MistralCode", new { htmlAttributes = new { @hidden = true } })
+@Html.EditorFor(x => Model.MistralName, $"Sizes[{i}].MistralName", $"Sizes[{i}].MistralName", new { htmlAttributes = new { @hidden = true } })
+<div><span asp-validation-for="@Model.MistralCode" class="text-danger"></span></div>
+<div><span asp-validation-for="@Model.MistralName" class="text-danger"></span></div>
 @Html.Hidden($"Sizes[{i}].SizeId", Model.SizeId)
-@*@Html.HiddenFor(x => Model.SizeId, new { name = $"Sizes[{Model.Index}].SizeId" })*@
 <div class="col-md-6">
     <div class="row form-group row-group">
-        <h4 class="col-md-6">@Html.Label($"Име на размер {Model.Index + 1}")</h4>
+        <h4 class="col-md-6">@Html.Label($"Име на размер {i + 1}")</h4>
         @Html.EditorFor(x => Model.SizeName, "", $"Sizes[{Model.Index}].SizeName", new { htmlAttributes = new { @class = "col-md-6 form-control" } })
         <span asp-validation-for="@Model.SizeName" class="text-danger"></span>
     </div>
@@ -47,6 +50,8 @@
     </div>
 </div>
 <div class="col-md-6">
+    <input class="mt-2" id="getMProduct@(i)" />
+    <div class="btn" onclick="getProduct(@i)" style="background-image: url('../../Images/search.png'); width:33px; height:33px;"></div>
     <div onclick="Remove(0, @Model.Index)" class="remove-button">Премахни</div>
 </div>
 <hr class="hr-tapas" />

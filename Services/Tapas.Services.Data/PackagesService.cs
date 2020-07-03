@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -25,6 +26,8 @@
                {
                    Name = model.Name,
                    Price = model.Price,
+                   MistralCode = model.MistralCode,
+                   MistralName = model.MistralName,
                });
             await this.packageRepository.SaveChangesAsync();
         }
@@ -39,30 +42,21 @@
             }).ToList();
         }
 
-        public void Edit(PackageViewModel packageViewModel)
+        public async Task EditAsync(PackageViewModel packageViewModel)
         {
-            var package = this.packageRepository.All()
-                .Where(x => x.Id == packageViewModel.Id)
-                .FirstOrDefault();
+            var package = this.ExistPackageById(packageViewModel.Id);
+
             package.Name = packageViewModel.Name;
             package.Price = packageViewModel.Price;
-
-            this.packageRepository.SaveChanges();
-        }
-
-        public bool ExistPackageById(int packageId)
-        {
-            return this.packageRepository.All().Any(x => x.Id == packageId);
-        }
-
-        public bool ExistPackageByName(string packageName)
-        {
-            return this.packageRepository.All().Any(x => x.Name == packageName);
+            package.MistralCode = packageViewModel.MistralCode;
+            package.MistralName = packageViewModel.MistralName;
+            this.packageRepository.Update(package);
+            await this.packageRepository.SaveChangesAsync();
         }
 
         public PackageViewModel GetPackageViewModelById(int packageId)
         {
-            return this.packageRepository.All()
+            var model = this.packageRepository.All()
                .Where(x => x.Id == packageId)
                .Select(x => new PackageViewModel()
                {
@@ -71,17 +65,33 @@
                    Price = x.Price,
                })
                .FirstOrDefault();
+
+            if (model is null)
+            {
+                throw new ArgumentException();
+            }
+
+            return model;
         }
 
-        public void Remove(int packageId)
+        public async Task RemoveAsync(int packageId)
         {
-            var package = this.GetPackageById(packageId);
+            var package = this.ExistPackageById(packageId);
 
             this.packageRepository.Delete(package);
-            this.packageRepository.SaveChanges();
+            await this.packageRepository.SaveChangesAsync();
         }
 
-        private Package GetPackageById(int packageId)
-           => this.packageRepository.All().FirstOrDefault(x => x.Id == packageId);
+        private Package ExistPackageById(int packageId)
+        {
+            var package = this.packageRepository.All().FirstOrDefault(x => x.Id == packageId);
+
+            if (package is null)
+            {
+                throw new ArgumentException();
+            }
+
+            return package;
+        }
     }
 }

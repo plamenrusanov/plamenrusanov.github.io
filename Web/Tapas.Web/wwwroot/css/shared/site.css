@@ -40,7 +40,7 @@ button.accept-policy {
 #closed {
     text-align: center;
     font-size: 30px;
-    height: 65px;
+    height: 48px;
 }
 
 /* Sticky footer styles
@@ -113,6 +113,7 @@ ul li:hover {
 }
 
 .remove-button {
+    display: inline-block;
     height: 30px;
     width: 90px;
     background-color: red;

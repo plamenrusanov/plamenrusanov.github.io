@@ -1,6 +1,7 @@
 ﻿namespace Tapas.Data.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using Tapas.Data.Common.Models;
@@ -12,7 +13,11 @@
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Price { get; set; }
 
-        public int MaxProducts { get; set; }
+        [Required]
+        public int MistralCode { get; set; }
+
+        [Required]
+        public string MistralName { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

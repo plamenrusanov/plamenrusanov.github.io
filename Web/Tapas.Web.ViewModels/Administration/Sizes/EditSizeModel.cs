@@ -36,5 +36,11 @@
         public int? PackageId { get; set; }
 
         public List<PackageViewModel> Packages { get; set; }
+
+        [Required]
+        public string MistralName { get; set; }
+
+        [Required]
+        public int MistralCode { get; set; }
     }
 }

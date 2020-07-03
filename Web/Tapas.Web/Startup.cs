@@ -77,6 +77,8 @@
                 this.configuration.GetSection("CloudSettings:CloudName").Value,
                 this.configuration.GetSection("CloudSettings:ApiKey").Value,
                 this.configuration.GetSection("CloudSettings:ApiSecret").Value));
+            services.AddTransient<IMistralService>(x => new MistralService(
+                this.configuration.GetSection("Mistral:Password").Value));
 
             services.AddTransient<IAllergensService, AllergensService>();
             services.AddTransient<ICategoriesService, CategoriesService>();

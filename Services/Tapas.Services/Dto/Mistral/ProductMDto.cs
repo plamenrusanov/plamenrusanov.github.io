@@ -4,7 +4,7 @@
     {
         public string Code { get; set; }
 
-        public int Name { get; set; }
+        public string Name { get; set; }
 
         public string Mea { get; set; }
 

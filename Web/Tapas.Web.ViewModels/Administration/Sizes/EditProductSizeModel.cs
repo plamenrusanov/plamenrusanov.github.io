@@ -26,5 +26,11 @@
 
         [Required]
         public int? PackageId { get; set; }
+
+        [Required]
+        public string MistralName { get; set; }
+
+        [Required]
+        public int MistralCode { get; set; }
     }
 }

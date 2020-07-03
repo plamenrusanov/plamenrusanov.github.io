@@ -11,6 +11,11 @@
             <div class="list-group">
                 @foreach (var item in Model.Categories)
                 {
+                    if (this.ViewData["Title"].ToString() == item.Name)
+                    {
+                        <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="GetProductsByCategory" asp-route-categoryId="@item.Id" class="btn btn-default list-group-item"><h3 style="color:#007BFF">@item.Name</h3></a>
+                        continue;
+                    }
                     <a asp-area="@GlobalConstants.AreaAdmin" asp-controller="Products" asp-action="GetProductsByCategory" asp-route-categoryId="@item.Id" class="btn btn-default list-group-item"><h3>@item.Name</h3></a>
                 }
             </div>

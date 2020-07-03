@@ -7,18 +7,14 @@
 
     public interface IPackagesService
     {
-        bool ExistPackageByName(string packageName);
-
-        bool ExistPackageById(int packageId);
-
         Task AddAsync(PackageInputModel model);
 
         ICollection<PackageViewModel> All();
 
         PackageViewModel GetPackageViewModelById(int packageId);
 
-        void Edit(PackageViewModel packageViewModel);
+        Task EditAsync(PackageViewModel packageViewModel);
 
-        void Remove(int packageId);
+        Task RemoveAsync(int packageId);
     }
 }

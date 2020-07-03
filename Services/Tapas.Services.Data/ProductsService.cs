@@ -54,7 +54,6 @@
                    Id = x.Id,
                    Name = x.Name,
                    Price = x.Price,
-                   MaxProducts = x.MaxProducts,
                }).ToList();
 
         public async Task AddAsync(ProductInputViewModel model)
@@ -95,6 +94,8 @@
                       Weight = size.Weight,
                       MaxProductsInPackage = size.MaxProductsInPackage,
                       MenuProductId = product.Id,
+                      MistralCode = size.MistralCode,
+                      MistralName = size.MistralName,
                   });
             }
 
@@ -178,6 +179,8 @@
                     Weight = c.Weight,
                     PackageId = c.PackageId,
                     MaxProductsInPackage = c.MaxProductsInPackage,
+                    MistralCode = c.MistralCode,
+                    MistralName = c.MistralName,
                 }).ToList();
             return model;
         }
@@ -210,6 +213,8 @@
                         MaxProductsInPackage = size.MaxProductsInPackage,
                         PackageId = size.PackageId,
                         MenuProductId = product.Id,
+                        MistralCode = size.MistralCode,
+                        MistralName = size.MistralName,
                     });
                 }
                 else
@@ -226,6 +231,8 @@
                     s.MaxProductsInPackage = size.MaxProductsInPackage;
                     s.MenuProductId = product.Id;
                     s.PackageId = size.PackageId;
+                    s.MistralCode = size.MistralCode;
+                    s.MistralName = size.MistralName;
                 }
             }
 

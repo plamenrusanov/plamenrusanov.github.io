@@ -1,5 +1,6 @@
 ﻿namespace Tapas.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -11,7 +12,6 @@
     [Authorize(Roles = GlobalConstants.AdministratorName)]
     public class PackagesController : AdministrationController
     {
-        private const string PackageExist = "Package already exist.";
         private readonly IPackagesService packagesService;
 
         public PackagesController(IPackagesService packagesService)
@@ -26,8 +26,15 @@
                 return this.RedirectToPage("/Account/Login");
             }
 
-            var packages = this.packagesService.All();
-            return this.View(packages);
+            try
+            {
+                var packages = this.packagesService.All();
+                return this.View(packages);
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
+            }
         }
 
         public IActionResult Add()
@@ -43,75 +50,90 @@
                 return this.View(inputModel);
             }
 
-            if (this.packagesService.ExistPackageByName(inputModel.Name))
+            try
             {
-                this.ModelState.AddModelError(string.Empty, PackageExist);
-                return this.View();
+                await this.packagesService.AddAsync(inputModel);
+
+                return this.RedirectToAction("Index");
             }
-
-            await this.packagesService.AddAsync(inputModel);
-
-            return this.RedirectToAction("Index");
+            catch (Exception)
+            {
+                return this.NotFound();
+            }
         }
 
         public IActionResult Edit(int packageId)
         {
-            var package = this.packagesService.GetPackageViewModelById(packageId);
-            if (package == null)
+            try
+            {
+                var package = this.packagesService.GetPackageViewModelById(packageId);
+                return this.View(package);
+            }
+            catch (Exception)
             {
                 return this.NotFound();
             }
-
-            return this.View(package);
         }
 
         [HttpPost]
-        public IActionResult Edit(PackageViewModel viewModel)
+        public async Task<IActionResult> Edit(PackageViewModel viewModel)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(viewModel);
             }
 
-            this.packagesService.Edit(viewModel);
-
-            return this.RedirectToAction("Index");
+            try
+            {
+                await this.packagesService.EditAsync(viewModel);
+                return this.RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                return this.NotFound();
+            }
         }
 
         public IActionResult Details(int packageId)
         {
-            if (!this.packagesService.ExistPackageById(packageId))
+            try
+            {
+                var package = this.packagesService.GetPackageViewModelById(packageId);
+
+                return this.View(package);
+            }
+            catch (Exception)
             {
                 return this.NotFound();
             }
-
-            var package = this.packagesService.GetPackageViewModelById(packageId);
-
-            return this.View(package);
         }
 
         public IActionResult Delete(int packageId)
         {
-            if (!this.packagesService.ExistPackageById(packageId))
+            try
+            {
+                var package = this.packagesService.GetPackageViewModelById(packageId);
+
+                return this.View(package);
+            }
+            catch (Exception)
             {
                 return this.NotFound();
             }
-
-            var package = this.packagesService.GetPackageViewModelById(packageId);
-
-            return this.View(package);
         }
 
-        public IActionResult OnDelete(int packageId)
+        public async Task<IActionResult> OnDelete(int packageId)
         {
-            if (!this.packagesService.ExistPackageById(packageId))
+            try
+            {
+                await this.packagesService.RemoveAsync(packageId);
+
+                return this.RedirectToAction("Index");
+            }
+            catch (Exception)
             {
                 return this.NotFound();
             }
-
-            this.packagesService.Remove(packageId);
-
-            return this.RedirectToAction("Index");
         }
     }
 }

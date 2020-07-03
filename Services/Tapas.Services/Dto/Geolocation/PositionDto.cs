@@ -1,19 +1,19 @@
 ﻿namespace Tapas.Services.Dto.Geolocation
 {
-    using System.ComponentModel;
+    using Newtonsoft.Json;
 
     public class PositionDto
     {
-        [DisplayName("display_name")]
+        [JsonProperty("display_name")]
         public string DisplayName { get; set; }
 
-        [DisplayName("lat")]
+        [JsonProperty("lat")]
         public string Latitude { get; set; }
 
-        [DisplayName("lon")]
+        [JsonProperty("lon")]
         public string Longitude { get; set; }
 
-        [DisplayName("display_name")]
+        [JsonProperty("display_name")]
         public AddressDto Address { get; set; }
     }
 }
