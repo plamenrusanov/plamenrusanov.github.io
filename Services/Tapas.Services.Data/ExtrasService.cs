@@ -53,6 +53,8 @@
                 Name = model.Name,
                 Price = model.Price,
                 Weight = model.Weight,
+                MistralCode = model.MistralCode,
+                MistralName = model.MistralName,
             };
 
             await this.extrasRepository.AddAsync(extra);
@@ -76,6 +78,8 @@
                 Name = extras.Name,
                 Price = extras.Price,
                 Weight = extras.Weight,
+                MistralCode = extras.MistralCode,
+                MistralName = extras.MistralName,
             };
         }
 
@@ -85,6 +89,8 @@
             extra.Name = model.Name;
             extra.Price = model.Price;
             extra.Weight = model.Weight;
+            extra.MistralCode = model.MistralCode;
+            extra.MistralName = model.MistralName;
             this.extrasRepository.Update(extra);
             await this.extrasRepository.SaveChangesAsync();
         }

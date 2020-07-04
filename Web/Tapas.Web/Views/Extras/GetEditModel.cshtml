@@ -13,7 +13,12 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="Id" class="form-control" hidden/>
+            @Html.EditorFor(x => Model.MistralCode, "MistralCode", "MistralCode", new { htmlAttributes = new { @hidden = true } })
+            @Html.EditorFor(x => Model.MistralName, "MistralName", "MistralName", new { htmlAttributes = new { @hidden = true } })
+            @Html.EditorFor(x => Model.Price, "Price", "Price", new { htmlAttributes = new { @hidden = true } })
+            <div><span asp-validation-for="@Model.MistralCode" class="text-danger"></span></div>
+            <div><span asp-validation-for="@Model.MistralName" class="text-danger"></span></div>
+            <input asp-for="Id" class="form-control" hidden />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -21,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <div id="Price2" class="form-control">@Model.Price</div>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -29,14 +34,39 @@
                 <input asp-for="Weight" class="form-control" />
                 <span asp-validation-for="Weight" class="text-danger"></span>
             </div>
+            <div>
+                <input class="mt-2" id="getMProduct" />
+                <div class="btn" onclick="getProduct()" style="background-image: url('../../Images/search.png'); width:33px; height:33px;"></div>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Запази" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
+<button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
+<div class="modal fade" id="deliveryTax" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveryModalTitle" style="color:black">Избери мистрал продукт</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="listProducts">
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" data-dismiss="modal" id="closeModal">Затвори</a>
+            </div>
+        </div>
+    </div>
+</div>
 <div>
     <a asp-action="Index">Назад</a>
 </div>
-
+@section Scripts{
+    <script src="~/js/Packages/add.js"></script>
+}

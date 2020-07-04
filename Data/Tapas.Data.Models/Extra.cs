@@ -2,6 +2,7 @@
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using Tapas.Data.Common.Models;
@@ -14,6 +15,12 @@
         public decimal Price { get; set; }
 
         public int Weight { get; set; }
+
+        [Required]
+        public int MistralCode { get; set; }
+
+        [Required]
+        public string MistralName { get; set; }
 
         public virtual ICollection<ExtraItem> ExtraItems { get; set; }
     }

@@ -19,5 +19,11 @@
         [Range(minimum: 1, maximum: 1000)]
         [Display(Name = "Тегло  гр.")]
         public int Weight { get; set; }
+
+        [RequiredBg]
+        public int MistralCode { get; set; }
+
+        [RequiredBg]
+        public string MistralName { get; set; }
     }
 }
