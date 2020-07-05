@@ -19,7 +19,7 @@
 
         bool IsExists(int id);
 
-        Task<string> ChangeStatusAsync(string status, string orderId, string setTime);
+        Task<string> ChangeStatusAsync(string status, string orderId, string setTime, string deliveryFee);
 
         ICollection<OrderCollectionViewModel> GetAll();
 

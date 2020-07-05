@@ -28,6 +28,8 @@
 
         public decimal TotalPrice { get; set; }
 
+        public decimal DeliveryFee { get; set; }
+
         public List<ShopingItemsViewModel> CartItems { get; set; }
 
         public OrderStatus Status { get; set; }

@@ -26,6 +26,8 @@
 
         public decimal DeliveryFee { get; set; }
 
+        public bool TakeAway { get; set; }
+
         public decimal OrderPrice { get; set; }
 
         public DateTime DelayedDelivery { get; set; }

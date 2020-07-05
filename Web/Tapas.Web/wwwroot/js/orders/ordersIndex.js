@@ -86,15 +86,20 @@ setInterval(con, 10000);
 
 function insertOrder(id) { var li = document.createElement("li"); li.className = "btn btn-danger btn-lg"; li.setAttribute("onclick", `orderDetails(${id})`); li.id = `li${id}`; li.style.width = "100%"; li.style.marginBottom = "2px"; var h5 = document.createElement("h5"); h5.textContent = `Поръчка: ${id}`; li.appendChild(h5); var list = document.getElementById("listOrders"); list.insertBefore(li, list.childNodes[0]); };
 
-function cStatus(status, order, setTime) { connection.invoke("OperatorChangeStatus", status, order, setTime); };
+function cStatus(status, order, setTime, deliveryFee) { connection.invoke("OperatorChangeStatus", status, order, setTime, deliveryFee); };
 
 function changeStatus(status) {
     var order = document.getElementById("order").innerHTML;
     var setTime;
+    var deliveryFee;
     if (document.getElementById('theInput')) {
         setTime = document.getElementById('theInput').value;
     }
-    cStatus(status, order, setTime);
+    if (status === "Processed") {
+        deliveryFee = document.getElementById("deliveryFee").value;
+    }
+    alert(deliveryFee);
+    cStatus(status, order, setTime, deliveryFee);
 };
 
 function orderDetails(orderId) {

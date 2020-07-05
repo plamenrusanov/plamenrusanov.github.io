@@ -5,88 +5,107 @@
     var i = 1;
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="row">
-            <h4 style="width:50%;">Поръчка:</h4><h4 id="order">@Model.OrderId</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <h4 style="width:50%;">Поръчка:</h4><h4 id="order">@Model.OrderId</h4>
+            </div>
         </div>
-    </div>
-    @if (Model.Status == OrderStatus.Unprocessed)
-    {
-        @if (true)
+
+        @if (Model.Status == OrderStatus.Unprocessed)
         {
-            <div class="col-md-6" id="timer">
-                <div id="minus1" onclick="minus()"><i class="btn material-icons" style="font-size:45px; padding:0; ">chevron_left</i></div>
-                <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Минути" value="40" min="30" step="5">
-                <div id="minus1" onclick="plus()"><i class="btn material-icons" style="font-size:45px; padding:0;">chevron_right</i></div>
+            @if (true)
+            {
+                <div class="col-md-6" id="timer">
+                    <div id="minus1" onclick="minus()"><i class="btn material-icons" style="font-size:45px; padding:0; ">chevron_left</i></div>
+                    <input name="Quantity" id="theInput" type="text" size="4" class="form-control" title="Минути" value="40" min="30" step="5">
+                    <div id="minus1" onclick="plus()"><i class="btn material-icons" style="font-size:45px; padding:0;">chevron_right</i></div>
+                </div>
+            }
+            else
+            {
+                @*delayed delivery time*@
+            }
+        }
+        else
+        {
+            <div class="col-md-6">
+                <div class="row">
+                    <h4 style="width:50%;">Доставка :</h4><h4>@Model.TimeForDelivery</h4>
+                </div>
+            </div>
+        }
+
+        <div class="col-md-6">
+            <div class="row">
+                <h4 style="width:50%;">Поръчана:</h4><h4 id="createdOn">@Model.CreatedOn</h4>
+            </div>
+        </div>
+
+        @if (Model.Status == OrderStatus.Unprocessed)
+        {
+            <div class="col-md-6">
+                <button type="button" class="btn btn-warning" onclick="changeStatus('@OrderStatus.Processed.ToString()')">Приеми поръчката</button>
+            </div>
+        }
+        else if (Model.Status == OrderStatus.Processed)
+        {
+            <div class="col-md-6">
+                <button type="button" class="btn btn-success" onclick="changeStatus('@OrderStatus.OnDelivery.ToString()')">Поръчката пътува</button>
+            </div>
+        }
+        else if (Model.Status == OrderStatus.OnDelivery)
+        {
+            <div class="col-md-6">
+                <button type="button" class="btn btn-info" onclick="changeStatus('@OrderStatus.Delivered.ToString()')">Поръчката доставена</button>
             </div>
         }
         else
         {
-            @*delayed delivery time*@
+            <div class="col-md-6">
+                <h4>Поръчката е доставена.</h4>
+            </div>
         }
-    }
-    else
-    {
+
         <div class="col-md-6">
-            <div class="row">
-                <h4 style="width:50%;">Доставка :</h4><h4>@Model.TimeForDelivery</h4>
+            <div class="row"><h4 style="width:50%;">Клиент: </h4><h4 id="userName">@Model.UserUserName</h4></div>
+        </div>
+
+        @if (Model.Status == OrderStatus.Unprocessed && Model.TotalPrice < GlobalConstants.MOPTCDF)
+        {
+            <div class="col-md-6">
+                @Html.Label("Цена за доставка")
+                <select id="deliveryFee">
+                    <option value="1,00">1.00</option>
+                    <option value="2,00">2.00</option>
+                    <option value="4,00">4.00</option>
+                </select>
+            </div>
+        }
+
+        <div class="col-md-6">
+            <h4 style="width:50%;">Телефон: </h4><h4 id="phone">@Model.UserPhone</h4>
+        </div>
+
+        @if (true)
+        {
+            <div class="col-md-6">
+                <a class="btn" href="#"><h4>Адрес: <span id="address">@Model.DisplayAddress</span></h4></a>
+            </div>
+        }
+
+        <div class="col-md-6">
+            <div>
+                <span>Допълнителна информация за адреса.</span><br />
+                <h6>@Html.DisplayFor(x => x.AddressInfo)</h6>
+            </div>
+            <div>
+                <span>Допълнителна информация за поръчката.</span><br />
+                <h6>@Html.DisplayFor(x => x.AddInfo)</h6>
             </div>
         </div>
-    }
-    <div class="col-md-6">
-        <div class="row">
-            <h4 style="width:50%;">Поръчана:</h4><h4 id="createdOn">@Model.CreatedOn</h4>
-        </div>
     </div>
-
-    @if (Model.Status == OrderStatus.Unprocessed)
-    {
-        <div class="col-md-6">
-            <button type="button" class="btn btn-warning" onclick="changeStatus('@OrderStatus.Processed.ToString()')">Приеми поръчката</button>
-        </div>
-    }
-    else if (Model.Status == OrderStatus.Processed)
-    {
-        <div class="col-md-6">
-            <button type="button" class="btn btn-success" onclick="changeStatus('@OrderStatus.OnDelivery.ToString()')">Поръчката пътува</button>
-        </div>
-    }
-    else if (Model.Status == OrderStatus.OnDelivery)
-    {
-        <div class="col-md-6">
-            <button type="button" class="btn btn-info" onclick="changeStatus('@OrderStatus.Delivered.ToString()')">Поръчката доставена</button>
-        </div>
-    }
-    else
-    {
-        <div class="col-md-6">
-            <h4>Поръчката е доставена.</h4>
-        </div>
-    }
-
-    <div class="col-md-6">
-        <h4 style="width:50%;">Клиент: </h4><h4 id="userName">@Model.UserUserName</h4>
-    </div>
-    <div class="col-md-6">
-        <h4 style="width:50%;">Телефон: </h4><h4 id="phone">@Model.UserPhone</h4>
-    </div>
-
-    <div class="col-md-6">
-        <h4>Адрес: <span id="address">@Model.DisplayAddress</span></h4>
-    </div>
-    <div class="col-md-6">
-        <div>
-            <span>Допълнителна информация за адреса.</span><br />
-            <h6>@Html.DisplayFor(x => x.AddressInfo)</h6>
-        </div>
-        <div>
-            <span>Допълнителна информация за поръчката.</span><br />
-            <h6>@Html.DisplayFor(x => x.AddInfo)</h6>
-        </div>
-    </div>
-</div>
-<hr />
+<hr class="hr-tapas" />
 
 <table class="table bg-light">
     <thead>

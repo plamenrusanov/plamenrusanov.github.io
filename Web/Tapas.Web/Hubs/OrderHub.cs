@@ -25,23 +25,7 @@
             this.hubUser = hubUser;
         }
 
-    /*  public async Task GetUpdateForOrder()
-        {
-            bool haveUpdate = false;
-            do
-            {
-                if (this.ordersService.IsThereNew())
-                {
-                    haveUpdate = true;
-                    var order = this.ordersService.GetUpdate();
-                    await this.Clients.Caller.SendAsync("ReceiveOrderUpdate", order);
-                }
-            }
-            while (haveUpdate);
-            await this.Clients.Caller.SendAsync("OperatorFinished");
-        } */
-
-        public async Task OperatorChangeStatus(string status, string order, string setTime)
+        public async Task OperatorChangeStatus(string status, string order, string setTime, string deliveryFee)
         {
             if (string.IsNullOrEmpty(status) || string.IsNullOrEmpty(order))
             {
@@ -51,7 +35,7 @@
 
             try
             {
-                var userId = await this.ordersService.ChangeStatusAsync(status, order, setTime);
+                var userId = await this.ordersService.ChangeStatusAsync(status, order, setTime, deliveryFee);
                 await this.Clients.All.SendAsync("OperatorStatusChanged", order, status);
                 await this.hubUser.Clients.User(userId)?.SendAsync("UserStatusChanged", order, status); // object statusResult = new object { };
                 if (Enum.TryParse(typeof(OrderStatus), status, out object statusResult))

@@ -80,20 +80,20 @@
 <hr class="hr-tapas" />
 @if (Model.OrderPrice < GlobalConstants.MOPTCDF && Model.OrderPrice >= GlobalConstants.OrderPriceMin)
 {
-    <div class="row w-100">
+    <div class="row w-100" id="deliveryDiv">
         <h5 style="width:70%;">Ще ви бъде начислена сума за доставка!</h5>
         <a class="btn btn-secondary btn-sm" onclick="displayDeliveryTax()" style="color:white; height:fit-content;">Доставка</a>
         <button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
     </div>
-    <hr class="hr-tapas" />
+    <hr class="hr-tapas" id="deliveryHr"/>
 }
 <div id="form">
     @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
     {
         @Html.AntiForgeryToken();
         @Html.ValidationSummary(true);
-
-        <div class="row m-0 form-group">
+        <div class="row"><h4>@Html.CheckBox("TakeAway", false, new { onchange="fChange()" }) @Html.LabelFor(x => x.TakeAway)</h4> </div>
+        <div class="row m-0 form-group" id="addressDiv">
             <span asp-validation-for="AddressId" class="text-danger"></span>
             <div class="col-md-9 pl-0 pr-0 mt-2">@Html.DropDownListFor(x => x.AddressId, Model.Addresses.Select(x => new SelectListItem() { Text = x.DisplayName, Value = x.Id }).ToList(), "Избери адрес", new { @class = "form-control" })</div>
 
@@ -130,15 +130,11 @@
 </div>
 @section Style{
     <link href="~/css/orders/orderTable.css" rel="stylesheet" />
+    <link href="~/css/orders/create.css" rel="stylesheet" />
 }
+
 
 @section Scripts{
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
-    <script>
-        function displayDeliveryTax() {
-            var el = document.getElementById(`btnDeliveryTax`);
-            el.click();
-        }
-    </script>
-
+    <script src="~/js/orders/create.js"></script>
 }

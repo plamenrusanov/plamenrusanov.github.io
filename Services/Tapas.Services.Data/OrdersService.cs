@@ -8,7 +8,9 @@
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Data.Models.Enums;
+    using Tapas.Services.Contracts;
     using Tapas.Services.Data.Contracts;
+    using Tapas.Services.Dto.Mistral;
     using Tapas.Web.ViewModels.Addreses;
     using Tapas.Web.ViewModels.Administration.Sizes;
     using Tapas.Web.ViewModels.Extras;
@@ -17,35 +19,38 @@
 
     public class OrdersService : IOrdersService
     {
+        private const int LocationId = 1;
+        private const int StoreId = 1;
         private readonly IRepository<Order> ordersRepository;
         private readonly IDeletableEntityRepository<ShopingCart> cartRepository;
         private readonly IDeletableEntityRepository<ShopingCartItem> itemsRepository;
         private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
+        private readonly IMistralService mistralService;
 
         public OrdersService(
             IRepository<Order> ordersRepository,
             IDeletableEntityRepository<ShopingCart> cartRepository,
             IDeletableEntityRepository<ShopingCartItem> itemsRepository,
-            IDeletableEntityRepository<ProductSize> sizeRepository)
+            IDeletableEntityRepository<ProductSize> sizeRepository,
+            IMistralService mistralService)
         {
             this.ordersRepository = ordersRepository;
             this.cartRepository = cartRepository;
             this.itemsRepository = itemsRepository;
             this.sizeRepository = sizeRepository;
+            this.mistralService = mistralService;
         }
 
-        public async Task<string> ChangeStatusAsync(string status, string orderId, string setTime)
+        public async Task<string> ChangeStatusAsync(string status, string orderId, string setTime, string deliveryFee)
         {
             if (string.IsNullOrEmpty(orderId))
             {
                 throw new ArgumentNullException("OrderId is null.");
             }
 
-            int id = default;
-            if (int.TryParse(orderId, out id))
+            if (int.TryParse(orderId, out int id))
             {
-                object statusResult = new object { };
-                if (Enum.TryParse(typeof(OrderStatus), status, out statusResult))
+                if (Enum.TryParse(typeof(OrderStatus), status, out object statusResult))
                 {
                     try
                     {
@@ -57,15 +62,22 @@
 
                         order.Status = (OrderStatus)statusResult;
 
-                        int minutesToDelivery;
-                        if (int.TryParse(setTime, out minutesToDelivery))
+                        if (int.TryParse(setTime, out int minutesToDelivery))
                         {
                             order.MinutesForDelivery = minutesToDelivery;
                         }
 
                         switch (statusResult)
                         {
-                            case OrderStatus.Processed: order.ProcessingTime = DateTime.UtcNow; break;
+                            case OrderStatus.Processed:
+                                if (decimal.TryParse(deliveryFee, out decimal fee))
+                                {
+                                    order.DeliveryFee = fee;
+                                }
+
+                                order.ProcessingTime = DateTime.UtcNow;
+                                await this.SendOrderToMistraalAsync(order);
+                                break;
                             case OrderStatus.OnDelivery: order.OnDeliveryTime = DateTime.UtcNow; break;
                             case OrderStatus.Delivered: order.DeliveredTime = DateTime.UtcNow; break;
                             default: break;
@@ -335,6 +347,55 @@
             }
 
             return model;
+        }
+
+        private async Task SendOrderToMistraalAsync(Order order)
+        {
+            var orderDto = new OrderMDto()
+            {
+                LocationId = LocationId,
+                StoreId = StoreId,
+                Date = DateTime.Now,
+                Info = order.AddInfo,
+                Sales = new List<OrderItemMDto>(),
+            };
+
+            foreach (var item in order.Bag.CartItems)
+            {
+                orderDto.Sales.Add(new OrderItemMDto()
+                {
+                    Code = item.Size.MistralCode,
+                    Name = item.Size.MistralName,
+                    SalesPrice = item.Size.Price,
+                    Qtty = item.Quantity,
+                });
+
+                foreach (var extra in item.ExtraItems)
+                {
+                    orderDto.Sales.Add(new OrderItemMDto()
+                    {
+                        Code = extra.Extra.MistralCode,
+                        Name = extra.Extra.MistralName,
+                        SalesPrice = extra.Extra.Price,
+                        Qtty = extra.Quantity,
+                    });
+                }
+
+                orderDto.Sales.Add(new OrderItemMDto()
+                {
+                    Code = item.Size.Package.MistralCode,
+                    Name = item.Size.Package.MistralName,
+                    SalesPrice = item.Size.Package.Price,
+                    Qtty = Math.Ceiling((decimal)item.Quantity / item.Size.MaxProductsInPackage),
+                });
+            }
+
+            if (order.DeliveryFee > 0)
+            {
+                orderDto.Sales.Add(new OrderItemMDto() { });
+            }
+
+            await this.mistralService.SaveWebOrder(orderDto);
         }
     }
 }

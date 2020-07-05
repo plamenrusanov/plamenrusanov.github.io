@@ -211,7 +211,7 @@
         {
             try
             {
-                var userId = await this.ordersService.ChangeStatusAsync(status, orderId, string.Empty);
+                var userId = await this.ordersService.ChangeStatusAsync(status, orderId, string.Empty, string.Empty);
                 this.hubUser.Clients.User(userId)?.SendAsync("UserStatusChanged", orderId, status);
                 return this.Ok();
             }
