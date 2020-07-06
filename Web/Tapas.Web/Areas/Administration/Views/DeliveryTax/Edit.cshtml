@@ -1,0 +1,80 @@
+﻿@model Tapas.Web.ViewModels.Administration.DeliveryTax.DeliveryTaxViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Редактиране такса";
+}
+<h1 class="text-center">@this.ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-area="Administration" asp-controller="DeliveryTax" asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(x => x.Id)
+            @Html.EditorFor(x => Model.MistralCode, $"MistralCode", $"MistralCode", new { htmlAttributes = new { @hidden = true } })
+            @Html.EditorFor(x => Model.MistralName, $"MistralName", $"MistralName", new { htmlAttributes = new { @hidden = true } })
+            @Html.EditorFor(x => Model.Price, $"Price", $"Price", new { htmlAttributes = new { @hidden = true } })
+            <div><span asp-validation-for="@Model.MistralCode" class="text-danger"></span></div>
+            <div><span asp-validation-for="@Model.MistralName" class="text-danger"></span></div>
+            <div class="form-group">
+                <label asp-for="MistralName" class="control-label"></label>
+                <div id="MistralName2" class="form-control"></div>
+                <span asp-validation-for="MistralName" class="text-danger"></span>
+            </div><div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <div id="Price2" class="form-control"></div>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div>
+                <input class="mt-2" id="getMProduct" />
+                <div class="btn" onclick="getProduct()" style="background-image: url('../../Images/search.png'); width:33px; height:33px;"></div>
+            </div>
+            <div class="form-group">
+                <button type="submit"  class="btn btn-primary">Запиши</button>
+            </div>
+        </form>
+    </div>
+</div>
+<button hidden data-toggle="modal" data-target="#deliveryTax" id="btnDeliveryTax"></button>
+<div class="modal fade" id="deliveryTax" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveryModalTitle" style="color:black">Избери мистрал продукт</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="listProducts">
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" data-dismiss="modal" id="closeModal">Затвори</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-area="Administration" asp-controller="DeliveryTax" asp-action="Index" class="btn btn-primary">Назад</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/deliveryTax/add.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var price = document.getElementById("Price");
+            var price2 = document.getElementById("Price2");
+            if (price) {
+                price2.innerText = price.value;
+            }
+            var na = document.getElementById("MistralName");
+            var na2 = document.getElementById("MistralName2");
+            if (na) {
+                na2.innerText = na.value;
+            }
+        });
+    </script>
+}
+

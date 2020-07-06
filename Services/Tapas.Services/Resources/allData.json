@@ -545,5 +545,47 @@
         "Atr5": null,
         "Group": "",
         "Specific": ""
+    }, {
+        "Code": "40",
+        "Name": "Доставка 1лв.",
+        "Mea": "броя",
+        "SalesPrice": "1.00",
+        "LastDeliveryPrice": "0.00",
+        "Qtty": "13",
+        "Atr1": null,
+        "Atr2": null,
+        "Atr3": null,
+        "Atr4": null,
+        "Atr5": null,
+        "Group": "",
+        "Specific": ""
+    }, {
+        "Code": "41",
+        "Name": "Доставка 2лв.",
+        "Mea": "броя",
+        "SalesPrice": "2.00",
+        "LastDeliveryPrice": "0.00",
+        "Qtty": "13",
+        "Atr1": null,
+        "Atr2": null,
+        "Atr3": null,
+        "Atr4": null,
+        "Atr5": null,
+        "Group": "",
+        "Specific": ""
+    }, {
+        "Code": "42",
+        "Name": "Доставка 4лв.",
+        "Mea": "броя",
+        "SalesPrice": "4.00",
+        "LastDeliveryPrice": "0.00",
+        "Qtty": "13",
+        "Atr1": null,
+        "Atr2": null,
+        "Atr3": null,
+        "Atr4": null,
+        "Atr5": null,
+        "Group": "",
+        "Specific": ""
     }
 ]

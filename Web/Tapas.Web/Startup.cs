@@ -92,6 +92,7 @@
             services.AddTransient<ICateringFoodService, CateringFoodService>();
             services.AddTransient<ICateringEquipmentService, CateringEquipmentService>();
             services.AddTransient<IExtrasService, ExtrasService>();
+            services.AddTransient<IDeliveryTaxService, DeliveryTaxService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

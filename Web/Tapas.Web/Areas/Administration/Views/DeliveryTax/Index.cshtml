@@ -1,0 +1,97 @@
+﻿@model List<Tapas.Web.ViewModels.Administration.DeliveryTax.DeliveryTaxViewModel>
+@{
+    Layout = "./../Shared/_AdminLayout.cshtml";
+    this.ViewData["Title"] = "Такса за доставка";
+    var isDeleted = (bool)this.ViewData["isDeleted"];
+}
+
+    <div class="row">
+        <div class="col-md-3 text-center mt-2">
+            @if (isDeleted)
+            {
+                <a class="btn btn-primary" href="/Administration/DeliveryTax/Index">Активни</a>
+            }
+            else
+            {
+                <a class="btn btn-primary" href="/Administration/DeliveryTax/Index?isDeleted=@true">Неактивни</a>
+            }
+        </div>
+        <div class="col-md-6 text-center">
+            <h1>@this.ViewData["Title"]</h1>
+        </div>
+        <div class="col-md-3 justify-content-end">
+            <a class="btn btn-primary" asp-area="Administration" asp-controller="DeliveryTax"
+               asp-action="Add">Добави</a>
+        </div>
+    </div>
+<div class="container bg-light">
+    <table class="table">
+        <thead>
+            <tr class="row">
+                <th class="col-md-2">
+                    @Html.Label("Код")
+                </th>
+                <th class="col-md-4">
+                    @Html.Label("Име")
+                </th>
+                <th class="col-md-2">
+                    @Html.Label("Цена")
+                </th>
+                @if (isDeleted)
+                {
+                    <th class="col-md-2">
+                    </th>
+                    <th class="col-md-2">
+                        @Html.Label("Активирай")
+                    </th>
+                }
+                else
+                {
+                    <th class="col-md-2">
+                        @Html.Label("Редактирай")
+                    </th>
+                    <th class="col-md-2">
+                        @Html.Label("Изтрий")
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="row">
+                    <td class="col-md-2">
+                        <h6>@item.MistralCode</h6>
+                    </td>
+                    <td class="col-md-4">
+                        <h6>@item.MistralName</h6>
+                    </td>
+                    <td class="col-md-2">
+                        <h6>@item.Price лв.</h6>
+                    </td>
+                    @if (isDeleted)
+                    {
+                        <td class="col-md-2">
+                        </td>
+                        <td class="col-md-2">
+                            <a class="btn btn-success" asp-area="Administration" asp-controller="DeliveryTax"
+                               asp-action="Activate" asp-route-deliveryTaxId="@item.Id">Активирай</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="col-md-2">
+                            <a class="btn btn-primary" asp-area="Administration" asp-controller="DeliveryTax"
+                               asp-action="Edit" asp-route-deliveryTaxId="@item.Id">Редактирай</a>
+                        </td>
+                        <td class="col-md-2">
+                            <a class="btn btn-danger" asp-area="Administration" asp-controller="DeliveryTax"
+                               asp-action="Delete" asp-route-deliveryTaxId="@item.Id">Изтрий</a>
+                        </td>
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

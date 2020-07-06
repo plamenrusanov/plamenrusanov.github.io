@@ -103,6 +103,9 @@
     <Content Update="Areas\Administration\Views\CateringFood\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Areas\Administration\Views\DeliveryTax\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Areas\Administration\Views\Packages\Add.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -41,6 +41,10 @@
         [Column(TypeName = "decimal(5, 2)")]
         public decimal DeliveryFee { get; set; }
 
+        public int? DeliveryTaxId { get; set; }
+
+        public virtual DeliveryTax DeliveryTax { get; set; }
+
         public bool TakeAway { get; set; }
     }
 }
