@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Tapas.Common;
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
     using Tapas.Data.Models.Enums;
@@ -25,6 +25,7 @@
         private readonly IDeletableEntityRepository<ShopingCart> cartRepository;
         private readonly IDeletableEntityRepository<ShopingCartItem> itemsRepository;
         private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
+        private readonly IDeletableEntityRepository<DeliveryAddress> addressRepository;
         private readonly IMistralService mistralService;
 
         public OrdersService(
@@ -32,12 +33,14 @@
             IDeletableEntityRepository<ShopingCart> cartRepository,
             IDeletableEntityRepository<ShopingCartItem> itemsRepository,
             IDeletableEntityRepository<ProductSize> sizeRepository,
+            IDeletableEntityRepository<DeliveryAddress> addressRepository,
             IMistralService mistralService)
         {
             this.ordersRepository = ordersRepository;
             this.cartRepository = cartRepository;
             this.itemsRepository = itemsRepository;
             this.sizeRepository = sizeRepository;
+            this.addressRepository = addressRepository;
             this.mistralService = mistralService;
         }
 
@@ -103,6 +106,11 @@
         // Post Orders/Create
         public async Task<int> CreateAsync(ApplicationUser user, OrderInpitModel model)
         {
+            if (model.TakeAway)
+            {
+                model.AddressId = this.addressRepository.All().Where(a => a.DisplayName == GlobalConstants.TakeAway).FirstOrDefault()?.Id;
+            }
+
             var order = new Order()
             {
                 AddInfo = model.AddInfo,
@@ -110,6 +118,7 @@
                 UserId = user.Id,
                 Status = OrderStatus.Unprocessed,
                 CreatedOn = DateTime.UtcNow,
+                TakeAway = model.TakeAway,
             };
 
             foreach (var item in user.ShopingCart.CartItems)
@@ -144,6 +153,7 @@
                 UserUserName = order.User.UserName,
                 UserPhone = order.User.PhoneNumber,
                 AddInfo = order.AddInfo,
+                TakeAway = order.TakeAway,
                 CartItems = order.Bag.CartItems
                     .Select(x => new ShopingItemsViewModel()
                     {
@@ -203,6 +213,7 @@
 
             var model = new OrderInpitModel()
             {
+                TakeAway = false,
                 AddInfo = string.Empty,
                 ApplicationUserId = user.Id,
                 Addresses = user.Addresses
@@ -295,6 +306,7 @@
                     Status = x.Status.ToString(),
                     ArriveTime = x.ProcessingTime.ToLocalTime().AddMinutes((double)x.MinutesForDelivery).ToString("dd/MM/yyyy HH:mm"),
                     CreatedOn = x.CreatedOn.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
+                    TakeAway = x.TakeAway,
                 }).Take(10).ToList();
         }
 
@@ -312,6 +324,7 @@
             {
                 CreatedOn = order.CreatedOn.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
                 OrderId = order.Id,
+                TakeAway = order.TakeAway,
                 CartItems = order.Bag.CartItems
                     .Select(x => new ShopingItemsViewModel()
                     {

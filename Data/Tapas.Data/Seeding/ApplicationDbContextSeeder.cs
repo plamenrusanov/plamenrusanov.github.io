@@ -30,6 +30,7 @@
                               new UsersSeeder(),
                               new UsersToRoleSeeder(),
                               new AllergensSeeder(serviceProvider.GetRequiredService<ICloudService>()),
+                              new AddressSeeder(),
                           };
 
             foreach (var seeder in seeders)

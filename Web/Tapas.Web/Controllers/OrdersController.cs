@@ -79,7 +79,16 @@
 
             if (!this.ModelState.IsValid)
             {
-                return this.View(viewName: nameof(this.Create));
+                foreach (var item in this.ModelState)
+                {
+                    Console.WriteLine(item.Key.ToString());
+                    foreach (var error in item.Value.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+                
+                return this.RedirectToAction("Create");
             }
 
             try

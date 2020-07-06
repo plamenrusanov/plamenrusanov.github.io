@@ -40,5 +40,7 @@
 
         [Column(TypeName = "decimal(5, 2)")]
         public decimal DeliveryFee { get; set; }
+
+        public bool TakeAway { get; set; }
     }
 }

@@ -19,6 +19,8 @@
 
         public decimal TotalPrice { get; set; }
 
+        public bool TakeAway { get; set; }
+
         public List<ShopingItemsViewModel> CartItems { get; set; }
 
         public OrderStatus Status { get; set; }

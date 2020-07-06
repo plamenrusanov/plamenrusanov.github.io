@@ -9,5 +9,7 @@
         public string CreatedOn { get; set; }
 
         public string ArriveTime { get; set; }
+
+        public bool TakeAway { get; set; }
     }
 }
