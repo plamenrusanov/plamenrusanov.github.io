@@ -14,7 +14,7 @@
     margin: 0;
 }
 
-#minus1 {
+#minus1, #plus1 {
     display: inline-block;
     cursor: pointer;
     width: 45px;

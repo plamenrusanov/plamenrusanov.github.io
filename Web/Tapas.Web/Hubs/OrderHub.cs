@@ -25,7 +25,7 @@
             this.hubUser = hubUser;
         }
 
-        public async Task OperatorChangeStatus(string status, string order, string setTime, string deliveryFee)
+        public async Task OperatorChangeStatus(string status, string order, string setTime, string taxId)
         {
             if (string.IsNullOrEmpty(status) || string.IsNullOrEmpty(order))
             {
@@ -35,7 +35,7 @@
 
             try
             {
-                var userId = await this.ordersService.ChangeStatusAsync(status, order, setTime, deliveryFee);
+                var userId = await this.ordersService.ChangeStatusAsync(status, order, setTime, taxId);
                 await this.Clients.All.SendAsync("OperatorStatusChanged", order, status);
                 await this.hubUser.Clients.User(userId)?.SendAsync("UserStatusChanged", order, status); // object statusResult = new object { };
                 if (Enum.TryParse(typeof(OrderStatus), status, out object statusResult))

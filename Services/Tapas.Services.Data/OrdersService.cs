@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Tapas.Common;
     using Tapas.Data.Common.Repositories;
     using Tapas.Data.Models;
@@ -21,11 +23,13 @@
     {
         private const int LocationId = 1;
         private const int StoreId = 1;
+        private const decimal Qtty = 1m;
         private readonly IRepository<Order> ordersRepository;
         private readonly IDeletableEntityRepository<ShopingCart> cartRepository;
         private readonly IDeletableEntityRepository<ShopingCartItem> itemsRepository;
         private readonly IDeletableEntityRepository<ProductSize> sizeRepository;
         private readonly IDeletableEntityRepository<DeliveryAddress> addressRepository;
+        private readonly IDeletableEntityRepository<DeliveryTax> deliveryTaxRepository;
         private readonly IMistralService mistralService;
 
         public OrdersService(
@@ -34,6 +38,7 @@
             IDeletableEntityRepository<ShopingCartItem> itemsRepository,
             IDeletableEntityRepository<ProductSize> sizeRepository,
             IDeletableEntityRepository<DeliveryAddress> addressRepository,
+            IDeletableEntityRepository<DeliveryTax> deliveryTaxRepository,
             IMistralService mistralService)
         {
             this.ordersRepository = ordersRepository;
@@ -41,10 +46,11 @@
             this.itemsRepository = itemsRepository;
             this.sizeRepository = sizeRepository;
             this.addressRepository = addressRepository;
+            this.deliveryTaxRepository = deliveryTaxRepository;
             this.mistralService = mistralService;
         }
 
-        public async Task<string> ChangeStatusAsync(string status, string orderId, string setTime, string deliveryFee)
+        public async Task<string> ChangeStatusAsync(string status, string orderId, string setTime, string taxId)
         {
             if (string.IsNullOrEmpty(orderId))
             {
@@ -73,9 +79,9 @@
                         switch (statusResult)
                         {
                             case OrderStatus.Processed:
-                                if (decimal.TryParse(deliveryFee, out decimal fee))
+                                if (!string.IsNullOrEmpty(taxId) && int.TryParse(taxId, out int t))
                                 {
-                                    order.DeliveryFee = fee;
+                                    order.DeliveryTaxId = t;
                                 }
 
                                 order.ProcessingTime = DateTime.UtcNow;
@@ -181,6 +187,26 @@
                 PackagesPrice = order.Bag.CartItems.Sum(x => (decimal)Math.Ceiling((double)x.Size.MaxProductsInPackage / x.Quantity) * x.Size.Package.Price),
             };
             model.TotalPrice = model.CartItems.Sum(x => x.ItemPrice) + model.PackagesPrice;
+
+            if (model.TotalPrice < GlobalConstants.MOPTCDF && !order.TakeAway && order.Status == OrderStatus.Unprocessed)
+            {
+                model.Taxes = this.deliveryTaxRepository
+                  .All()
+                  .OrderBy(x => x.Price)
+                  .Select(x => new SelectListItem()
+                  {
+                      Text = x.MistralName,
+                      Value = x.Id.ToString(),
+                      Selected = false,
+                  }).ToList();
+            }
+
+            if (order.DeliveryTaxId.HasValue)
+            {
+                var x = this.deliveryTaxRepository.All().Where(x => x.Id == order.DeliveryTaxId).FirstOrDefault().Price;
+                model.TotalPrice += x;
+                model.DeliveryFee = x;
+            }
 
             if (model.Status != OrderStatus.Unprocessed)
             {
@@ -325,6 +351,7 @@
                 CreatedOn = order.CreatedOn.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
                 OrderId = order.Id,
                 TakeAway = order.TakeAway,
+                
                 CartItems = order.Bag.CartItems
                     .Select(x => new ShopingItemsViewModel()
                     {
@@ -352,7 +379,14 @@
                 PackagesPrice = order.Bag.CartItems.Sum(x => (decimal)Math.Ceiling((double)x.Size.MaxProductsInPackage / x.Quantity) * x.Size.Package.Price),
             };
 
-            model.TotalPrice = model.CartItems.Sum(x => x.ItemPrice) + model.DeliveryFee + model.PackagesPrice;
+            model.TotalPrice = model.CartItems.Sum(x => x.ItemPrice) + model.PackagesPrice;
+
+            if (order.DeliveryTaxId.HasValue)
+            {
+                var x = this.deliveryTaxRepository.All().Where(x => x.Id == order.DeliveryTaxId).FirstOrDefault().Price;
+                model.TotalPrice += x;
+                model.DeliveryFee = x;
+            }
 
             if (model.Status != OrderStatus.Unprocessed)
             {
@@ -403,9 +437,22 @@
                 });
             }
 
-            if (order.DeliveryFee > 0)
+            if (!order.TakeAway && order.DeliveryTaxId.HasValue)
             {
-                orderDto.Sales.Add(new OrderItemMDto() { });
+                var tax = this.deliveryTaxRepository
+                    .All()
+                    .Where(x => x.Id == order.DeliveryTaxId)
+                    .FirstOrDefault();
+                if (tax != null)
+                {
+                    orderDto.Sales.Add(new OrderItemMDto()
+                    {
+                        Code = tax.MistralCode,
+                        Name = tax.MistralName,
+                        SalesPrice = tax.Price,
+                        Qtty = Qtty,
+                    });
+                }
             }
 
             await this.mistralService.SaveWebOrder(orderDto);

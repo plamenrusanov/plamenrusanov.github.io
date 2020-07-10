@@ -44,7 +44,7 @@
         }
     </div>
 </div>
-<hr/>
+<hr />
 <div class="bg-light">
 
     <table class="table bg-light">
@@ -113,12 +113,20 @@
         <h5 style="width:70%;">Опаковки</h5>
         <h5>@Model.PackagesPrice лв.</h5>
     </div>
+    @if (Model.DeliveryFee > 0)
+    {
+        <hr/>
+        <div class="row">
+            <h5 style="width:70%;">Доставка</h5>
+            <h5>@Model.DeliveryFee лв.</h5>
+        </div>
+    }
     <hr />
     <div class="row">
         <h4 style="width:70%;">@Html.Label("Общо за поръчката:")</h4> <h4>@Html.DisplayFor(x => x.TotalPrice) лв.</h4>
     </div>
 
-    @if (Model.TotalPrice >= GlobalConstants.OrderPriceMin && Model.TotalPrice < GlobalConstants.MOPTCDF && !Model.TakeAway)
+    @if (Model.TotalPrice >= GlobalConstants.OrderPriceMin && Model.TotalPrice < GlobalConstants.MOPTCDF && !Model.TakeAway && Model.Status == OrderStatus.Unprocessed)
     {
         <hr class="hr-tapas" />
         <div class="row">

@@ -3,11 +3,17 @@
     using System;
     using System.Collections.Generic;
 
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Tapas.Data.Models.Enums;
     using Tapas.Web.ViewModels.ShopingCartItems;
 
     public class OrderDetailsViewModel
     {
+        public OrderDetailsViewModel()
+        {
+            this.Taxes = new List<SelectListItem>();
+        }
+
         public int OrderId { get; set; }
 
         public string AddInfo { get; set; }
@@ -31,6 +37,10 @@
         public decimal DeliveryFee { get; set; }
 
         public bool TakeAway { get; set; }
+
+        public int? DeliveryTaxId { get; set; }
+
+        public List<SelectListItem> Taxes { get; set; }
 
         public List<ShopingItemsViewModel> CartItems { get; set; }
 
